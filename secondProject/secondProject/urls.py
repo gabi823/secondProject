@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from spotifyWrapped import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('callback/', views.spotify_callback, name='spotify_callback'),
+
 ]
