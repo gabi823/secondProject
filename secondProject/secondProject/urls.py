@@ -21,5 +21,7 @@ from spotifyWrapped import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('callback/', views.spotify_callback, name='spotify_callback'),
+    path('spotify/login/', views.spotify_login, name='spotify_login'),
+    path('spotify/data/', views.spotify_data, name='spotify_data'),
 
 ]
