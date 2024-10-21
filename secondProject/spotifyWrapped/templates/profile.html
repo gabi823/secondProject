@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Wrapped Profile</title>
+    <style>
+        body {
+            background-color: #f0f4ff;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .wrap-card {
+            display: inline-block;
+            background-color: white;
+            padding: 20px;
+            margin: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            height: 100px;
+        }
+        .wrap-card h3 {
+            font-size: 16px;
+        }
+        .logout-btn, .delete-btn {
+            margin-top: 20px;
+            background-color: #ff3b3b;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .logout-btn {
+            background-color: #1db954;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, {{ user_name }}</h1>
+        <h2>Your Saved Spotify Wrapped</h2>
+
+        {% for wrap in wraps %}
+        <div class="wrap-card">
+            <h3>{{ wrap.title }}</h3>
+            <p>Date Created: {{ wrap.date }}</p>
+            <button class="delete-btn">Delete Wrap</button>
+        </div>
+        {% empty %}
+        <p>No wraps saved yet.</p>
+        {% endfor %}
+
+        <form action="{% url 'spotify_logout' %}" method="post">
+            {% csrf_token %}
+            <button class="logout-btn">Logout</button>
+        </form>
+        <br>
+        <a href="{% url 'delete_account' %}">Delete Account</a>
+    </div>
+</body>
+</html>
