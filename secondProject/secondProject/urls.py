@@ -15,13 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from spotifyWrapped import views
+from spotifyWrapped.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', home_view, name='home'),
     path('callback/', views.spotify_callback, name='spotify_callback'),
     path('spotify/login/', views.spotify_login, name='spotify_login'),
     path('spotify/data/', views.spotify_data, name='spotify_data'),
     path('logout/', views.logout_view, name='logout'),
+    path('api/', include('spotifyWrapped.urls')),
+    path('wel/', ReactView.as_view(), name="something")
 ]
