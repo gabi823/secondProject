@@ -2,6 +2,14 @@ import requests
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import JsonResponse
+from rest_framework.views import APIView
+from . models import *
+from rest_framework.response import Response
+from .serializer import *
+from rest_framework import viewsets
+from rest_framework import serializers
+from .models import Artist
+from .serializer import ArtistSerializer
 
 # Create your views here.
 from django.http import HttpResponse
@@ -110,3 +118,25 @@ def logout_view(request):
     """
     request.session.flush()
     return redirect('spotify_login')
+
+
+class ReactView(APIView):
+    serializer_class = ReactSerializer
+
+    def get(self, request):
+        detail = [{"name": detail.name, "detail": detail.detail}
+                  for detail in React.objects.all()]
+        return Response(detail)
+
+    def post(self, request):
+        serializer = ReactSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+
+class ArtistViewSet(viewsets.ModelViewSet):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+
+def home_view(request):
+    return render(request, 'home.html')
