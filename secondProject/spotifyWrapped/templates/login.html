@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Your Spotify Wrapped</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #e0ebff;
+        }
+        .welcome-container {
+            margin-top: 100px;
+            font-family: Arial, sans-serif;
+        }
+        .login-btn {
+            padding: 15px 30px;
+            background-color: #1db954;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <h1>Listen up! Your Spotify is here...</h1>
+        <h2>What do you listen to the most? Find out now!</h2>
+        <form action="{% url 'spotify_login' %}" method="get">
+            <button class="login-btn">Login with Spotify</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -23,5 +23,9 @@ urlpatterns = [
     path('callback/', views.spotify_callback, name='spotify_callback'),
     path('spotify/login/', views.spotify_login, name='spotify_login'),
     path('spotify/data/', views.spotify_data, name='spotify_data'),
-    path('logout/', views.logout_view, name='logout'),
+    path('spotify/profile/', views.profile_page, name='profile_page'),
+    path('spotify/logout/', views.logout_view, name='spotify_logout'),
+    path('delete_account/', views.delete_account, name='delete_account'),
+    path('', views.login_page, name='login_page'),
+    path('spotify/delete_wrap/<int:wrap_id>/', views.delete_wrap, name='delete_wrap'),
 ]

@@ -1,7 +1,12 @@
+from datetime import timedelta
+from django.utils import timezone
+
 import requests
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import JsonResponse
+from django.contrib.auth import logout as django_logout
+from .models import SpotifyUser
 
 # Create your views here.
 from django.http import HttpResponse
@@ -23,6 +28,43 @@ def spotify_login(request):
         f'&scope={scopes}'
     )
     return redirect(url)
+
+def login_page(request):
+    return render(request, 'login.html')
+
+
+def profile_page(request):
+    """
+    Displays the user's profile with their Spotify Wrapped data.
+    """
+    user_id = request.session.get('user_id')
+
+    if not user_id:
+        return redirect('spotify_login')
+
+    # Fetch the user from the database
+    user = SpotifyUser.objects.get(id=user_id)
+
+    # Fetch the user's saved Spotify Wrapped data (if any)
+    wraps = user.spotify_wraps
+
+    context = {
+        'user_name': user.display_name,
+        'wraps': wraps  # Pass the user's Spotify wraps to the profile page
+    }
+
+    return render(request, 'profile.html', context)
+
+def delete_account(request):
+    # Handle account deletion logic
+    if request.method == "POST":
+        user_id = request.session.get('user_id')
+        # Logic to delete the user from the database
+        # SpotifyUser.objects.filter(id=user_id).delete()
+        request.session.flush()
+        return redirect('spotify_login')
+
+    return render(request, 'delete_account.html')
 
 def spotify_callback(request):
     """
@@ -48,12 +90,40 @@ def spotify_callback(request):
         response_data = response.json()
         access_token = response_data.get('access_token')
         refresh_token = response_data.get('refresh_token')
+        expires_in = response_data.get('expires_in', 3600)
 
-        # Save tokens in the session
+        # Calculate token expiry time
+        token_expiry = timezone.now() + timedelta(seconds=expires_in)
+
+        # Use the access token to fetch user profile information
+        headers = {
+            'Authorization': f'Bearer {access_token}'
+        }
+        user_profile_url = 'https://api.spotify.com/v1/me'
+        user_data_response = requests.get(user_profile_url, headers=headers)
+        user_data = user_data_response.json()
+
+        # Extract user data
+        spotify_id = user_data.get('id')
+        display_name = user_data.get('display_name')
+        external_url = user_data.get('external_urls').get('spotify')
+
+        # Check if the user already exists in the database
+        user, created = SpotifyUser.objects.get_or_create(spotify_id=spotify_id)
+        user.display_name = display_name
+        user.external_url = external_url
+        user.access_token = access_token
+        user.refresh_token = refresh_token
+        user.token_expiry = token_expiry
+        user.save()
+
+        # Save the user_name and tokens in the session for the profile page
+        request.session['spotify_user_name'] = display_name
         request.session['spotify_access_token'] = access_token
         request.session['spotify_refresh_token'] = refresh_token
+        request.session['user_id'] = user.id
 
-        return redirect('spotify_data')
+        return redirect('profile_page')
 
     return redirect('spotify_login')
 
@@ -110,3 +180,22 @@ def logout_view(request):
     """
     request.session.flush()
     return redirect('spotify_login')
+
+
+def delete_wrap(request, wrap_id):
+    """
+    Deletes a specific Spotify wrap by ID.
+    """
+    user_id = request.session.get('user_id')
+
+    if not user_id:
+        return redirect('spotify_login')
+
+    # Fetch the user from the database
+    user = SpotifyUser.objects.get(id=user_id)
+
+    # Delete the wrap by filtering it out
+    user.spotify_wraps = [wrap for wrap in user.spotify_wraps if wrap['id'] != wrap_id]
+    user.save()
+
+    return redirect('profile_page')
