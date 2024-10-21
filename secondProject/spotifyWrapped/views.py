@@ -60,10 +60,9 @@ def delete_account(request):
     if request.method == "POST":
         user_id = request.session.get('user_id')
         # Logic to delete the user from the database
-        # SpotifyUser.objects.filter(id=user_id).delete()
+        SpotifyUser.objects.filter(id=user_id).delete()
         request.session.flush()
-        return redirect('spotify_login')
-
+        return redirect('login_page')
     return render(request, 'delete_account.html')
 
 def spotify_callback(request):
@@ -179,7 +178,7 @@ def logout_view(request):
     Logout the user and clear the session.
     """
     request.session.flush()
-    return redirect('spotify_login')
+    return redirect('login_page')
 
 
 def delete_wrap(request, wrap_id):
