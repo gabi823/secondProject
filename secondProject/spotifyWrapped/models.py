@@ -11,3 +11,11 @@ class SpotifyUser(models.Model):
 
     def __str__(self):
         return self.display_name
+# Create your models here.
+class React(models.Model):
+    name = models.CharField(max_length=30)
+    detail = models.CharField(max_length=500)
+
+class Artist(models.Model):
+    name = models.CharField(max_length=100)
+    genre = models.CharField(max_length=100)
