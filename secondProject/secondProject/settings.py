@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'spotifyWrapped.apps.SpotifywrappedConfig',
+    'spotifyWrapped.apps.SpotifywrappedConfig',  # App configuration
 ]
 
 MIDDLEWARE = [
@@ -69,8 +69,7 @@ ROOT_URLCONF = 'secondProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],  # Ensure templates folder is correctly set
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,3 +136,18 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Session settings for token storage
+# Set session expiration for persistence; users will stay logged in for 24 hours
+SESSION_COOKIE_AGE = 86400  # 24 hours in seconds
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Session won't expire when the browser is closed
+SESSION_SAVE_EVERY_REQUEST = True  # Save the session to ensure updates
+
+# Redirect after successful login or logout
+LOGIN_REDIRECT_URL = '/spotify/data/'  # Redirect users to the Spotify data page after login
+LOGOUT_REDIRECT_URL = '/spotify/login/'  # Redirect users to the login page after logout
+
+# In production, make sure you disable debug and properly configure `ALLOWED_HOSTS`
+# DEBUG = False
+# ALLOWED_HOSTS = ['your-production-domain.com']
+
