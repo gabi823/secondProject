@@ -22,6 +22,8 @@ class Migration(migrations.Migration):
                 ('refresh_token', models.CharField(max_length=255)),
                 ('token_expiry', models.DateTimeField()),
                 ('spotify_wraps', models.JSONField(default=list)), ]
+        ),
+        migrations.CreateModel(
             name='Artist',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
