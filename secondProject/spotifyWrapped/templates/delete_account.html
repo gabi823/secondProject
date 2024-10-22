@@ -33,7 +33,7 @@
         <h1>Are you sure you want to delete your account?</h1>
         <form action="{% url 'delete_account' %}" method="post">
             {% csrf_token %}
-            <button class="delete-btn">Delete Account</button>
+            <button class="delete-btn" type="submit">Delete Account</button>
         </form>
         <p>This will remove all your data from our system.</p>
     </div>

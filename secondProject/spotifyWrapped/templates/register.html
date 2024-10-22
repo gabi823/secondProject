@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register for Spotify Wrapped</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 100px;
+            display: inline-block;
+            padding: 40px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .register-btn {
+            padding: 15px 30px;
+            background-color: #1db954;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Your Wrapped Account</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }} <!-- User registration fields -->
+            
+            <!-- Link Spotify as part of the registration process -->
+            <h3>Link your Spotify account:</h3>
+            <a href="{% url 'spotify_login' %}">
+                <button type="button" class="register-btn">Link with Spotify</button>
+            </a>
+
+            <br><br>
+            <button class="register-btn" type="submit">Complete Registration</button>
+        </form>
+
+        <p>Already have an account? <a href="{% url 'user_login' %}">Log in here</a></p>
+    </div>
+</body>
+</html>
