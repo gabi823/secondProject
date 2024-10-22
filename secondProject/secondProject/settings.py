@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'spotifyWrapped.apps.SpotifywrappedConfig',  # App configuration
+    'rest_framework',
+    'requests',
 ]
 
 MIDDLEWARE = [
@@ -69,7 +71,7 @@ ROOT_URLCONF = 'secondProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Ensure templates folder is correctly set
+        'DIRS': [os.path.join(BASE_DIR, 'spotifyWrapped', 'templates')],  # Ensure templates folder is correctly set
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

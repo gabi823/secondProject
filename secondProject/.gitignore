@@ -3,4 +3,8 @@ secrets.json
 
 # Ignore __pycache__ and compiled Python files
 __pycache__/
+secondProject/__pycache__
+*.pyc
 *.py[cod]
+secondProject/env/*
+/env/*
