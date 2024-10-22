@@ -5,8 +5,13 @@ import requests
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import JsonResponse
-from django.contrib.auth import logout as django_logout
+from django.contrib.auth import logout as django_logout, login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.utils.text import normalize_newlines
+
 from .models import SpotifyUser
+from .forms import UserRegisterForm
 
 # Create your views here.
 from django.http import HttpResponse
@@ -14,6 +19,42 @@ from django.http import HttpResponse
 SPOTIFY_CLIENT_ID = settings.SPOTIFY_CLIENT_ID
 SPOTIFY_CLIENT_SECRET = settings.SPOTIFY_CLIENT_SECRET
 SPOTIFY_REDIRECT_URI = settings.SPOTIFY_REDIRECT_URI
+
+# User registration
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save();
+            login(request, user)
+            return redirect('spotify_login')  # Redirect to Spotify linking after registration
+        else:
+            form = UserRegisterForm()
+        return render(request, 'register.html', {"form": form})
+
+# User login
+def user_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('profile_page')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {"form": form})
+
+# Unlink Spotify account
+@login_required
+def unlink_spotify(request):
+    user = SpotifyUser.objects.get(id=request.user.id)
+    user.access_token = None
+    user.refresh_token = None
+    user.save()
+    return redirect('spotify_login')
 
 def spotify_login(request):
     """

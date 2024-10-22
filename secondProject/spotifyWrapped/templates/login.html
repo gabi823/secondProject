@@ -13,8 +13,19 @@
             margin-top: 100px;
             font-family: Arial, sans-serif;
         }
-        .login-btn {
-            padding: 15px 30px;
+        .form-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .input-field {
+            padding: 10px;
+            margin: 10px 0;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .submit-btn {
+            padding: 12px 25px;
             background-color: #1db954;
             color: white;
             border: none;
@@ -26,11 +37,19 @@
 </head>
 <body>
     <div class="welcome-container">
-        <h1>Listen up! Your Spotify is here...</h1>
-        <h2>What do you listen to the most? Find out now!</h2>
-        <form action="{% url 'spotify_login' %}" method="get">
-            <button class="login-btn">Login with Spotify</button>
-        </form>
+        <h1>Listen up! Your Spotify Wrapped is here...</h1>
+        <h2>Log in to see your stats!</h2>
+
+        <!-- Login form for the Wrapped website -->
+        <div class="form-container">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }} <!-- This will display the username and password fields -->
+                <button class="submit-btn" type="submit">Login</button>
+            </form>
+        </div>
+
+        <p>Don't have an account? <a href="{% url 'register' %}">Create one here</a></p>
     </div>
 </body>
 </html>

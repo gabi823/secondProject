@@ -26,6 +26,8 @@ urlpatterns = [
     path('spotify/profile/', views.profile_page, name='profile_page'),
     path('spotify/logout/', views.logout_view, name='spotify_logout'),
     path('delete_account/', views.delete_account, name='delete_account'),
-    path('', views.login_page, name='login_page'),
+    path('register/', views.register, name='register'),
+    path('login/', views.login, name='login'),
+    path('unlink_spotify/', views.unlink_spotify, name='unlink_spotify'),
     path('spotify/delete_wrap/<int:wrap_id>/', views.delete_wrap, name='delete_wrap'),
 ]
