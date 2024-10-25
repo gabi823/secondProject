@@ -265,8 +265,9 @@ class ReactView(APIView):
             return Response(serializer.data)
 
 class ArtistViewSet(viewsets.ModelViewSet):
-    queryset = Artist.objects.all()
-    serializer_class = ArtistSerializer
+    def get(self, request):
+        data = Artist.objects.all()
+        serializer_class = ArtistSerializer
 
 def home_view(request):
     return render(request, 'home.html')

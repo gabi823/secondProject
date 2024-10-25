@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'spotifyWrapped.apps.SpotifywrappedConfig',  # App configuration
     'rest_framework',
     'requests',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -64,14 +65,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'secondProject.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'spotifyWrapped', 'templates')],  # Ensure templates folder is correctly set
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,6 +87,15 @@ TEMPLATES = [
         },
     },
 ]
+
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'frontend/build/static',
+]
+
+STATIC_URL = '/static/'
+
+STATIC_ROOT =  BASE_DIR / 'staticfiles'
 
 WSGI_APPLICATION = 'secondProject.wsgi.application'
 
