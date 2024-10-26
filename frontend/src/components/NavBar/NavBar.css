@@ -1,0 +1,50 @@
+
+.nostalgify {
+  	position: absolute;
+  	top: 101px;
+  	left: 99px;
+  	line-height: 20px;
+  	display: inline-block;
+  	width: 116px;
+  	height: 21px;
+}
+.loginWithSpotify {
+  	position: absolute;
+  	top: 96px;
+  	right: 282px;
+  	display: inline-block;
+  	width: 189px;
+  	height: 26px;
+}
+.aboutUs {
+  	position: absolute;
+  	top: 96px;
+  	right: 101px;
+  	display: inline-block;
+  	width: 101px;
+  	height: 26px;
+}
+.screenshot20241017At1015 {
+  	position: absolute;
+  	top: 96px;
+  	left: 213px;
+  	width: 50px;
+  	height: 30px;
+  	object-fit: cover;
+  	opacity: 0.8;
+}
+.nostalgifyParent {
+  	width: 100%;
+  	position: relative;
+  	background-color: #fff;
+  	border: 1px solid rgba(0, 0, 0, 0.75);
+  	box-sizing: border-box;
+  	height: 193px;
+  	overflow: hidden;
+  	opacity: 0.85;
+  	text-align: left;
+  	font-size: 24px;
+  	color: #000;
+  	font-family: Manrope;
+}
+
