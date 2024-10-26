@@ -1,59 +1,75 @@
 import React from 'react';
 import NavBar from '../../components/NavBar/NavBar.js';
 
+const imagesColumn1 = [
+    "https://via.placeholder.com/308x308",
+    "https://via.placeholder.com/307x308",
+    "https://via.placeholder.com/307x308",
+    "https://via.placeholder.com/307x308"
+];
+
+const imagesColumn2 = [
+    "https://via.placeholder.com/230x231",
+    "https://via.placeholder.com/230x231",
+    "https://via.placeholder.com/230x231",
+    "https://via.placeholder.com/230x231",
+    "https://via.placeholder.com/230x231"
+];
+
+const imagesColumn3 = [
+    "https://via.placeholder.com/308x301",
+    "https://via.placeholder.com/307x308",
+    "https://via.placeholder.com/307x308",
+    "https://via.placeholder.com/307x308"
+];
+
 const Welcome = () => {
     return (
         <>
-            <NavBar />
-            {/* Outer Wrapper to Center Content */}
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                overflow: 'hidden',
-            }}>
-                {/* Inner Wrapper to Group Images */}
+            <NavBar/>
+            <div style={{width: '100%', height: '100%', position: 'relative', zIndex: -1, display: 'flex', justifyContent: 'center', marginTop: '-275px',}}>
                 <div style={{
+                    height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'center',
+                    justifyContent: 'flex-start',
                     alignItems: 'center',
-                    gap: '20px',
-                    textAlign: 'center',
-                    zIndex: -1,
+                    gap: '20px',  // Add gap between the images
+                    padding: '10px'
                 }}>
-                    <img style={{width: 308, height: 308, left: 273, top: -25, position: 'absolute'}}
-                         src="https://via.placeholder.com/308x308" alt="image1"/>
-                    <img style={{width: 306.67, height: 308, left: 273, top: 303, position: 'absolute'}}
-                         src="https://via.placeholder.com/307x308" alt="image2"/>
-                    <img style={{width: 306.67, height: 308, left: 273, top: 631, position: 'absolute'}}
-                         src="https://via.placeholder.com/307x308" alt="image3"/>
-                    <img style={{width: 306.67, height: 308, left: 273, top: 959, position: 'absolute'}}
-                         src="https://via.placeholder.com/307x308" alt="image4"/>
-                    <img style={{width: 230, height: 231, left: 604, top: 168, position: 'absolute'}}
-                         src="https://via.placeholder.com/230x231" alt="image5"/>
-                    <img style={{width: 230, height: 231, left: 604, top: -82, position: 'absolute'}}
-                         src="https://via.placeholder.com/230x231" alt="image6"/>
-                    <img style={{width: 308, height: 301.16, left: 859, top: 748, position: 'absolute'}}
-                         src="https://via.placeholder.com/308x301" alt="image7"/>
-                    <img style={{width: 230, height: 231, left: 604, top: 418, position: 'absolute'}}
-                         src="https://via.placeholder.com/230x231" alt="image8"/>
-                    <img style={{width: 230, height: 231, left: 604, top: 668, position: 'absolute'}}
-                         src="https://via.placeholder.com/230x231" alt="image9"/>
-                    <img style={{width: 230, height: 231, left: 604, top: 918, position: 'absolute'}}
-                         src="https://via.placeholder.com/230x231" alt="image10"/>
-                    <img style={{width: 306.67, height: 308, left: 859, top: 418, position: 'absolute'}}
-                         src="https://via.placeholder.com/307x308" alt="image11"/>
-                    <img style={{width: 306.67, height: 308, left: 859, top: 83, position: 'absolute'}}
-                         src="https://via.placeholder.com/307x308" alt="image12"/>
-                    <img style={{width: 307, height: 308, left: 859, top: -244, position: 'absolute'}}
-                         src="https://via.placeholder.com/307x308" alt="image13"/>
-
+                    {imagesColumn1.map((src, index) => (
+                        <img key={index} style={{width: 308, height: 308}} src={src} alt={`image${index + 1}`}/>
+                    ))}
+                </div>
+                <div style={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    gap: '20px',  // Add gap between the images
+                    padding: '10px'
+                }}>
+                    {imagesColumn2.map((src, index) => (
+                        <img key={index} style={{width: 230, height: 231}} src={src} alt={`image${index + 1}`}/>
+                    ))}
+                </div>
+                <div style={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    gap: '20px',  // Add gap between the images
+                    padding: '10px'
+                }}>
+                    {imagesColumn3.map((src, index) => (
+                        <img key={index} style={{width: 307, height: 308}} src={src} alt={`image${index + 1}`}/>
+                    ))}
+                </div>
             </div>
-        </div>
-</>
-)
-    ;
+        </>
+    );
 };
 
 export default Welcome;

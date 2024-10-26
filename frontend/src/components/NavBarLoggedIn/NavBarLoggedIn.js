@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-const NavBar = () => {
+
+const NavBarLoggedIn = () => {
     return (
         <nav style={{
             width: '100%',
@@ -51,7 +52,7 @@ const NavBar = () => {
                     textDecoration: 'none',
                     whiteSpace: 'nowrap'
                 }}>
-                    login with spotify
+                    profile
                 </Link>
                 <Link to="/about" style={{
                     color: 'black',
@@ -68,5 +69,4 @@ const NavBar = () => {
     );
 };
 
-
-export default NavBar;
+export default NavBarLoggedIn;
