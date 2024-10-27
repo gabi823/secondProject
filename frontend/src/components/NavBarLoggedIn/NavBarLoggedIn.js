@@ -22,20 +22,23 @@ const NavBarLoggedIn = () => {
                 alignItems: 'center',
                 gap: '5px'
             }}>
-                <div style={{
+                <Link to="/" style={{
                     color: 'black',
                     fontSize: '24px',
                     fontFamily: 'Manrope',
                     fontWeight: '400',
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    textDecoration: 'none',
                 }}>
                     nostalgify
-                </div>
-                <img
-                    style={{ width: '50px', height: '30px'}}
-                    src="https://via.placeholder.com/50x30"
-                    alt="Logo"
-                />
+                </Link>
+                <Link to="/">
+                    <img
+                        style={{width: '50px', height: '30px'}}
+                        src="https://via.placeholder.com/50x30"
+                        alt="Logo"
+                    />
+                </Link>
             </div>
 
             {/* Links */}
@@ -44,7 +47,7 @@ const NavBarLoggedIn = () => {
                 gap: '80px',
                 alignItems: 'center'
             }}>
-                <Link to="/login" style={{
+                <Link to="/profile" style={{
                     color: 'black',
                     fontSize: '24px',
                     fontFamily: 'Manrope',
