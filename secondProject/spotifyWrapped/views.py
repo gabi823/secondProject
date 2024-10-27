@@ -5,21 +5,23 @@ import requests
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import JsonResponse
-from django.contrib.auth import logout as django_logout, login, authenticate
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from django.utils.text import normalize_newlines
 
-from .models import SpotifyUser
 from .forms import UserRegisterForm
 from rest_framework.views import APIView
 from . models import *
 from rest_framework.response import Response
 from .serializer import *
 from rest_framework import viewsets
-from rest_framework import serializers
 from .models import Artist
 from .serializer import ArtistSerializer
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
+from .serializer import UserSerializer
 
 # Create your views here.
 from django.http import HttpResponse
@@ -28,42 +30,43 @@ SPOTIFY_CLIENT_ID = settings.SPOTIFY_CLIENT_ID
 SPOTIFY_CLIENT_SECRET = settings.SPOTIFY_CLIENT_SECRET
 SPOTIFY_REDIRECT_URI = settings.SPOTIFY_REDIRECT_URI
 
-# User registration
+
+# --- User Authentication API Views ---
+@api_view(['POST'])
 def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save();
-            login(request, user)
-            return redirect('spotify_login')  # Redirect to Spotify linking after registration
-        else:
-            form = UserRegisterForm()
-        return render(request, 'register.html', {"form": form})
+    """API endpoint for user registration."""
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        user = serializer.save()
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({"token": token.key}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # User login
+@api_view(['POST'])
 def user_login(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('profile_page')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'login.html', {"form": form})
+    """API endpoint for user login."""
+    username = request.data.get("username")
+    password = request.data.get("password")
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({"token": token.key}, status=status.HTTP_200_OK)
+    return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
-# Unlink Spotify account
-@login_required
+
+# --- Spotify Integration View ---
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def unlink_spotify(request):
-    user = SpotifyUser.objects.get(id=request.user.id)
-    user.access_token = None
-    user.refresh_token = None
-    user.save()
-    return redirect('spotify_login')
+    # Access the SpotifyUser profile via the related name 'spotify_profile'
+    spotify_profile = request.user.spotify_profile
+    spotify_profile.access_token = None
+    spotify_profile.refresh_token = None
+    spotify_profile.save()
+    return Response({"message": "Spotify account unlinked successfully"}, status=status.HTTP_200_OK)
 
+@login_required
 def spotify_login(request):
     """
     Redirects the user to Spotify's authorization URL for login.
@@ -77,42 +80,6 @@ def spotify_login(request):
         f'&scope={scopes}'
     )
     return redirect(url)
-
-def login_page(request):
-    return render(request, 'login.html')
-
-
-def profile_page(request):
-    """
-    Displays the user's profile with their Spotify Wrapped data.
-    """
-    user_id = request.session.get('user_id')
-
-    if not user_id:
-        return redirect('spotify_login')
-
-    # Fetch the user from the database
-    user = SpotifyUser.objects.get(id=user_id)
-
-    # Fetch the user's saved Spotify Wrapped data (if any)
-    wraps = user.spotify_wraps
-
-    context = {
-        'user_name': user.display_name,
-        'wraps': wraps  # Pass the user's Spotify wraps to the profile page
-    }
-
-    return render(request, 'profile.html', context)
-
-def delete_account(request):
-    # Handle account deletion logic
-    if request.method == "POST":
-        user_id = request.session.get('user_id')
-        # Logic to delete the user from the database
-        SpotifyUser.objects.filter(id=user_id).delete()
-        request.session.flush()
-        return redirect('login_page')
-    return render(request, 'delete_account.html')
 
 def spotify_callback(request):
     """
@@ -139,14 +106,10 @@ def spotify_callback(request):
         access_token = response_data.get('access_token')
         refresh_token = response_data.get('refresh_token')
         expires_in = response_data.get('expires_in', 3600)
-
-        # Calculate token expiry time
         token_expiry = timezone.now() + timedelta(seconds=expires_in)
 
         # Use the access token to fetch user profile information
-        headers = {
-            'Authorization': f'Bearer {access_token}'
-        }
+        headers = {'Authorization': f'Bearer {access_token}'}
         user_profile_url = 'https://api.spotify.com/v1/me'
         user_data_response = requests.get(user_profile_url, headers=headers)
         user_data = user_data_response.json()
@@ -165,20 +128,53 @@ def spotify_callback(request):
         user.token_expiry = token_expiry
         user.save()
 
-        # Save the user_name and tokens in the session for the profile page
-        request.session['spotify_user_name'] = display_name
-        request.session['spotify_access_token'] = access_token
-        request.session['spotify_refresh_token'] = refresh_token
-        request.session['user_id'] = user.id
+        return JsonResponse({"message": "Spotify account linked successfully", "display_name": display_name}, status = 200)
+    return JsonResponse({"error": "Spotify authentication failed"}, status = 400)
 
-        return redirect('profile_page')
 
-    return redirect('spotify_login')
+# --- Artist and React Data Views ---
+
+class ArtistViewSet(viewsets.ModelViewSet):
+    """ViewSet for managing Artist model."""
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+
+class ReactViewSet(viewsets.ModelViewSet):
+    """ViewSet for managing React model."""
+    queryset = React.objects.all()
+    serializer_class = ReactSerializer
+
+
+# --- HTML Rendered Views (Optional if API-based) ---
+
+def login_page(request):
+    return render(request, 'login.html')
+
+def profile_page(request):
+    """Displays the user's profile with their Spotify Wrapped data."""
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('spotify_login')
+
+    # Fetch the user from the database
+    user = SpotifyUser.objects.get(id=user_id)
+
+    context = {
+        'user_name': user.display_name,
+        'wraps': user.spotify_wraps  # Pass the user's Spotify wraps to the profile page
+    }
+
+    return render(request, 'profile.html', context)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_account(request):
+    user = request.user
+    user.delete()
+    return Response({"message": "Account deleted successfully"}, status=status.HTTP_200_OK)
 
 def refresh_spotify_token(refresh_token):
-    """
-    Function to refresh the Spotify access token when it expires.
-    """
+    """Function to refresh the Spotify access token when it expires."""
     token_url = 'https://accounts.spotify.com/api/token'
     response = requests.post(
         token_url,
@@ -192,82 +188,60 @@ def refresh_spotify_token(refresh_token):
     response_data = response.json()
     return response_data.get('access_token')
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def spotify_data(request):
-    """
-    Displays user's Spotify data (e.g., user profile or top tracks) using the access token.
-    """
+    """Displays user's Spotify data (e.g., user profile or top tracks) using the access token."""
     access_token = request.session.get('spotify_access_token')
     refresh_token = request.session.get('spotify_refresh_token')
 
     if not access_token:
         if refresh_token:
             access_token = refresh_spotify_token(refresh_token)
-            request.session['spotify_access_token'] = access_token
+            request.user.spotifyuser.access_token = access_token
+            request.user.spotifyuser.save()
         else:
-            return redirect('spotify_login')
+            return Response({"error": "User needs to log into Spotify"}, status=status.HTTP_400_BAD_REQUEST)
 
-    headers = {
-        'Authorization': f'Bearer {access_token}'
-    }
-
-    # Fetch user profile data
-
+    headers = {'Authorization': f'Bearer {access_token}'}
     user_profile_url = 'https://api.spotify.com/v1/me'
     user_data_response = requests.get(user_profile_url, headers=headers)
 
     if user_data_response.status_code != 200:
-        return JsonResponse({'error': 'Failed to fetch data from Spotify'}, status=400)
+        return Response({'error': 'Failed to fetch data from Spotify'}, status=status.HTTP_400_BAD_REQUEST)
 
     user_data = user_data_response.json()
+    return Response(user_data, status=status.HTTP_200_OK)
 
-    return JsonResponse(user_data)
-
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def logout_view(request):
-    """
-    Logout the user and clear the session.
-    """
-    request.session.flush()
-    return redirect('login_page')
+    """Logout the user and clear the session."""
+    request.auth.delete()
+    return Response({"message": "User logged out successfully"}, status=status.HTTP_200_OK)
 
-
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def delete_wrap(request, wrap_id):
-    """
-    Deletes a specific Spotify wrap by ID.
-    """
-    user_id = request.session.get('user_id')
-
-    if not user_id:
-        return redirect('spotify_login')
-
-    # Fetch the user from the database
-    user = SpotifyUser.objects.get(id=user_id)
-
-    # Delete the wrap by filtering it out
+    """Deletes a specific Spotify wrap by ID."""
+    user = request.user.spotifyuser
     user.spotify_wraps = [wrap for wrap in user.spotify_wraps if wrap['id'] != wrap_id]
     user.save()
-
-    return redirect('profile_page')
-    return redirect('spotify_login')
-
+    return Response({"message": "Wrap deleted successfully"}, status=status.HTTP_200_OK)
 
 class ReactView(APIView):
-    serializer_class = ReactSerializer
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        detail = [{"name": detail.name, "detail": detail.detail}
-                  for detail in React.objects.all()]
-        return Response(detail)
+        details = [{"name": detail.name, "detail": detail.detail} for detail in React.objects.all()]
+        return Response(details)
 
     def post(self, request):
         serializer = ReactSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
+        if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-
-class ArtistViewSet(viewsets.ModelViewSet):
-    def get(self, request):
-        data = Artist.objects.all()
-        serializer_class = ArtistSerializer
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def home_view(request):
     return render(request, 'home.html')
