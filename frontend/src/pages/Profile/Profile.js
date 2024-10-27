@@ -126,12 +126,13 @@ const Profile = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'left',
-                    width: '700px', // Reduced width to fit screen
-                    border: '1px solid #000',
-                    padding: '15px', // Reduced padding
+                    width: '700px',
+                    padding: '15px',
                     borderRadius: '10px',
-                    maxHeight: '90vh', // Ensure it fits within the screen
-                    overflowY: 'auto' // If content overflows, allow scrolling within this section
+                    height: '500px', // Ensure it fits within the screen
+                    overflowY: 'auto', // If content overflows, allow scrolling within this section
+                    boxSizing: 'border-box',
+                    overflowX: 'hidden',
                 }}>
                     <div style={{
                         display: 'flex',
@@ -144,8 +145,8 @@ const Profile = () => {
                             width: '160px', // Reduced image size
                             height: '160px',
                         }}
-                            src="https://via.placeholder.com/160x160"
-                            alt="Wrapped Image" />
+                             src="https://via.placeholder.com/160x160"
+                             alt="Wrapped Image"/>
                         <div style={{
                             textAlign: 'left',
                             color: 'black',
@@ -154,7 +155,7 @@ const Profile = () => {
                             fontWeight: '500',
                             marginLeft: '20px'
                         }}>
-                            Your Wrapped #1<br />
+                            Your Wrapped #1<br/>
                             <span style={{
                                 fontSize: '18px', // Reduced font size
                                 fontWeight: '500',
@@ -166,9 +167,15 @@ const Profile = () => {
                             width: '28px', // Reduced icon size
                             height: '28px',
                         }}
-                            src="https://via.placeholder.com/28x28"
-                            alt="icon" />
+                             src="https://via.placeholder.com/28x28"
+                             alt="icon"/>
                     </div>
+
+                    <hr style={{
+                        width: '100%',
+                        border: '0.5px solid black',
+                        marginBottom: '20px'
+                    }}/>
 
                     <div style={{
                         display: 'flex',
@@ -181,8 +188,8 @@ const Profile = () => {
                             width: '160px', // Reduced image size
                             height: '160px',
                         }}
-                            src="https://via.placeholder.com/160x160"
-                            alt="Wrapped Image" />
+                             src="https://via.placeholder.com/160x160"
+                             alt="Wrapped Image"/>
                         <div style={{
                             textAlign: 'left',
                             color: 'black',
@@ -191,7 +198,7 @@ const Profile = () => {
                             fontWeight: '500',
                             marginLeft: '20px'
                         }}>
-                            Your Wrapped #2<br />
+                            Your Wrapped #2<br/>
                             <span style={{
                                 fontSize: '18px', // Reduced font size
                                 fontWeight: '500',
@@ -203,9 +210,58 @@ const Profile = () => {
                             width: '28px', // Reduced icon size
                             height: '28px',
                         }}
-                            src="https://via.placeholder.com/28x28"
-                            alt="icon" />
+                             src="https://via.placeholder.com/28x28"
+                             alt="icon"/>
                     </div>
+
+                    <hr style={{
+                        width: '100%',
+                        border: '0.5px solid black',
+                        marginBottom: '20px'
+                    }}/>
+
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginBottom: '20px', // Reduced margin
+                        width: '100%',
+                        justifyContent: 'space-between'
+                    }}>
+                        <img style={{
+                            width: '160px', // Reduced image size
+                            height: '160px',
+                        }}
+                             src="https://via.placeholder.com/160x160"
+                             alt="Wrapped Image"/>
+                        <div style={{
+                            textAlign: 'left',
+                            color: 'black',
+                            fontSize: '30px', // Reduced font size
+                            fontFamily: 'Manrope',
+                            fontWeight: '500',
+                            marginLeft: '20px'
+                        }}>
+                            Your Wrapped #2<br/>
+                            <span style={{
+                                fontSize: '18px', // Reduced font size
+                                fontWeight: '500',
+                            }}>
+                                Date Created: 2024-10-10
+                            </span>
+                        </div>
+                        <img style={{
+                            width: '28px', // Reduced icon size
+                            height: '28px',
+                        }}
+                             src="https://via.placeholder.com/28x28"
+                             alt="icon"/>
+                    </div>
+
+                    <hr style={{
+                        width: '100%',
+                        border: '0.5px solid black',
+                        marginBottom: '20px'
+                    }}/>
 
                     <div style={{
                         display: 'flex',
@@ -218,7 +274,7 @@ const Profile = () => {
                             fontFamily: 'Manrope',
                             fontWeight: '500',
                         }}>
-                            Create New Wrapped<br />
+                            Create New Wrapped<br/>
                         </span>
                         <span style={{
                             color: 'black',
