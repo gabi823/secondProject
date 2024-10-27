@@ -22,15 +22,27 @@ const Profile = () => {
                     alignItems: 'center',
                     gap: '10px',
                 }}>
+                    {/* Circular Image Container */}
                     <div style={{
-                        width: '180px', // Reduced size for better fit
-                        height: '180px', // Reduced size for better fit
+                        width: '180px', // Circle size
+                        height: '180px',
                         background: 'white',
-                        boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                        borderRadius: '50%',
+                        borderRadius: '50%', // Makes the div circular
+                        overflow: 'hidden', // Ensures the image is cropped
                         border: '2px black solid',
-                        marginBottom: '10px'
-                    }} />
+                        marginBottom: '10px',
+                    }}>
+                        <img
+                            src="https://via.placeholder.com/300" // Replace with your image source
+                            alt="Profile"
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover', // Crops the image to fill the circle
+                                borderRadius: '50%', // Ensures the image itself is circular
+                            }}
+                        />
+                    </div>
                     <div style={{
                         width: '204px',
                         height: '34px',
@@ -241,12 +253,12 @@ const Profile = () => {
                             fontWeight: '500',
                             marginLeft: '20px'
                         }}>
-                            Your Wrapped #2<br/>
+                            Your Wrapped #3<br/>
                             <span style={{
                                 fontSize: '18px', // Reduced font size
                                 fontWeight: '500',
                             }}>
-                                Date Created: 2024-10-10
+                                Date Created: 2024-10-11
                             </span>
                         </div>
                         <img style={{
