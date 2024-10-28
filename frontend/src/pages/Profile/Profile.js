@@ -1,6 +1,7 @@
 import React from 'react';
 import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
-import styles from "./Profile.css"
+import {Link} from "react-router-dom";
+import Settings from "../Settings/Settings";
 
 const Profile = () => {
     return (
@@ -110,27 +111,28 @@ const Profile = () => {
                             </div>
                         </div>
                     </div>
-
-                    <div style={{
-                        width: '119px',
-                        height: '38px',
-                        background: 'white',
-                        borderRadius: '10px',
-                        border: '1px black solid',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}>
+                    <Link to="/settings">
                         <div style={{
-                            color: 'black',
-                            fontSize: '16px', // Reduced size
-                            fontFamily: 'Manrope',
-                            fontWeight: '600',
-                            textAlign: 'center',
+                            width: '119px',
+                            height: '38px',
+                            background: 'white',
+                            borderRadius: '10px',
+                            border: '1px black solid',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                         }}>
-                            Settings
+                            <div style={{
+                                color: 'black',
+                                fontSize: '16px', // Reduced size
+                                fontFamily: 'Manrope',
+                                fontWeight: '600',
+                                textAlign: 'center',
+                            }}>
+                                Settings
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                 </div>
 
                 {/* Wrapped Container */}
@@ -277,8 +279,9 @@ const Profile = () => {
 
                     <div style={{
                         display: 'flex',
-                        flexDirection: 'column',
+                        flexDirection: 'row',
                         alignItems: 'center',
+                        justifyContent: 'center',
                     }}>
                         <span style={{
                             color: 'black',
@@ -286,8 +289,9 @@ const Profile = () => {
                             fontFamily: 'Manrope',
                             fontWeight: '500',
                         }}>
-                            Create New Wrapped<br/>
+                            Create New Wrapped
                         </span>
+                        <br></br>
                         <span style={{
                             color: 'black',
                             fontSize: '50px', // Reduced font size
