@@ -39,7 +39,7 @@ SPOTIFY_REDIRECT_URI = secrets['SPOTIFY_REDIRECT_URI']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'spotifyWrapped.apps.SpotifywrappedConfig',  # App configuration
     'rest_framework',
+    'rest_framework.authtoken',
     'requests',
     'corsheaders',
 ]
@@ -67,6 +68,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
+
+# REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
 CORS_ALLOW_ALL_ORIGINS = True
 
