@@ -23,20 +23,31 @@ import os
 
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend', 'build')
 urlpatterns = [
+    # Admin and Home
     path('admin/', admin.site.urls),
     path('', home_view, name='home'),
+
+    # Spotify Authentication and Profile Management
     path('callback/', views.spotify_callback, name='spotify_callback'),
     path('spotify/login/', views.spotify_login, name='spotify_login'),
     path('spotify/data/', views.spotify_data, name='spotify_data'),
     path('spotify/profile/', views.profile_page, name='profile_page'),
     path('spotify/logout/', views.logout_view, name='spotify_logout'),
     path('delete_account/', views.delete_account, name='delete_account'),
+
+    # User Authentication API
     path('register/', views.register, name='register'),
     path('login/', views.login, name='login'),
+
+    # Spotify Data and Wraps
     path('unlink_spotify/', views.unlink_spotify, name='unlink_spotify'),
+    path('spotify/data', views.spotify_data, name='spotify_data'),
     path('spotify/delete_wrap/<int:wrap_id>/', views.delete_wrap, name='delete_wrap'),
+
+    # API Routes
     path('api/', include('spotifyWrapped.urls')),
-    path('wel/', ReactView.as_view(), name="something"),
+    path('api/react/', views.ReactView.as_view(), name='react_view'),
+    path('api/artists/', views.ArtistViewSet.as_view({'get': 'list'}), name='artist_view'),
     re_path(r'^.*$', serve, {
         'path': 'index.html',
         'document_root': frontend_dir
