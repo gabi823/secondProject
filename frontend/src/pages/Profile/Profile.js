@@ -285,24 +285,26 @@ const Profile = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}>
-                        <span style={{
+                        <Link to="/selectionscreen" style={{
                             color: 'black',
                             fontSize: '30px', // Reduced font size
                             fontFamily: 'Manrope',
                             fontWeight: '500',
+                            textDecoration: 'none'
                         }}>
                             Create New Wrapped
-                        </span>
+                        </Link>
                         <br></br>
-                        <span style={{
+                        <Link to="/selectionscreen" style={{
                             color: 'black',
                             fontSize: '50px', // Reduced font size
                             fontFamily: 'Manrope',
                             fontWeight: '700',
                             marginLeft: '15px',
+                            textDecoration: 'none'
                         }}>
                             +
-                        </span>
+                        </Link>
                     </div>
                 </div>
             </div>
