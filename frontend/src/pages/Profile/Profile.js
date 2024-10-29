@@ -22,6 +22,7 @@ const Profile = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap: '10px',
+                    marginRight: '60px',
                 }}>
                     {/* Circular Image Container */}
                     <div style={{
@@ -128,6 +129,7 @@ const Profile = () => {
                                 fontFamily: 'Manrope',
                                 fontWeight: '600',
                                 textAlign: 'center',
+                                textDecoration: 'none'
                             }}>
                                 Settings
                             </div>
@@ -297,6 +299,7 @@ const Profile = () => {
                             fontSize: '50px', // Reduced font size
                             fontFamily: 'Manrope',
                             fontWeight: '700',
+                            marginLeft: '15px',
                         }}>
                             +
                         </span>

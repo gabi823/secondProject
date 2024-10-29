@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
+import {Link} from "react-router-dom";
 
 const Settings = () => {
     return (
@@ -29,7 +30,7 @@ const Settings = () => {
                         fontWeight: '700',
                         marginBottom: '0px',
                     }}>Settings</h1>
-                    <button style={{
+                    <Link to="/profile" style={{
                         border: 'none',
                         background: 'none',
                         color: 'black',
@@ -38,10 +39,11 @@ const Settings = () => {
                         fontWeight: 500,
                         cursor: 'pointer',
                         marginTop: '0px',
+                        textDecoration:'none'
                     }}>
                         <span style={{fontSize: '1.2rem'}}>←</span>
                         back to profile
-                    </button>
+                    </Link>
                 </div>
 
                 {/* Settings items container */}

@@ -13,7 +13,7 @@ const NavBar = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '0 70px',
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
         }}>
             {/* Logo and Title */}
             <div style={{
@@ -54,7 +54,17 @@ const NavBar = () => {
                     textDecoration: 'none',
                     whiteSpace: 'nowrap'
                 }}>
-                    login with spotify
+                    login
+                </Link>
+                <Link to="/createaccount" style={{
+                    color: 'black',
+                    fontSize: '24px',
+                    fontFamily: 'Manrope',
+                    fontWeight: '400',
+                    textDecoration: 'none',
+                    whiteSpace: 'nowrap'
+                }}>
+                    create account
                 </Link>
                 <Link to="/about" style={{
                     color: 'black',
