@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class SpotifyUser(models.Model):
@@ -19,3 +20,9 @@ class React(models.Model):
 class Artist(models.Model):
     name = models.CharField(max_length=100)
     genre = models.CharField(max_length=100)
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Add additional fields if necessary
+    def __str__(self):
+        return self.user.username
