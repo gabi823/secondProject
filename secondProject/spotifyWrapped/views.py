@@ -63,11 +63,13 @@ def user_login(request):
 @permission_classes([IsAuthenticated])
 def unlink_spotify(request):
     # Access the SpotifyUser profile via the related name 'spotify_profile'
-    spotify_profile = request.user.spotify_profile
-    spotify_profile.access_token = None
-    spotify_profile.refresh_token = None
-    spotify_profile.save()
-    return Response({"message": "Spotify account unlinked successfully"}, status=status.HTTP_200_OK)
+    spotify_profile = getattr(request.user, 'spotify_profile', None)
+    if spotify_profile:
+        spotify_profile.access_token = None
+        spotify_profile.refresh_token = None
+        spotify_profile.save()
+        return Response({"message": "Spotify account unlinked successfully"}, status=status.HTTP_200_OK)
+    return Response({"error": "Spotify profile not found"}, status=status.HTTP_404_NOT_FOUND)
 
 @login_required
 def spotify_login(request):
@@ -237,6 +239,7 @@ def spotify_data(request):
 def logout_view(request):
     """Logout the user and clear the session."""
     request.auth.delete()
+    logout(request)
     return Response({"message": "User logged out successfully"}, status=status.HTTP_200_OK)
 
 @api_view(['DELETE'])
