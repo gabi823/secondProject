@@ -42,7 +42,7 @@
 
         <!-- Login form for the Wrapped website -->
         <div class="form-container">
-            <form method="post">
+            <form method="post" action="{% url 'user_login' %}">
                 {% csrf_token %}
                 {{ form.as_p }} <!-- This will display the username and password fields -->
                 <button class="submit-btn" type="submit">Login</button>
