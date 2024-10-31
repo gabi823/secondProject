@@ -7,6 +7,7 @@ import Settings from './pages/Settings/Settings.js';
 import Selection from './pages/Selection/Selection.js';
 import Login from './pages/Login/Login.js';
 import CreateAccount from "./pages/CreateAccount/CreateAccount.js";
+import WrappedIntro from "./pages/Wrapped/WrappedIntro.js";
 
 
 const App = () => {
@@ -19,6 +20,8 @@ const App = () => {
                 <Route path="/selectionscreen" element={<Selection />}></Route>
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/createaccount" element={<CreateAccount />}></Route>
+
+                <Route path="/wrappedintro" element={<WrappedIntro />}></Route>
 
             </Routes>
         </Router>

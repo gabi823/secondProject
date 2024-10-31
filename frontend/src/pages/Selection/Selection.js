@@ -12,13 +12,13 @@ const Selection = () => {
 
                     {/* Selection container on the left */}
                     <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px', width: '775px', marginTop: '220px' }}>
-                        <div style={{ color: 'black', fontSize: 64, fontFamily: 'Manrope', fontWeight: '700', wordWrap: 'break-word', marginBottom: '50px' }}>
+                        <div style={{ color: 'black', fontSize: 50, fontFamily: 'Manrope', fontWeight: '700', wordWrap: 'break-word', marginBottom: '50px' }}>
                             Let’s look back, shall we?
                         </div>
 
-                        {/* Name Your Wrapped and Line Input Field */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '45px' }}>
-                            <div style={{ color: 'black', fontSize: 32, fontFamily: 'Manrope', fontWeight: '600', wordWrap: 'break-word' }}>
+                        {/* Name Your ProfileWrapped and Line Input Field */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px' }}>
+                            <div style={{ color: 'black', fontSize: 25, fontFamily: 'Manrope', fontWeight: '500', wordWrap: 'break-word' }}>
                                 Name Your Wrapped:
                             </div>
                             <input
@@ -26,8 +26,8 @@ const Selection = () => {
                                 placeholder="Enter a name"
                                 style={{
                                     flex: 1,
-                                    height: 40,
-                                    fontSize: 24,
+                                    height: 30,
+                                    fontSize: 25,
                                     fontFamily: 'Manrope',
                                     fontWeight: '800',
                                     border: 'none',
@@ -56,9 +56,9 @@ const Selection = () => {
                                     style={{
                                         flex: 1,
                                         height: '100%',
-                                        fontSize: 24,
+                                        fontSize: 20,
                                         fontFamily: 'Manrope',
-                                        fontWeight: '600',
+                                        fontWeight: '400',
                                         color: 'black',
                                         border: 'none',
                                         outline: 'none',
@@ -79,7 +79,7 @@ const Selection = () => {
                                     position: 'absolute',
                                     right: '10px',
                                     pointerEvents: 'none', // Allows click through to select
-                                    fontSize: 24,
+                                    fontSize: 20,
                                     color: 'black'
                                 }}>▼</span>
                             </div>
@@ -100,7 +100,7 @@ const Selection = () => {
                                     color: 'black',
                                     fontSize: 24,
                                     fontFamily: 'Manrope',
-                                    fontWeight: '600'
+                                    fontWeight: '400'
                                 }}>Go</span>
                             </div>
                         </div>

@@ -5,7 +5,72 @@ import {Link} from "react-router-dom";
 const CreateAccount = () => {
     return (
         <>
-            <NavBar />
+            <NavBar/>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: '-1',
+            }}>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 28,
+                    marginTop: 170,
+                }}>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 1"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 2"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 3"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 4"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 5"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 6"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 7"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 8"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 9"/>
+                </div>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 28,
+                    marginTop: 230,
+                }}>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 9"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 10"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 11"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 12"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 13"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 14"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 15"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 16"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 17"/>
+                </div>
+            </div>
             <div
                 style={{
                     display: 'flex',
