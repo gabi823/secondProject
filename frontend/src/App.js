@@ -8,6 +8,7 @@ import Selection from './pages/Selection/Selection.js';
 import Login from './pages/Login/Login.js';
 import CreateAccount from "./pages/CreateAccount/CreateAccount.js";
 import WrappedIntro from "./pages/Wrapped/WrappedIntro.js";
+import WrappedSongs from "./pages/Wrapped/WrappedSongs.js";
 
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
                 <Route path="/createaccount" element={<CreateAccount />}></Route>
 
                 <Route path="/wrappedintro" element={<WrappedIntro />}></Route>
+                <Route path="/topsongs" element={<WrappedSongs />}></Route>
 
             </Routes>
         </Router>

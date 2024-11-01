@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {Link} from "react-router-dom";
 const WrappedIntro = () => {
     return (
         <div style={{
@@ -15,7 +15,7 @@ const WrappedIntro = () => {
             zIndex: '-1',
         }}>
             {/* Exit Button */}
-            <button
+            <Link to="/profile"
                 style={{
                     position: 'absolute',
                     top: '20px',
@@ -23,12 +23,13 @@ const WrappedIntro = () => {
                     fontSize: '28px',
                     background: 'none',
                     border: 'none',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    textDecoration: 'none'
                 }}
                 onClick={() => console.log('Exit clicked')}
             >
                 &times;
-            </button>
+            </Link>
 
             <div style={{
                 display: 'flex',
