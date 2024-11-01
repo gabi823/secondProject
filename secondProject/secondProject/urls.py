@@ -35,8 +35,8 @@ urlpatterns = [
     path('delete_account/', views.delete_account, name='delete_account'),
 
     # User Authentication API
-    path('register/', views.register, name='register'),
-    path('login/', views.login, name='login'),
+    path('api/register/', views.register, name='register'),
+    path('api/login/', views.user_login, name='login'),
 
     # Spotify Data and Wraps
     path('unlink_spotify/', views.unlink_spotify, name='unlink_spotify'),

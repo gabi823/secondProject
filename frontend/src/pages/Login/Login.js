@@ -6,18 +6,21 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('/api/login/', { username, password });
+            const token = response.data.token;
+
+            // Save token in localStorage
             localStorage.setItem('token', response.data.token);
-            setMessage('Login successful!');
+
             navigate('/profile');
         } catch (error) {
-            setMessage('Login failed. Please check your credentials.');
+            setError('Login failed. Please check your credentials.');
         }
     };
 
@@ -78,6 +81,7 @@ const Login = () => {
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            placeholder='Username'
                             style={{
                                 width: '100%',
                                 height: '30px',
@@ -106,6 +110,7 @@ const Login = () => {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            placeholder='Password'
                             style={{
                                 width: '100%',
                                 height: '30px',
