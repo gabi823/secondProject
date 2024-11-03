@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Artists = () => {
+const WrappedArtists = () => {
     const radius = 325; // Increased radius for more space between central and surrounding artists
     const centerPosition = {
         x: 300, // X coordinate for the center (adjust based on container width)
@@ -89,7 +89,7 @@ const Artists = () => {
 
             {/* Next Page Link */}
             <Link
-                to="/next" // replace with the actual path to the next page
+                to="/topalbums"
                 style={{
                     position: "fixed",
                     bottom: "20px",
@@ -107,4 +107,4 @@ const Artists = () => {
     );
 };
 
-export default Artists;
+export default WrappedArtists;

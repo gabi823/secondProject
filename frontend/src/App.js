@@ -9,8 +9,9 @@ import Login from './pages/Login/Login.js';
 import CreateAccount from "./pages/CreateAccount/CreateAccount.js";
 import WrappedIntro from "./pages/Wrapped/WrappedIntro.js";
 import WrappedSongs from "./pages/Wrapped/WrappedSongs.js";
-import TopGenres from "./pages/Wrapped/WrappedGenres.js";
-import Artists from "./pages/Wrapped/WrappedArtists.js";
+import WrappedGenres from "./pages/Wrapped/WrappedGenres.js";
+import WrappedArtists from "./pages/Wrapped/WrappedArtists.js";
+import WrappedAlbums from "./pages/Wrapped/WrappedAlbums";
 
 
 
@@ -27,8 +28,9 @@ const App = () => {
 
                 <Route path="/wrappedintro" element={<WrappedIntro />}></Route>
                 <Route path="/topsongs" element={<WrappedSongs />}></Route>
-                <Route path="/topgenres" element={<TopGenres />}></Route>
-                <Route path="/topartists" element={<Artists />}></Route>
+                <Route path="/topgenres" element={<WrappedGenres />}></Route>
+                <Route path="/topartists" element={<WrappedArtists />}></Route>
+                <Route path="/topalbums" element={<WrappedAlbums />}></Route>
 
             </Routes>
         </Router>

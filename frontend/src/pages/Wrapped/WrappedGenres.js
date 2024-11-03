@@ -13,7 +13,7 @@ const genres = [
   { rank: 8, name: "Hip Hop", lineHeight: "130px" }
 ];
 
-const GenreList = () => {
+const WrappedGenres = () => {
   return (
       <div style={{padding: "20px", position: "relative"}}>
           {/* Title and Exit */}
@@ -232,7 +232,7 @@ const GenreList = () => {
 
           {/* Next Page Arrow */}
           <Link
-              to="/topartists" // replace with the actual path to the next page
+              to="/topartists"
               style={{
                   position: "fixed",
                   bottom: "20px",
@@ -250,4 +250,4 @@ const GenreList = () => {
   );
 };
 
-export default GenreList;
+export default WrappedGenres;
