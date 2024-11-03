@@ -3,9 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Spotify Personality Playlist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            text-align: left;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .heading {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+
+        .heading span {
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .subheading {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .playlist-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            background: radial-gradient(circle, #cb2d88, #47155c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+        }
+
+        .playlist-img::before {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .playlist-img span {
+            z-index: 2;
+        }
+
+        .content {
+            text-align: left;
+            flex: 1;
+        }
+
+        .username {
+            font-weight: bold;
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+
+        .username span {
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .playlist-info {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 5px 0;
+        }
+
+        .add-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border: 1px solid #333;
+            border-radius: 20px;
+            background-color: #fff;
+            color: #333;
+            text-align: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .add-btn:hover {
+            background-color: #f2f2f2;
+            border-color: #333;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .arrow {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+            transition: color 0.3s;
+            display: flex;
+            justify-content: flex-end;
+            font-weight: 700;
+        }
+
+        .arrow:hover {
+            color: #1db954;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My Django App!</h1>
+    <div id="app"></div>
+
+    <script>
+        // React-like component structure using vanilla JavaScript
+        function PlaylistCard() {
+            return `
+                <div class="container">
+                    <div class="heading">
+                        Since you were <span>Insert Personality Type</span>...
+                    </div>
+                    <div class="subheading">
+                        We made a playlist for you!
+                    </div>
+
+                    <div class="card">
+                        <div class="playlist-img">
+                            <span>Your<br>Time<br>Capsule</span>
+                        </div>
+                        <div class="content">
+                            <div class="username">your_username, the <span>Personality Type</span></div>
+                            <div class="playlist-info">50 songs, 3hr 12min</div>
+                            <button class="add-btn">Add to your Library</button>
+                        </div>
+                    </div>
+
+                    <div class="description">
+                        A blend of familiar favorites and brand new songs that represent you and your music taste in this moment of time.
+                    </div>
+
+                    <div class="arrow">&rarr;</div>
+                </div>
+            `;
+        }
+
+        // Render function
+        function render(component, container) {
+            container.innerHTML = component();
+        }
+
+        // Render PlaylistCard component
+        document.addEventListener('DOMContentLoaded', () => {
+            const app = document.getElementById('app');
+            render(PlaylistCard, app);
+        });
+    </script>
 </body>
 </html>
