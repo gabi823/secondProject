@@ -59,7 +59,7 @@ const WrappedSongs = () => {
         ))}
       </div>
         <Link
-        to="/next-page" // replace with the actual path to the next page
+        to="/topgenres" // replace with the actual path to the next page
         style={{
           position: "fixed",
           bottom: "20px",
