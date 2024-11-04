@@ -1,0 +1,76 @@
+/* WrappedSongs.css */
+
+.container {
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the top */
+}
+
+.title {
+    font-size: 36px;
+    font-weight: 700;
+    font-family: 'Manrope', sans-serif; /* Ensure to import Manrope font */
+    margin: 0;
+}
+
+.exit-button {
+    font-size: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.song-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 32%);
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.song-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.song-cover {
+    width: 161px;
+    height: 161px;
+}
+
+.rank {
+    font-size: 67px;
+    font-weight: 1000; /* Correct weight value */
+    color: black;
+    font-family: 'Manrope', sans-serif;
+}
+
+.song-title {
+    font-size: 23px;
+    font-weight: 700;
+    font-family: 'Manrope', sans-serif;
+    margin-top: 0;
+}
+
+.artist {
+    font-size: 20px;
+    font-weight: 400;
+    font-family: 'Manrope', sans-serif;
+    color: black;
+    margin-top: 5px;
+}
+
+.next-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 36px;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}

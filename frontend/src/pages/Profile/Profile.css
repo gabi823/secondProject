@@ -1,0 +1,174 @@
+/* Main container styling */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 60px;
+    padding: 20px;
+    margin-top: 65px;
+}
+
+/* Profile Container */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-right: 60px;
+}
+
+/* Circular Image Container */
+.profile-image-container {
+    width: 180px;
+    height: 180px;
+    background: white;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px black solid;
+    margin-bottom: 10px;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Username and Email */
+.username, .email {
+    color: black;
+    text-align: center;
+    font-family: Manrope;
+}
+
+.username {
+    font-size: 22px;
+    font-weight: 400;
+    text-decoration: underline;
+    word-wrap: break-word;
+    width: 204px;
+    height: 34px;
+}
+
+.email {
+    font-size: 14px;
+    font-weight: 400;
+    width: 191px;
+    height: 21px;
+}
+
+/* Taste Container */
+.taste-container {
+    width: 220px;
+    height: 75px;
+    background: white;
+    border-radius: 10px;
+    border: 1px black solid;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    gap: 15px;
+}
+
+.artist-image {
+    width: 64px;
+    height: 64px;
+    border-radius: 5px;
+}
+
+/* Settings Link */
+.settings-link {
+    width: 119px;
+    height: 38px;
+    background: white;
+    border-radius: 10px;
+    border: 1px black solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-text {
+    color: black;
+    font-size: 16px;
+    font-family: Manrope;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Profile Wrapped Container */
+.profile-wrapped-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    width: 700px;
+    padding: 15px;
+    border-radius: 10px;
+    height: 500px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Wrapped Section */
+.wrapped-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.wrapped-image {
+    width: 160px;
+    height: 160px;
+}
+
+.wrapped-title {
+    text-align: left;
+    color: black;
+    font-size: 30px;
+    font-family: Manrope;
+    font-weight: 500;
+    margin-left: 20px;
+}
+
+.wrapped-date {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* Divider */
+.divider {
+    width: 100%;
+    border: 0.5px solid black;
+    margin-bottom: 20px;
+}
+
+/* Create New Wrapped */
+.create-new-wrapped {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-new-link {
+    color: black;
+    font-size: 30px;
+    font-family: Manrope;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.create-new-icon {
+    color: black;
+    font-size: 50px;
+    font-family: Manrope;
+    font-weight: 700;
+    margin-left: 15px;
+    text-decoration: none;
+}

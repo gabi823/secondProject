@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./WrappedArtists.css";
 
 const WrappedArtists = () => {
     const radius = 325; // Increased radius for more space between central and surrounding artists
     const centerPosition = {
-        x: 300, // X coordinate for the center (adjust based on container width)
-        y: 300, // Y coordinate for the center (adjust based on container height)
+        x: 300, // X coordinate for the center
+        y: 300, // Y coordinate for the center
     };
     const artists = [
         { name: "The Weeknd", img: "https://via.placeholder.com/100x100" },
@@ -20,21 +21,13 @@ const WrappedArtists = () => {
     ];
 
     return (
-        <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "0" }}>
+        <div className="artists-container">
             {/* Title and Exit Button */}
-            <div style={{ position: "absolute", top: "20px", left: "20px", right: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h1 style={{ fontSize: "36px", fontWeight: "700", fontFamily: "Manrope", margin: "0" }}>Your Top Artists</h1>
+            <div className="header-container">
+                <h1 className="header-title">Your Top Artists</h1>
                 <Link
                     to="/profile"
-                    style={{
-                        fontSize: "28px",
-                        position: "relative",
-                        top: "-8px", // Adjust this value as needed for less spacing above
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        textDecoration: "none",
-                    }}
+                    className="exit-link"
                     onClick={() => console.log("Exit clicked")}
                 >
                     &times;
@@ -42,19 +35,13 @@ const WrappedArtists = () => {
             </div>
 
             {/* Container for all artists */}
-            <div style={{ position: "relative", width: "600px", height: "600px" }}>
+            <div className="artist-wrapper">
                 {/* Main artist in the center */}
-                <div style={{
-                    position: "absolute",
-                    top: `${centerPosition.y}px`,
-                    left: `${centerPosition.x}px`,
-                    transform: "translate(-50%, -50%)",
-                    textAlign: "center"
-                }}>
+                <div className="central-artist">
                     <img
                         src="https://via.placeholder.com/200x200"
                         alt="Taylor Swift"
-                        style={{ width: "300px", height: "300px", borderRadius: "50%" }}
+                        className="central-artist-img"
                     />
                     <div style={{ fontSize: "24px", fontWeight: "700", marginTop: "10px", fontFamily: "Manrope" }}>1. Taylor Swift</div>
                 </div>
@@ -68,18 +55,16 @@ const WrappedArtists = () => {
                     return (
                         <div
                             key={index}
+                            className="surrounding-artist"
                             style={{
-                                position: "absolute",
                                 top: `${y}px`,
                                 left: `${x}px`,
-                                transform: "translate(-50%, -50%)",
-                                textAlign: "center"
                             }}
                         >
                             <img
                                 src={artist.img}
                                 alt={artist.name}
-                                style={{ width: "175px", height: "175px", borderRadius: "50%" }}
+                                className="surrounding-artist-img"
                             />
                             <div style={{ fontSize: "16px", fontWeight: "700", marginTop: "5px", fontFamily: "Manrope" }}>{index + 2}. {artist.name}</div>
                         </div>
@@ -90,15 +75,7 @@ const WrappedArtists = () => {
             {/* Next Page Link */}
             <Link
                 to="/topalbums"
-                style={{
-                    position: "fixed",
-                    bottom: "20px",
-                    right: "20px",
-                    fontSize: "36px",
-                    textDecoration: "none",
-                    color: "black",
-                    cursor: "pointer"
-                }}
+                className="next-page-link"
                 onClick={() => console.log("Next page clicked")}
             >
                 &#8594;

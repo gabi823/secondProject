@@ -8,11 +8,11 @@ import Settings from './pages/Settings/Settings.js';
 import Selection from './pages/Selection/Selection.js';
 import Login from './pages/Login/Login.js';
 import CreateAccount from "./pages/CreateAccount/CreateAccount.js";
-import WrappedIntro from "./pages/Wrapped/WrappedIntro.js";
-import WrappedSongs from "./pages/Wrapped/WrappedSongs.js";
-import WrappedGenres from "./pages/Wrapped/WrappedGenres.js";
-import WrappedArtists from "./pages/Wrapped/WrappedArtists.js";
-import WrappedAlbums from "./pages/Wrapped/WrappedAlbums";
+import WrappedIntro from "./pages/Wrapped/WrappedIntro/WrappedIntro.js";
+import WrappedSongs from "./pages/Wrapped/WrappedSongs/WrappedSongs.js";
+import WrappedGenres from "./pages/Wrapped/WrappedGenres/WrappedGenres.js";
+import WrappedArtists from "./pages/Wrapped/WrappedArtists/WrappedArtists.js";
+import WrappedAlbums from "./pages/Wrapped/WrappedAlbums/WrappedAlbums";
 import WrappedPersonality from "./pages/Wrapped/WrappedPersonality";
 
 
