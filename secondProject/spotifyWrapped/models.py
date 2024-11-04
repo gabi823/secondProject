@@ -2,13 +2,19 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class SpotifyUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='spotify_profile', null=True)
+    user = models.OneToOneField(U ser, on_delete=models.CASCADE, related_name='spotify_profile', default=1)
     spotify_id = models.CharField(max_length=100, unique=True)
     display_name = models.CharField(max_length=100)
     access_token = models.CharField(max_length=255, blank=True, null=True)
     refresh_token = models.CharField(max_length=255, blank=True, null=True)
     token_expiry = models.DateTimeField(null=True, blank=True)
-    spotify_wraps = models.JSONField(default=list)  # For storing past wraps
+
+    # Fields to store various Spotify data points
+    top_tracks = models.JSONField(default=list)  # Top tracks
+    top_artists = models.JSONField(default=list)  # Top artists
+    recent_tracks = models.JSONField(default=list)  # Recently played tracks
+    saved_albums = models.JSONField(default=list)  # User saved albums
+    saved_tracks = models.JSONField(default=list)  # User saved tracks
 
     def __str__(self):
         return self.display_name
