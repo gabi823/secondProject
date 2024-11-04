@@ -12,6 +12,7 @@ import WrappedSongs from "./pages/Wrapped/WrappedSongs.js";
 import WrappedGenres from "./pages/Wrapped/WrappedGenres.js";
 import WrappedArtists from "./pages/Wrapped/WrappedArtists.js";
 import WrappedAlbums from "./pages/Wrapped/WrappedAlbums";
+import WrappedPersonality from "./pages/Wrapped/WrappedPersonality";
 
 
 
@@ -31,6 +32,8 @@ const App = () => {
                 <Route path="/topgenres" element={<WrappedGenres />}></Route>
                 <Route path="/topartists" element={<WrappedArtists />}></Route>
                 <Route path="/topalbums" element={<WrappedAlbums />}></Route>
+                <Route path="/listening-personality" element={<WrappedPersonality />}></Route>
+
 
             </Routes>
         </Router>
