@@ -5,7 +5,7 @@ import requests
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import JsonResponse
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
@@ -52,7 +52,9 @@ def user_login(request):
     username = request.data.get("username")
     password = request.data.get("password")
     user = authenticate(username=username, password=password)
+
     if user is not None:
+        auth_login(request, user)
         token, created = Token.objects.get_or_create(user=user)
         return Response({"token": token.key}, status=status.HTTP_200_OK)
     return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
@@ -92,10 +94,10 @@ def spotify_callback(request):
     """
     # Process the request and get the authorization code
     code = request.GET.get('code')
+    token_url = 'https://accounts.spotify.com/api/token'
 
     if code:
         # Exchange authorization code for access token
-        token_url = 'https://accounts.spotify.com/api/token'
         response = requests.post(
             token_url,
             data={
@@ -213,7 +215,7 @@ def login_page(request):
     return render(request, 'login.html')
 
 def profile_page(request):
-    """Displays the user's profile with their Spotify Wrapped data."""
+    """Displays the user's profile with their Spotify ProfileWrapped data."""
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('spotify_login')
@@ -295,7 +297,6 @@ def spotify_data(request):
 def logout_view(request):
     """Logout the user and clear the session."""
     request.auth.delete()
-    logout(request)
     return Response({"message": "User logged out successfully"}, status=status.HTTP_200_OK)
 
 @api_view(['DELETE'])
