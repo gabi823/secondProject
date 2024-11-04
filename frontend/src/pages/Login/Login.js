@@ -6,24 +6,93 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('/api/login/', { username, password });
+            const token = response.data.token;
+
+            // Save token in localStorage
             localStorage.setItem('token', response.data.token);
-            setMessage('Login successful!');
+
             navigate('/profile');
         } catch (error) {
-            setMessage('Login failed. Please check your credentials.');
+            setError('Login failed. Please check your credentials.');
         }
     };
 
     return (
         <>
-            <NavBar />
+            <NavBar/>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: '-1',
+            }}>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 28,
+                    marginTop: 180,
+                }}>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 1"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 2"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 3"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 4"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 5"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 6"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 7"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 8"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 9"/>
+                </div>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 28,
+                    marginTop: 200,
+                }}>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 9"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 10"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 11"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 12"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 13"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 14"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 15"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 16"/>
+                    <img style={{width: 161, height: 161}} src="https://via.placeholder.com/161x161"
+                         alt="Placeholder image 17"/>
+                </div>
+            </div>
+
             <div
                 style={{
                     display: 'flex',
@@ -61,7 +130,7 @@ const Login = () => {
                     >
                         Login
                     </div>
-                    <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+                    <form onSubmit={handleSubmit} style={{width: '100%'}}>
                         <div
                             style={{
                                 fontSize: 18,
@@ -78,6 +147,7 @@ const Login = () => {
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            placeholder='Username'
                             style={{
                                 width: '100%',
                                 height: '30px',
@@ -106,6 +176,7 @@ const Login = () => {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            placeholder='Password'
                             style={{
                                 width: '100%',
                                 height: '30px',
@@ -118,28 +189,30 @@ const Login = () => {
                             }}
                             required
                         />
-                        <button
-                            type="submit"
-                            style={{
-                                width: '60%',
-                                height: '40px',
-                                background: 'white',
-                                borderRadius: 5,
-                                border: '1px solid #000',
-                                fontSize: 18,
-                                fontFamily: 'Manrope',
-                                fontWeight: '600',
-                                color: 'black',
-                                cursor: 'pointer',
-                                transition: 'background 0.3s',
-                            }}
-                            onMouseEnter={(e) => (e.target.style.background = '#f0f0f0')}
-                            onMouseLeave={(e) => (e.target.style.background = 'white')}
-                        >
-                            Login
-                        </button>
+                        <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
+                            <button
+                                type="submit"
+                                style={{
+                                    width: '60%',
+                                    height: '40px',
+                                    background: 'white',
+                                    borderRadius: 5,
+                                    border: '1px solid #000',
+                                    fontSize: 18,
+                                    fontFamily: 'Manrope',
+                                    fontWeight: '600',
+                                    color: 'black',
+                                    cursor: 'pointer',
+                                    transition: 'background 0.3s',
+                                }}
+                                onMouseEnter={(e) => (e.target.style.background = '#f0f0f0')}
+                                onMouseLeave={(e) => (e.target.style.background = 'white')}
+                            >
+                                Login
+                            </button>
+                        </div>
                     </form>
-                    {message && <p style={{ marginTop: '20px', color: 'red', fontFamily: 'Manrope' }}>{message}</p>}
+                    {message && <p style={{marginTop: '20px', color: 'red', fontFamily: 'Manrope'}}>{message}</p>}
                 </div>
             </div>
         </>

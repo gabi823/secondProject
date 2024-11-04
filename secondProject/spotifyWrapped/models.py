@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class SpotifyUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='spotify_profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='spotify_profile', null=True)
     spotify_id = models.CharField(max_length=100, unique=True)
     display_name = models.CharField(max_length=100)
     access_token = models.CharField(max_length=255, blank=True, null=True)

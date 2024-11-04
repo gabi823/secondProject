@@ -137,7 +137,7 @@ const Profile = () => {
                     </Link>
                 </div>
 
-                {/* Wrapped Container */}
+                {/* ProfileWrapped Container */}
                 <div style={{
                     display: 'flex',
                     flexDirection: 'column',
