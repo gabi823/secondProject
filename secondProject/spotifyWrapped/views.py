@@ -164,6 +164,47 @@ class ReactView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+def fetch_all_spotify_data(spotify_user):
+    """
+    Fetch and store all relevant Spotify data for the specified SpotifyUser instance.
+    If the access token is expired, refresh it before proceeding.
+    """
+    # Check token expiration and refresh if needed
+    if spotify_user.token_expiry <= timezone.now():
+        new_token = refresh_spotify_token(spotify_user.refresh_token)
+        if new_token:
+            spotify_user.access_token = new_token
+            spotify_user.token_expiry = timezone.now() + timedelta(hours=1)  # Adjust expiry
+            spotify_user.save()
+
+    headers = {'Authorization': f'Bearer {spotify_user.access_token}'}
+    endpoints = {
+        'top_tracks': 'https://api.spotify.com/v1/me/top/tracks',
+        'top_artists': 'https://api.spotify.com/v1/me/top/artists',
+        'recent_tracks': 'https://api.spotify.com/v1/me/player/recently-played',
+        'saved_tracks': 'https://api.spotify.com/v1/me/tracks',
+        'saved_albums': 'https://api.spotify.com/v1/me/albums',
+    }
+
+    for field, url in endpoints.items():
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            setattr(spotify_user, field, response.json().get('items', []))
+        else:
+            setattr(spotify_user, field, [])  # Set as empty list if data fetching fails
+
+    spotify_user.save()
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_all_spotify_data(request):
+    """
+    Fetch and store all Spotify data for the authenticated user, updating stored data.
+    """
+    spotify_user = request.user.spotify_profile
+    fetch_all_spotify_data(spotify_user)
+    return Response({"message": "All Spotify data updated successfully"}, status=200)
+
 
 # --- HTML Rendered Views (Optional if API-based) ---
 
@@ -212,18 +253,22 @@ def refresh_spotify_token(refresh_token):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def spotify_data(request):
-    """Displays user's Spotify data (e.g., user profile or top tracks) using the access token."""
-    access_token = request.session.get('spotify_access_token')
-    refresh_token = request.session.get('spotify_refresh_token')
+    """Displays user's Spotify data (e.g., user profile or top tracks) using the access token, fetching fress data if needed."""
+    spotify_user = request.user.spotify_profile
+    access_token = spotify_user.access_token
+    refresh_token = spotify_user.refresh_token
 
-    if not access_token:
-        if refresh_token:
-            access_token = refresh_spotify_token(refresh_token)
-            request.user.spotifyuser.access_token = access_token
-            request.user.spotifyuser.save()
+    # Check if the access token needs to be refreshed
+    if spotify_user.token_expiry <= timezone.now():
+        access_token = refresh_spotify_token(refresh_token)
+        if access_token:
+            spotify_user.access_token = access_token
+            spotify_user.token_expiry = timezone.now() + timedelta(hours=1)  # Adjust the expiry time as needed
+            spotify_user.save()
         else:
             return Response({"error": "User needs to log into Spotify"}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Fetch Spotify user profile data
     headers = {'Authorization': f'Bearer {access_token}'}
     user_profile_url = 'https://api.spotify.com/v1/me'
     user_data_response = requests.get(user_profile_url, headers=headers)
@@ -231,8 +276,19 @@ def spotify_data(request):
     if user_data_response.status_code != 200:
         return Response({'error': 'Failed to fetch data from Spotify'}, status=status.HTTP_400_BAD_REQUEST)
 
-    user_data = user_data_response.json()
-    return Response(user_data, status=status.HTTP_200_OK)
+    # Fetch and store additional Spotify data points if not present or if a refresh is needed
+    fetch_all_spotify_data(spotify_user)
+
+    # Prepare data for response
+    data = {
+        'user_profile': user_data_response.json(),
+        'top_tracks': spotify_user.top_tracks,
+        'top_artists': spotify_user.top_artists,
+        'recent_tracks': spotify_user.recent_tracks,
+        'saved_albums': spotify_user.saved_albums,
+        'saved_tracks': spotify_user.saved_tracks,
+    }
+    return Response(data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

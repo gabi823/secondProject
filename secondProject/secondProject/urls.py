@@ -42,6 +42,8 @@ urlpatterns = [
     path('unlink_spotify/', views.unlink_spotify, name='unlink_spotify'),
     path('spotify/data', views.spotify_data, name='spotify_data'),
     path('spotify/delete_wrap/<int:wrap_id>/', views.delete_wrap, name='delete_wrap'),
+    # Endpoint to fetch and update all Spotify data at once
+    path('api/update_spotify_data/', views.update_all_spotify_data, name='update_spotify_data'),
 
     # API Routes
     path('api/', include('spotifyWrapped.urls')),

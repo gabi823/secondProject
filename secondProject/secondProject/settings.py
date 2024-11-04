@@ -98,7 +98,7 @@ TEMPLATES = [
 
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'frontend/build/static',
+    BASE_DIR.parent / 'frontend/build/static',
 ]
 
 STATIC_URL = '/static/'
