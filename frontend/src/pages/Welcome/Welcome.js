@@ -27,7 +27,7 @@ const Welcome = () => {
     return (
         <>
             <NavBar/>
-            <div style={{width: '100%', height: '100%', position: 'relative', zIndex: -1, display: 'flex', justifyContent: 'center', marginTop: '-325px', overflow: 'hidden'}}>
+            <div style={{width: '100%', height: '100%', position: 'relative', zIndex: -1, display: 'flex', justifyContent: 'center', marginTop: '-325px', overflow: 'hidden', marginLeft: 20}}>
                 <div style={{
                     height: '100%',
                     display: 'flex',

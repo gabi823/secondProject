@@ -174,7 +174,7 @@ def login_page(request):
     return render(request, 'login.html')
 
 def profile_page(request):
-    """Displays the user's profile with their Spotify Wrapped data."""
+    """Displays the user's profile with their Spotify ProfileWrapped data."""
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('spotify_login')
