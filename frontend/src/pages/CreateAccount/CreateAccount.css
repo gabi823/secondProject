@@ -12,6 +12,7 @@
     right: 0;
     bottom: 0;
     z-index: -1;
+    padding: 0 20px; /* Added padding for smaller screens */
 }
 
 /* First row of images */
@@ -45,6 +46,8 @@
     right: 0;
     bottom: 0;
     margin-top: 175px;
+    padding: 0 20px; /* Outer padding for narrower screens */
+
 }
 
 .create-account-form {
@@ -107,4 +110,38 @@
 
 .create-button:hover {
     background: #f0f0f0;
+}
+@media (max-width: 393px) {
+    .create-account-container {
+        padding: 0 15px; /* Reduced padding for narrow screens */
+    }
+
+    .create-account-form {
+        width: 100%; /* Full width within the padded container */
+        padding: 20px; /* Smaller padding for narrow screens */
+    }
+
+    .form-heading {
+        font-size: 20px; /* Smaller font size for the heading */
+    }
+
+    .form-label {
+        font-size: 16px; /* Smaller font size for labels */
+    }
+
+    .form-input {
+        width: 90%; /* Smaller input width for spacing */
+        height: 25px;
+        font-size: 16px;
+    }
+
+    .create-button {
+        width: 70%; /* Adjust button width for narrow screens */
+        font-size: 16px; /* Smaller button font size */
+        height: 35px; /* Adjust button height */
+    }
+    .image {
+        width: 100px; /* Adjust width for smaller screens */
+        height: 100px; /* Adjust height for smaller screens */
+    }
 }
