@@ -13,7 +13,7 @@ import WrappedSongs from "./pages/Wrapped/WrappedSongs/WrappedSongs.js";
 import WrappedGenres from "./pages/Wrapped/WrappedGenres/WrappedGenres.js";
 import WrappedArtists from "./pages/Wrapped/WrappedArtists/WrappedArtists.js";
 import WrappedAlbums from "./pages/Wrapped/WrappedAlbums/WrappedAlbums";
-import WrappedPersonality from "./pages/Wrapped/WrappedPersonality";
+import WrappedPersonality from "./pages/Wrapped/WrappedPersonality/WrappedPersonality";
 
 
 
