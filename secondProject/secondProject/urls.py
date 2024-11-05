@@ -35,13 +35,15 @@ urlpatterns = [
     path('delete_account/', views.delete_account, name='delete_account'),
 
     # User Authentication API
-    path('register/', views.register, name='register'),
-    path('login/', views.login, name='login'),
+    path('api/register/', views.register, name='register'),
+    path('api/login/', views.user_login, name='login'),
 
     # Spotify Data and Wraps
     path('unlink_spotify/', views.unlink_spotify, name='unlink_spotify'),
     path('spotify/data', views.spotify_data, name='spotify_data'),
     path('spotify/delete_wrap/<int:wrap_id>/', views.delete_wrap, name='delete_wrap'),
+    # Endpoint to fetch and update all Spotify data at once
+    path('api/update_spotify_data/', views.update_all_spotify_data, name='update_spotify_data'),
 
     # API Routes
     path('api/', include('spotifyWrapped.urls')),

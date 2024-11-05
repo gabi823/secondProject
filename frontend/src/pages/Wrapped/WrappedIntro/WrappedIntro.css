@@ -1,0 +1,76 @@
+/* WrappedIntro.css */
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+.exit-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+    margin-top: 10px;
+}
+
+.center-text {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-top: 100px;
+    margin-bottom: 0;
+}
+
+.center-text h1 {
+    color: black;
+    font-size: 34px;
+    font-family: Manrope, sans-serif;
+    font-weight: 1000;
+    text-align: left;
+}
+
+.center-text p {
+    color: black;
+    font-size: 18px;
+    font-family: Manrope, sans-serif;
+    font-weight: 500;
+    margin-top: 0;
+}
+
+.begin-button {
+    font-size: 28px;
+    font-family: Manrope, sans-serif;
+    font-weight: 600;
+    padding: 15px 90px;
+    border-radius: 20px;
+    border: 1px solid black;
+    background: transparent;
+    cursor: pointer;
+}
+
+.image-container-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+    margin-top: 100px;
+}

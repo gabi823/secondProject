@@ -1,0 +1,40 @@
+/* Container for the entire component */
+.welcome-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    margin-top: -325px;
+    overflow: hidden;
+    margin-left: 20px;
+}
+
+/* Common styling for each image column */
+.image-column {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+    overflow: hidden;
+}
+
+/* Specific image sizes for each column */
+.image-column1 img {
+    width: 308px;
+    height: 308px;
+}
+
+.image-column2 img {
+    width: 230px;
+    height: 231px;
+}
+
+.image-column3 img {
+    width: 307px;
+    height: 308px;
+}
