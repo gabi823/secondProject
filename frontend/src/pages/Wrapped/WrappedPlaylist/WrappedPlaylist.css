@@ -1,0 +1,109 @@
+/* Wrapper styling */
+.wrappedPlaylist {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-color: #fff;
+    font-family: 'Manrope';
+    color: #000;
+}
+
+/* Header styling */
+.header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title {
+    font-size: 2vw;
+    font-weight: 700;
+    margin: 0;
+}
+
+.exit-button {
+    font-size: 2vw;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+/* Next page button styling */
+.next-page-button {
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+    font-size: 3vw;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+/* Playlist container styling */
+.playlist {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 1200px;
+    gap: 3vw;
+}
+
+/* Image styling */
+.screenshot20241022At218 {
+    height: 480px;
+    width: 480px;
+
+}
+
+/* Text container styling */
+.text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Individual text elements styling */
+.yourUsernameThePersonalityContainer {
+    font-size: 2vw;
+    font-weight: bold;
+    display: inline-block;
+    text-align: left;
+}
+
+.songs3hr12min {
+    font-size: 1.5vw;
+    font-weight: 500;
+    margin-top: 0.5vw;
+}
+
+.wrappedPlaylistChild {
+    border-radius: 20px;
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 5px;
+    width: 150px;
+    margin-top: 1vw;
+    text-align: center;
+    cursor: pointer;
+}
+
+.addToYour {
+    font-size: 0.8vw;
+    font-weight: 500;
+}
+
+.aBlendOf {
+    font-size: 1vw;
+    font-weight: 500;
+    margin-top: 1vw;
+    text-align: left;
+}

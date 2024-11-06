@@ -113,41 +113,6 @@
     overflow-x: hidden;
 }
 
-/* Wrapped Section */
-.wrapped-section {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    width: 100%;
-    justify-content: space-between;
-}
-
-.wrapped-image {
-    width: 160px;
-    height: 160px;
-}
-
-.wrapped-title {
-    text-align: left;
-    color: black;
-    font-size: 30px;
-    font-family: Manrope;
-    font-weight: 500;
-    margin-left: 20px;
-}
-
-.wrapped-date {
-    font-size: 18px;
-    font-weight: 500;
-}
-
-/* Divider */
-.divider {
-    width: 100%;
-    border: 0.5px solid black;
-    margin-bottom: 20px;
-}
-
 /* Create New Wrapped */
 .create-new-wrapped {
     display: flex;

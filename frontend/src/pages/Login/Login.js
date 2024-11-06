@@ -37,6 +37,7 @@ const Login = () => {
                         />
                     ))}
                 </div>
+
                 <div className="login-image-row">
                     {Array.from({ length: 9 }).map((_, index) => (
                         <img
@@ -58,7 +59,7 @@ const Login = () => {
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Username"
+                            placeholder=""
                             className="login-input"
                             required
                         />
@@ -68,7 +69,7 @@ const Login = () => {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Password"
+                            placeholder=""
                             className="login-input"
                             required
                         />

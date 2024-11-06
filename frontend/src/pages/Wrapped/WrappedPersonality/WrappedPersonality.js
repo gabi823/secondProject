@@ -25,7 +25,7 @@ const WrappedPersonality = ({ personalityIndex = 0 }) => {
             </div>
 
             <Link
-                to="/listening-personality"
+                to="/your-playlist"
                 className="next-page-button"
                 onClick={() => console.log("Next page clicked")}
             >

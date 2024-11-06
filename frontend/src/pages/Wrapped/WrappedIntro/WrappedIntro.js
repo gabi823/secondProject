@@ -27,7 +27,7 @@ const WrappedIntro = () => {
                     <h1>Seems like you’ve been busy...</h1>
                     <p>Let’s see what you’ve been up to!</p>
                 </div>
-                <button className="begin-button">Begin</button>
+                <Link to="/top-songs" className="begin-button">Begin</Link>
             </div>
 
             <div className="image-container-bottom">

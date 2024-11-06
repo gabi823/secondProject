@@ -49,7 +49,7 @@ const WrappedSongs = () => {
       </div>
 
       <Link
-        to="/topgenres" // Replace with the actual path to the next page
+        to="/top-genres" // Replace with the actual path to the next page
         className="next-button"
         onClick={() => console.log("Next page clicked")}
       >

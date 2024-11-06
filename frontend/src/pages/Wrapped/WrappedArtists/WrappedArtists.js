@@ -74,7 +74,7 @@ const WrappedArtists = () => {
 
             {/* Next Page Link */}
             <Link
-                to="/topalbums"
+                to="/top-albums"
                 className="next-page-link"
                 onClick={() => console.log("Next page clicked")}
             >
