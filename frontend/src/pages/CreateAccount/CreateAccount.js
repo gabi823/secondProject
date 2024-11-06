@@ -1,9 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import NavBar from "../../components/NavBar/NavBar";
-import { Link } from "react-router-dom";
 import './CreateAccount.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CreateAccount = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [message, setMessage] = useState('');
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // Log user input before sending it to backend
+        console.log('Form Data:', { username, password, email });
+
+        try {
+            // Send POST request to Django API
+            const response = await axios.post('/api/register/', {
+                username,
+                password,
+                email,
+            });
+
+            setMessage('Account created successfully!');
+            console.log('User created:', response.data);  // Log backend response
+
+            // Redirect to the login page after successful account creation
+            navigate('/login');
+        } catch (error) {
+            console.error('Error:', error.response); // Log full error response
+            if (error.response && error.response.data) {
+                setMessage(Object.values(error.response.data).join(', '));
+            } else {
+                setMessage('Account creation failed. Please try again.');
+            }
+        }
+    }
+
     return (
         <>
             <NavBar />
@@ -32,16 +68,36 @@ const CreateAccount = () => {
                 </div>
             </div>
             <div className="create-account-container">
-                <div className="create-account-form">
+                <form className="create-account-form" onSubmit={handleSubmit}>
                     <div className="form-heading">Create Account</div>
+
                     <div className="form-label">Username:</div>
-                    <input type="text" className="form-input" />
+                    <input
+                        type="text"
+                        className="form-input"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
                     <div className="form-label">Password:</div>
-                    <input type="password" className="form-input" />
+                    <input
+                        type="password"
+                        className="form-input"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                     <div className="form-label">Email:</div>
-                    <input type="text" className="form-input" />
-                    <button className="create-button">Create Account</button>
-                </div>
+                    <input
+                        type="email"
+                        className="form-input"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <button type="submit" className="create-button">Create Account</button>
+
+                    {/* Show feedback message */}
+                    {message && <p className="form-message">{message}</p>}
+                </form>
             </div>
         </>
     );
