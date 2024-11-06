@@ -8,8 +8,31 @@ function Register() {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
+    const validatePassword = (password) => {
+        const minLength = 8;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+        if (password.length < minLength) {
+            return 'Password must be at least 8 characters long.';
+        }
+        if (!hasUpperCase) {
+            return 'Password must have at least one uppercase letter.';
+        }
+        if (!hasSpecialChar) {
+            return 'Password must have at least one special character.';
+        }
+        return '';
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const passwordError = validatePassword(password);
+        if (passwordError) {
+            setMessage(passwordError);
+            return;
+        }
+
         try {
             const response = await axios.post('/api/register/', { username, password });
             setMessage('Registration successful!');
