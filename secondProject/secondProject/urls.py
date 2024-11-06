@@ -19,6 +19,7 @@ from django.urls import path, re_path, include
 from spotifyWrapped import views
 from spotifyWrapped.views import *
 from django.views.static import serve
+import analytics
 import os
 
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend', 'build')
@@ -41,5 +42,5 @@ urlpatterns = [
         'path': 'index.html',
         'document_root': frontend_dir
     }),
-
+    include('analytics/', analytics.urls),
 ]
