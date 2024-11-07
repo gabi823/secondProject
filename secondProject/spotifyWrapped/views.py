@@ -24,6 +24,7 @@ from rest_framework.authtoken.models import Token
 from .serializer import UserSerializer
 
 from .models import SpotifyUser
+import json 
 
 
 # Create your views here.
@@ -196,6 +197,15 @@ def fetch_all_spotify_data(spotify_user):
             setattr(spotify_user, field, [])  # Set as empty list if data fetching fails
 
     spotify_user.save()
+
+
+def classify_personality(spotify_user):
+    fetch_all_spotify_data(spotify_user)
+    python_dict = json.loads(spotify_user.recent_tracks)
+    
+    # start to classify personalities
+
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
