@@ -1,0 +1,58 @@
+/* Header styling */
+.header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title {
+    font-size: 36px;
+    font-weight: 700;
+    font-family: 'Manrope';
+    margin: 0;
+}
+
+.exit-button {
+    font-size: 28px;
+    position: relative;
+    top: -8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+.login-background {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    gap: 0px;
+    margin-top: 50px;
+}
+
+.login-image-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+    margin-top: 0px;
+    margin-bottom: 30px;
+    line-height: 0;
+}
+
+.login-image {
+    width: 161px;
+    height: 161px;
+}
