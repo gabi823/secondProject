@@ -4,17 +4,17 @@ import './WrappedIntro.css'; // Import the CSS file
 
 const WrappedIntro = () => {
     return (
-        <div className="wrapper">
-            {/* Exit Button */}
-            <Link to="/profile" className="exit-button" onClick={() => console.log('Exit clicked')}>
-                &times;
-            </Link>
-
-            <div className="image-container">
-                {Array.from({ length: 9 }).map((_, index) => (
-                    <img
-                        key={index}
-                        style={{ width: 161, height: 161 }}
+        <>
+        <div className="header">
+            <h1 className="header-title"></h1>
+            <Link to="/profile" className="exit-button" onClick={() => console.log("Exit clicked")}>&times;</Link>
+        </div>
+    <div className="wrapper">
+        <div className="image-container">
+            {Array.from({length: 9}).map((_, index) => (
+                <img
+                    key={index}
+                    style={{width: 161, height: 161}}
                         src="https://via.placeholder.com/161x161"
                         alt={`Placeholder image ${index + 1}`}
                     />
@@ -31,16 +31,17 @@ const WrappedIntro = () => {
             </div>
 
             <div className="image-container-bottom">
-                {Array.from({ length: 9 }).map((_, index) => (
+                {Array.from({length: 9}).map((_, index) => (
                     <img
                         key={index}
-                        style={{ width: 161, height: 161 }}
+                        style={{width: 161, height: 161}}
                         src="https://via.placeholder.com/161x161"
                         alt={`Placeholder image ${index + 1}`}
                     />
                 ))}
             </div>
         </div>
+            </>
     );
 };
 
