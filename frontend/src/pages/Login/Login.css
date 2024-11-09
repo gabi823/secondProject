@@ -1,6 +1,7 @@
 /* Login.css */
 
-.login-background {
+/* Background images container */
+.images-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,22 +12,28 @@
     right: 0;
     bottom: 0;
     z-index: -1;
-    margin-top: 350px;
 }
 
-.login-image-row {
+/* First row of images */
+.images-row {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 28px;
-    margin-top: 300px;
-    margin-bottom: 200px;
+    margin-top: 170px;
 }
 
-.login-image {
+/* Second row of images */
+.images-row.second {
+    margin-top: 230px;
+}
+
+/* Image style */
+.image {
     width: 161px;
     height: 161px;
 }
+
 
 .login-container {
     display: flex;

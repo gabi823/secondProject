@@ -29,7 +29,7 @@
     display: grid;
     grid-template-columns: repeat(3, 32%);
     gap: 30px;
-    margin-top: 30px;
+    margin-top: 70px;
 }
 
 .song-item {

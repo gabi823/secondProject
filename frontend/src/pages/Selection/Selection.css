@@ -24,7 +24,7 @@
 
 .selection-title {
     color: black;
-    font-size: 50px;
+    font-size: 46px;
     font-family: 'Manrope', sans-serif;
     font-weight: 700;
     word-wrap: break-word;
@@ -49,9 +49,9 @@
 .wrapped-input {
     flex: 1;
     height: 30px;
-    font-size: 25px;
+    font-size: 20px;
     font-family: 'Manrope', sans-serif;
-    font-weight: 800;
+    font-weight: 400;
     border: none;
     border-bottom: 2px solid black;
     outline: none;
@@ -114,7 +114,7 @@
 
 .go-button span {
     color: black;
-    font-size: 24px;
+    font-size: 22px;
     font-family: 'Manrope', sans-serif;
     font-weight: 400;
 }

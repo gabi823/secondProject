@@ -41,7 +41,7 @@ const WrappedIntro = () => {
                 ))}
             </div>
         </div>
-            </>
+        </>
     );
 };
 
