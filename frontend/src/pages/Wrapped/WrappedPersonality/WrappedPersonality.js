@@ -12,7 +12,7 @@ const WrappedPersonality = ({ personalityIndex = 0 }) => {
                 <h1 className="header-title">Your Listening Personality</h1>
                 <Link to="/profile" className="exit-button" onClick={() => console.log("Exit clicked")}>&times;</Link>
             </div>
-
+            <div className='whole-container'>
             <div className="personality-container">
                 <div className="bottom-line"></div>
                 <div className="outer-circle"></div>
@@ -23,9 +23,10 @@ const WrappedPersonality = ({ personalityIndex = 0 }) => {
                 <div className="personality-name">{name}</div>
                 <div className="personality-description">{description}</div>
             </div>
+            </div>
 
             <Link
-                to="/listening-personality"
+                to="/your-playlist"
                 className="next-page-button"
                 onClick={() => console.log("Next page clicked")}
             >

@@ -14,6 +14,8 @@ import WrappedGenres from "./pages/Wrapped/WrappedGenres/WrappedGenres.js";
 import WrappedArtists from "./pages/Wrapped/WrappedArtists/WrappedArtists.js";
 import WrappedAlbums from "./pages/Wrapped/WrappedAlbums/WrappedAlbums";
 import WrappedPersonality from "./pages/Wrapped/WrappedPersonality/WrappedPersonality";
+import WrappedPlaylist from "./pages/Wrapped/WrappedPlaylist/WrappedPlaylist";
+import WrappedSummary from "./pages/Wrapped/WrappedSummary/WrappedSummary";
 
 
 
@@ -28,12 +30,14 @@ const App = () => {
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/createaccount" element={<CreateAccount />}></Route>
 
-                <Route path="/wrappedintro" element={<WrappedIntro />}></Route>
-                <Route path="/topsongs" element={<WrappedSongs />}></Route>
-                <Route path="/topgenres" element={<WrappedGenres />}></Route>
-                <Route path="/topartists" element={<WrappedArtists />}></Route>
-                <Route path="/topalbums" element={<WrappedAlbums />}></Route>
+                <Route path="/wrapped-intro" element={<WrappedIntro />}></Route>
+                <Route path="/top-songs" element={<WrappedSongs />}></Route>
+                <Route path="/top-genres" element={<WrappedGenres />}></Route>
+                <Route path="/top-artists" element={<WrappedArtists />}></Route>
+                <Route path="/top-albums" element={<WrappedAlbums />}></Route>
                 <Route path="/listening-personality" element={<WrappedPersonality />}></Route>
+                <Route path="/your-playlist" element={<WrappedPlaylist />}></Route>
+                <Route path="/wrapped-summary" element={<WrappedSummary />}></Route>
 
 
             </Routes>

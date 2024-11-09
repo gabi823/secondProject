@@ -48,7 +48,7 @@ const WrappedGenres = () => {
 
             {/* Next Page Arrow */}
             <Link
-                to="/topartists"
+                to="/top-artists"
                 style={{
                     position: "fixed",
                     bottom: "20px",
