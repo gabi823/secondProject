@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from rest_framework.authtoken.admin import User
-
 from django.contrib.auth.models import User
-
 from . models import Artist, React
 
 
@@ -13,6 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True}  # Ensure password is write-only
         }
+
 
     def create(self, validated_data):
         # Create a new user with hashed password

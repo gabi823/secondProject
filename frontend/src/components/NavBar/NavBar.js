@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import './NavBar.css'; // Import the CSS file
+import "./NavBar.css"; // Import the CSS file
 
 const NavBar = () => {
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const toggleMobileMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
+
     return (
-        <nav className="navbar">
+        <header className="navbar">
             {/* Logo and Title */}
             <div className="navbar-logo-title">
-                <Link to="/" className="navbar-title">
-                    nostalgify
-                </Link>
+                <Link to="/" className="navbar-title">nostalgify</Link>
                 <Link to="/">
                     <img
                         className="navbar-logo"
@@ -19,13 +23,29 @@ const NavBar = () => {
                 </Link>
             </div>
 
-            {/* Links */}
-            <div className="navbar-links">
+            {/* Links for Desktop */}
+            <div className={`navbar-links ${menuOpen ? "open" : ""}`}>
                 <Link to="/login" className="navbar-link">login</Link>
                 <Link to="/createaccount" className="navbar-link">create account</Link>
                 <Link to="/about" className="navbar-link">about us</Link>
             </div>
-        </nav>
+
+            {/* Hamburger Icon */}
+            <div className="hamburger-icon" onClick={toggleMobileMenu}>
+                <div className="bar"></div>
+                <div className="bar"></div>
+                <div className="bar"></div>
+            </div>
+
+            {/* Mobile Menu */}
+            {menuOpen && (
+                <ul className={`mobile-menu ${menuOpen ? 'show' : ''}`}>
+                    <li><Link to="/login" onClick={toggleMobileMenu}>login</Link></li>
+                    <li><Link to="/createaccount" onClick={toggleMobileMenu}>create account</Link></li>
+                    <li><Link to="/about" onClick={toggleMobileMenu}>about us</Link></li>
+                </ul>
+            )}
+        </header>
     );
 };
 

@@ -12,6 +12,7 @@
     right: 0;
     bottom: 0;
     z-index: -1;
+    padding: 0 20px; /* Added padding for smaller screens */
 }
 
 /* First row of images */
@@ -119,4 +120,45 @@
     margin-top: 20px;
     color: red;
     font-family: 'Manrope', sans-serif;
+}
+@media (max-width: 393px) {
+    .login-box {
+        width: 85%; /* Make container smaller */
+        padding: 20px 15px;
+    }
+
+    .login-title {
+        font-size: 18px
+    }
+
+    .login-label {
+        font-size: 14px;
+    }
+
+    .login-input {
+        height: 25px;
+        font-size: 14px;
+        width: 90%;
+    }
+
+    .login-button {
+        width: 70%;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    .login-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .login-image-row {
+        gap: 10px;
+        margin-top: 100px;
+    }
+
+    .login-container {
+        margin-top: 100px;
+        padding: 30px 30px;
+    }
 }
