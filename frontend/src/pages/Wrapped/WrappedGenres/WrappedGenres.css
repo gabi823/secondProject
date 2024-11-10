@@ -1,25 +1,18 @@
-/* WrappedGenres.css */
-
-.wrapper {
-    padding: 20px;
-    position: relative;
-    background: white;
-}
-
-.title-container {
+/* Wrapper to center and resize content */
+.header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: flex-start; /* Align items to the top */
 }
 
 .title {
     font-size: 36px;
     font-weight: 700;
-    font-family: Manrope;
+    font-family: 'Manrope', sans-serif; /* Ensure to import Manrope font */
     margin: 0;
 }
 
-.exit-link {
+.exit-button {
     font-size: 28px;
     background: none;
     border: none;
@@ -27,19 +20,65 @@
     text-decoration: none;
 }
 
-.genres-list {
+.wrapped-genres-container {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    overflow: hidden;
 }
 
+
+/* Genre Texts */
 .genre {
     position: absolute;
     color: black;
-    font-size: 48px;
-    font-family: Manrope;
+    font-size: 2vw;
+    font-family: 'Manrope', sans-serif;
     font-weight: 700;
-    word-wrap: break-word;
+    margin-left: 10px;
 }
 
-/* You can add additional styles for each genre's specific positioning if needed */
+/* Genre specific positioning */
+.pop { top: 30vh; left: 10vw; }
+.indie-pop { top: 40vh; left: 27vw; }
+.rap { top: 50vh; left: 46vw; }
+.k-pop { top: 60vh; left: 64vw; }
+.rock { top: 70vh; left: 83vw; }
+
+.rnb { top: 55vh; left: 83vw; }
+.jazz { top: 45vh; left: 64vw; }
+.hip-hop { top: 35vh; left: 46vw; }
+
+/* Vertical Lines under the first five genres */
+.line-pop, .line-indie-pop, .line-rap, .line-k-pop, .line-rock,
+.line-rnb, .line-jazz, .line-hip-hop {
+    position: absolute;
+    width: 0;
+    border: 1px solid black;
+}
+
+/* Lines under the first five genres */
+.line-pop { top: 30vh; bottom: 0; left: 10vw; }
+.line-indie-pop { top: 40vh; bottom: 0; left: 27vw; }
+.line-rap { top: 50vh; bottom: 0; left: 46vw; }
+.line-k-pop { top: 60vh; bottom: 0; left: 64vw; }
+.line-rock { top: 70vh; bottom: 0; left: 83vw; }
+
+/* Lines above the last three genres */
+.line-rnb { top: 0; bottom: 40vh; left: 83vw; }
+.line-jazz { top: 0; bottom: 50vh; left: 64vw; }
+.line-hip-hop { top: 0; bottom: 60vh; left: 46vw; }
+
+/* Arrow Styling */
+.next-page-arrow {
+    font-size: 36px;
+    position: absolute;
+    bottom: 5vh;
+    right: 5vw;
+    color: black;
+    text-decoration: none;
+}

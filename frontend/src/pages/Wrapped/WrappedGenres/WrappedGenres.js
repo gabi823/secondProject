@@ -1,68 +1,65 @@
-// WrappedGenres.js
 import React from "react";
 import { Link } from "react-router-dom";
-import './WrappedGenres.css'; // Import the CSS file
+import './WrappedGenres.css';
 
-// Array of genres with specific line heights CHANGE WHEN LINKING TO API
 const genres = [
-    { rank: 1, name: "Pop", position: { left: 89, top: 336 } },
-    { rank: 2, name: "Indie Pop", position: { left: 295, top: 440 } },
-    { rank: 3, name: "Rap", position: { left: 630, top: 564 } },
-    { rank: 4, name: "K-Pop", position: { left: 880, top: 642 } },
-    { rank: 5, name: "Rock", position: { left: 1260, top: 865 } },
-    { rank: 6, name: "R&B", position: { left: 1156, top: 552 } },
-    { rank: 7, name: "Jazz", position: { left: 885, top: 433 } },
-    { rank: 8, name: "Hip Hop", position: { left: 592, top: 321 } },
+    { rank: 1, name: "Pop" },
+    { rank: 2, name: "Indie Pop" },
+    { rank: 3, name: "Rap" },
+    { rank: 4, name: "K-Pop" },
+    { rank: 5, name: "Rock" },
+    { rank: 6, name: "R&B" },
+    { rank: 7, name: "Jazz" },
+    { rank: 8, name: "Hip Hop" },
 ];
 
 const WrappedGenres = () => {
     return (
-        <div className="wrapper">
-            {/* Title and Exit */}
-            <div className="title-container">
-                <h1 className="title">Your Top Genres</h1>
-                <Link
-                    to="/profile"
-                    className="exit-link"
-                    onClick={() => console.log("Exit clicked")}
-                >
-                    &times;
-                </Link>
-            </div>
+        <>
+            <div className="wrapped-genres-container">
+      <div className="header">
+        <h1 className="title">Your Top Genres</h1>
+        <Link
+          to="/profile"
+          className="exit-button"
+          onClick={() => console.log("Exit clicked")}
+        >
+          &times;
+        </Link>
+      </div>
 
-            {/* Genres List */}
-            <div className="genres-list">
-                {genres.map((genre) => (
-                    <div
-                        key={genre.rank}
-                        className="genre"
-                        style={{
-                            left: `${genre.position.left}px`,
-                            top: `${genre.position.top}px`,
-                        }}
-                    >
-                        {genre.name}
-                    </div>
-                ))}
+                {/* Genre Texts */}
+                <div className="genre pop">1. Pop</div>
+                <div className="genre indie-pop">2. Indie Pop</div>
+                <div className="genre rap">3. Rap</div>
+                <div className="genre k-pop">4. K-Pop</div>
+                <div className="genre rock">5. Rock</div>
+                <div className="genre rnb">6. R&B</div>
+                <div className="genre jazz">7. Jazz</div>
+                <div className="genre hip-hop">8. Hip Hop</div>
+
+                {/* Vertical Lines under the first five genres */}
+                <div className="line line-pop"></div>
+                <div className="line line-indie-pop"></div>
+                <div className="line line-rap"></div>
+                <div className="line line-k-pop"></div>
+                <div className="line line-rock"></div>
+
+                {/* Vertical Lines above the last three genres */}
+                <div className="line line-rnb"></div>
+                <div className="line line-jazz"></div>
+                <div className="line line-hip-hop"></div>
             </div>
 
             {/* Next Page Arrow */}
             <Link
                 to="/top-artists"
-                style={{
-                    position: "fixed",
-                    bottom: "20px",
-                    right: "20px",
-                    fontSize: "36px",
-                    textDecoration: "none",
-                    color: "black",
-                    cursor: "pointer"
-                }}
+                className="next-page-arrow"
                 onClick={() => console.log("Next page clicked")}
             >
                 &#8594;
             </Link>
-        </div>
+        </>
     );
 };
 

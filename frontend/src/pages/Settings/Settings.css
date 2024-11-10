@@ -106,7 +106,12 @@
     gap: 20px;
 }
 
-.logout-button, .delete-button {
+.logout-button{
+    font-size: 1.25rem;
+    margin-top: 40px;
+}
+
+.delete-button {
     font-size: 1.25rem;
     margin-top: 20px;
 }
