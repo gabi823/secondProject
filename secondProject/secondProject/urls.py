@@ -32,7 +32,11 @@ urlpatterns = [
     path('spotify/login/', views.spotify_login, name='spotify_login'),
     path('spotify/profile/', views.profile_page, name='profile_page'),
     path('spotify/logout/', views.logout_view, name='spotify_logout'),
-    path('delete_account/', views.delete_account, name='delete_account'),
+    path('api/profile/', views.get_profile, name='get_profile'),
+    path('api/update-username/', views.update_username, name='update_username'),
+    path('api/update-email/', views.update_email, name='update_email'),
+    path('api/logout/', views.logout_view, name='logout_view'),
+    path('api/delete_account/', views.delete_account, name='delete_account'),
 
     # User Authentication API
     path('api/register/', views.register, name='register'),

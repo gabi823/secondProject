@@ -228,7 +228,45 @@ def profile_page(request):
         'wraps': user.spotify_wraps  # Pass the user's Spotify wraps to the profile page
     }
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_username(request):
+    """Update the username of the authenticated user."""
+    user = request.user
+    new_username = request.data.get("username")
+
+    if not new_username:
+        return Response({"error": "Username is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+    user.username = new_username
+    user.save()
+    return Response({"message": "Username updated successfully"}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_email(request):
+    """Update the email of the authenticated user."""
+    user = request.user
+    new_email = request.data.get("email")
+
+    if not new_email:
+        return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+    user.email = new_email
+    user.save()
+    return Response({"message": "Email updated successfully"}, status=status.HTTP_200_OK)
+
     return render(request, 'profile.html', context)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_profile(request):
+    """Retrieve current user profile details (username and email)."""
+    user = request.user
+    return Response({
+        "username": user.username,
+        "email": user.email
+    }, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

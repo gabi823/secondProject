@@ -1,9 +1,56 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './Profile.css';
+import axios from 'axios';
 
 const Profile = () => {
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [taste, setTaste] = useState('');
+    const [wrappedData, setWrappedData] = useState([]);
+    const navigate = useNavigate();
+    const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get('/api/profile/', {
+                    headers: {Authorization: `Token ${token}`}
+                });
+                const {username, email, top_artist, wraps} = response.data;
+                setUsername(username);
+                setEmail(email);
+                setTaste(top_artist || 'No artist data');
+                setWrapped(wraps || []);
+            } catch (error) {
+                setError('Failed to load profile data.');
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        navigate('/login');
+    }
+
+    const deleteWrap = async (wrapId) => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.delete(`/api/spotify/delete_wrap/${wrapId}/`, {
+                headers: { Authorization: `Token ${token}` }
+            });
+            setWrappedData(wrappedData.filter(wrap => wrap.id !== wrapId));
+            setMessage('Wrap deleted successfully!');
+        } catch (error) {
+            setError('Failed to delete wrap.');
+        }
+    };
+
     return (
         <>
             <NavBarLoggedIn />
@@ -18,10 +65,10 @@ const Profile = () => {
                         />
                     </div>
                     <div className="username">
-                        your_username
+                        {username}
                     </div>
                     <div className="email">
-                        youremail123@email.com
+                        {email}
                     </div>
 
                     <div className="taste-container">
@@ -50,22 +97,25 @@ const Profile = () => {
 
                 {/* Profile Wrapped Container */}
                 <div className="profile-wrapped-container">
-                    <div className="wrapped-section">
-                        <img
-                            src="https://via.placeholder.com/160x160"
-                            alt="Wrapped Image"
-                            className="wrapped-image"
-                        />
-                        <div className="wrapped-title">
-                            Your Wrapped #1<br/>
-                            <span className="wrapped-date">Date Created: 2024-10-9</span>
+                    {wrappedData.map((wrap) => (
+                        <div key={wrap.id} className="wrapped-section">
+                            <img
+                                src="https://via.placeholder.com/160x160"
+                                alt="Wrapped"
+                                className="wrapped-image"
+                            />
+                            <div className="wrapped-title">
+                                {wrap.title}<br/>
+                                <span className="wrapped-date">Date Created: {wrap.date_created}</span>
+                            </div>
+                            <img
+                                src="https://via.placeholder.com/28x28"
+                                alt="delete-icon"
+                                className="icon"
+                                onClick={() => deleteWrap(wrap.id)}
+                            />
                         </div>
-                        <img
-                            src="https://via.placeholder.com/28x28"
-                            alt="icon"
-                            className="icon"
-                        />
-                    </div>
+                    ))}
 
                     <hr className="divider"/>
 
