@@ -53,12 +53,12 @@ const WrappedGenres = () => {
 
             {/* Next Page Arrow */}
             <Link
-                to="/top-artists"
-                className="next-page-arrow"
-                onClick={() => console.log("Next page clicked")}
-            >
-                &#8594;
-            </Link>
+        to="/top-artists" // Replace with the actual path to the next page
+        className="next-button"
+        onClick={() => console.log("Next page clicked")}
+      >
+        &#8594;
+      </Link>
         </>
     );
 };

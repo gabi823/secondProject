@@ -26,12 +26,12 @@ const WrappedPlaylist = () => {
 				</div>
 			</div>
 			<Link
-				to="/wrapped-summary"
-				className="next-page-button"
-				onClick={() => console.log("Next page clicked")}
-			>
-				&#8594;
-			</Link>
+        to="/wrapped-summary" // Replace with the actual path to the next page
+        className="next-button"
+        onClick={() => console.log("Next page clicked")}
+      >
+        &#8594;
+      </Link>
 		</div>
 	);
 };

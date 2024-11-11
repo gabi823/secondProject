@@ -26,12 +26,12 @@ const WrappedPersonality = ({ personalityIndex = 0 }) => {
             </div>
 
             <Link
-                to="/your-playlist"
-                className="next-page-button"
-                onClick={() => console.log("Next page clicked")}
-            >
-                &#8594;
-            </Link>
+        to="/your-playlist" // Replace with the actual path to the next page
+        className="next-button"
+        onClick={() => console.log("Next page clicked")}
+      >
+        &#8594;
+      </Link>
         </>
     );
 };
