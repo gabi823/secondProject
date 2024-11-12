@@ -198,13 +198,50 @@ def fetch_all_spotify_data(spotify_user):
 
     spotify_user.save()
 
-
 def classify_personality(spotify_user):
     fetch_all_spotify_data(spotify_user)
-    python_dict = json.loads(spotify_user.recent_tracks)
+    recent_tracks = spotify_user.recent_tracks
     
-    # start to classify personalities
-
+    # Extract artist IDs from each track in recent_tracks
+    artist_ids = []
+    for item in recent_tracks:
+        for artist in item['track']['artists']:
+            artist_ids.append(artist['id'])
+    
+    # Create a comma-separated string of up to 50 unique artist IDs
+    unique_artist_ids = list(set(artist_ids))[:50]
+    artist_ids_str = ",".join(unique_artist_ids)
+    
+    # Make a request to the Spotify API to get information about all these artists
+    headers = {'Authorization': f'Bearer {spotify_user.access_token}'}
+    artist_info_url = f'https://api.spotify.com/v1/artists?ids={artist_ids_str}'
+    response = requests.get(artist_info_url, headers=headers)
+    
+    if response.status_code != 200:
+        print("Error fetching artist data:", response.status_code)
+        return
+    
+    artist_data = response.json().get('artists', [])
+    
+    # Retrieve genres from each artist and combine them into a single set to remove duplicates
+    genres = set()
+    for artist in artist_data:
+        genres.update(artist.get('genres', []))
+    
+    # Example classification logic based on genres
+    personality_classification = None
+    if "pop" in genres:
+        personality_classification = "Extrovert"
+    elif "classical" in genres:
+        personality_classification = "Introspective"
+    elif "hip hop" in genres or "rap" in genres:
+        personality_classification = "Energetic"
+    else:
+        personality_classification = "Diverse"
+    
+    print(f"User {spotify_user.display_name} classified as {personality_classification}")
+    
+    return personality_classification   
 
 
 @api_view(['POST'])
