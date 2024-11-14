@@ -44,17 +44,17 @@ const Welcome = () => {
             <div className="welcome-container">
                 <div className="image-column image-column1">
                     {images.column1.map((src, index) => (
-                        <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image" />
+                        <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image1" />
                     ))}
                 </div>
                 <div className="image-column image-column2">
                     {images.column2.map((src, index) => (
-                        <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image" />
+                        <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image2" />
                     ))}
                 </div>
                 <div className="image-column image-column3">
                     {images.column3.map((src, index) => (
-                        <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image" />
+                        <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image3" />
                     ))}
                 </div>
             </div>

@@ -8,7 +8,6 @@
     justify-content: center;
     margin-top: -325px;
     overflow: hidden;
-    margin-left: 20px;
 }
 
 /* Common styling for each image column */
@@ -55,8 +54,13 @@
 }
 
 /* Style images to fit their container */
-.carousel-image {
-    width: 100%;
-    height: auto;
+.carousel-image1,.carousel-image3 {
+    width: 310px;
+    height: 310px;
+}
+
+.carousel-image2 {
+    width: 210px;
+    height: 210px;
 }
 
