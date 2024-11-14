@@ -25,7 +25,7 @@ const Profile = () => {
                 setUsername(username);
                 setEmail(email);
                 setTaste(top_artist || 'No artist data');
-                setWrapped(wraps || []);
+                //setWrapped(wraps || []);
             } catch (error) {
                 setError('Failed to load profile data.');
             }
