@@ -1,4 +1,4 @@
-/* Container for the entire component */
+/* Welcome.css */
 .welcome-container {
     width: 100%;
     height: 100%;
@@ -12,49 +12,46 @@
 
 /* Common styling for each image column */
 .image-column {
-    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: auto;
+    height: auto;
+    padding: 10px;
+}
+
+.image-column-inner {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
     gap: 20px;
-    padding: 10px;
-    overflow: hidden;
 }
 
-.image-column1 {
-    animation: scrollDown 10s linear infinite;
+.image-column1 .image-column-inner {
+    animation: scrollDown 60s linear infinite;
 }
 
-.image-column2 {
-    animation: scrollUp 10s linear infinite;
+.image-column2 .image-column-inner {
+    animation: scrollDown 60s linear infinite;
 }
 
-.image-column3 {
-    animation: scrollDown 10s linear infinite;
+
+.image-column3 .image-column-inner {
+    animation: scrollDown 60s linear infinite;
 }
 
-/* Carousel animation for columns */
+/* Carousel animations */
 @keyframes scrollDown {
     0% {
         transform: translateY(0);
     }
     100% {
-        transform: translateY(-100%);
+        transform: translateY(-75%);
     }
 }
 
-@keyframes scrollUp {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(100%);
-    }
-}
 
 /* Style images to fit their container */
-.carousel-image1,.carousel-image3 {
+.carousel-image1,
+.carousel-image3 {
     width: 310px;
     height: 310px;
 }
@@ -63,4 +60,3 @@
     width: 210px;
     height: 210px;
 }
-
