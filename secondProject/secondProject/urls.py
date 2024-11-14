@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from spotifyWrapped import views
 from spotifyWrapped.views import *
+from spotifyWrapped.views import fetch_playlist_images
 from django.views.static import serve
 import os
 
@@ -48,6 +49,7 @@ urlpatterns = [
     path('spotify/delete_wrap/<int:wrap_id>/', views.delete_wrap, name='delete_wrap'),
     # Endpoint to fetch and update all Spotify data at once
     path('api/update_spotify_data/', views.update_all_spotify_data, name='update_spotify_data'),
+    path('api/fetch-playlist-images/', fetch_playlist_images, name='fetch_playlist_images'),
 
     # API Routes
     path('api/', include('spotifyWrapped.urls')),

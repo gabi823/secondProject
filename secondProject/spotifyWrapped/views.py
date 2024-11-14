@@ -32,6 +32,7 @@ from django.http import HttpResponse
 SPOTIFY_CLIENT_ID = settings.SPOTIFY_CLIENT_ID
 SPOTIFY_CLIENT_SECRET = settings.SPOTIFY_CLIENT_SECRET
 SPOTIFY_REDIRECT_URI = settings.SPOTIFY_REDIRECT_URI
+SPOTIFY_REFRESH_TOKEN = settings.SPOTIFY_REFRESH_TOKEN
 
 
 # --- User Authentication API Views ---
@@ -279,6 +280,13 @@ def delete_account(request):
 
 def refresh_spotify_token(refresh_token):
     """Function to refresh the Spotify access token when it expires."""
+
+    # Use the global refresh token if no user-specific token is provided
+    refresh_token = refresh_token or settings.SPOTIFY_REFRESH_TOKEN
+
+    if not refresh_token:
+        raise ValueError("No refresh token provided")
+
     token_url = 'https://accounts.spotify.com/api/token'
     response = requests.post(
         token_url,
@@ -350,3 +358,31 @@ def delete_wrap(request, wrap_id):
 
 def home_view(request):
     return render(request, 'home.html')
+
+@api_view(['GET'])
+def fetch_playlist_images(request):
+    """
+    Fetches images from a specific Spotify playlist using the global access token.
+    """
+    playlist_id = '6UeSakyzhiEt4NB3UAd6NQ'
+
+    # Use the global refresh token to get an access token
+    access_token = refresh_spotify_token(SPOTIFY_REFRESH_TOKEN)
+
+    if not access_token:
+        return JsonResponse({'error': 'Failed to obtain Spotify access token'}, status=400)
+
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+    }
+    url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
+
+    response = requests.get(url, headers=headers)
+    if response.status_code != 200:
+        return JsonResponse({'error': 'Failed to fetch playlist data'}, status=400)
+
+    tracks = response.json().get('items', [])
+    images = [track['track']['album']['images'][0]['url'] for track in tracks if track['track']['album']['images']]
+
+    return JsonResponse({'images': images[:12]})  # Limit the number of images as needed
+
