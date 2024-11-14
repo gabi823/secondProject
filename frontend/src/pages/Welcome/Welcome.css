@@ -23,18 +23,40 @@
     overflow: hidden;
 }
 
-/* Specific image sizes for each column */
-.image-column1 img {
-    width: 308px;
-    height: 308px;
+.image-column1 {
+    animation: scrollDown 10s linear infinite;
 }
 
-.image-column2 img {
-    width: 230px;
-    height: 231px;
+.image-column2 {
+    animation: scrollUp 10s linear infinite;
 }
 
-.image-column3 img {
-    width: 307px;
-    height: 308px;
+.image-column3 {
+    animation: scrollDown 10s linear infinite;
 }
+
+/* Carousel animation for columns */
+@keyframes scrollDown {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+@keyframes scrollUp {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+/* Style images to fit their container */
+.carousel-image {
+    width: 100%;
+    height: auto;
+}
+
