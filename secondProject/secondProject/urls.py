@@ -25,7 +25,8 @@ frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'fronten
 urlpatterns = [
     # Admin and Home
     path('admin/', admin.site.urls),
-    path('', home_view, name='home'),
+    path('api/', include('spotifyWrapped.urls')),
+    path('', views.serve_react, name='home'),
 
     # Spotify Authentication and Profile Management
     path('callback/', views.spotify_callback, name='spotify_callback'),
@@ -37,6 +38,11 @@ urlpatterns = [
     path('api/update-email/', views.update_email, name='update_email'),
     path('api/logout/', views.logout_view, name='logout_view'),
     path('delete_account/', views.delete_account, name='delete_account'),
+
+    # Frontend routes - serve React app
+    path('createaccount/', views.serve_react, name='create_account'),
+    path('login/', views.serve_react, name='login'),
+    path('about/', views.serve_react, name='about'),
 
     # User Authentication API
     path('api/register/', views.register, name='register'),
@@ -50,12 +56,10 @@ urlpatterns = [
     path('api/update_spotify_data/', views.update_all_spotify_data, name='update_spotify_data'),
 
     # API Routes
-    path('api/', include('spotifyWrapped.urls')),
     path('api/react/', views.ReactView.as_view(), name='react_view'),
     path('api/artists/', views.ArtistViewSet.as_view({'get': 'list'}), name='artist_view'),
     re_path(r'^.*$', serve, {
         'path': 'index.html',
         'document_root': frontend_dir
-    }),
-
+    })
 ]

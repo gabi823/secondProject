@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from "../../components/NavBar/NavBar";
 import './CreateAccount.css';
 import axios from 'axios';
@@ -9,13 +9,27 @@ const CreateAccount = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
+    const [spotifyClientId, setSpotifyClientId] = useState('');
+    const [spotifyRedirectUri, setSpotifyRedirectUri] = useState('');
     const navigate = useNavigate();
+
+    // Fetch Spotify credentials from backend
+    useEffect(() => {
+        const fetchSpotifyCredentials = async () => {
+            try {
+                const response = await axios.get('/api/spotify-credentials/');
+                setSpotifyClientId(response.data.client_id);
+                setSpotifyRedirectUri(response.data.redirect_uri);
+            } catch (error) {
+                console.error('Error fetching Spotify credentials:', error);
+            }
+        };
+
+        fetchSpotifyCredentials();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Log user input before sending it to backend
-        console.log('Form Data:', { username, password, email });
 
         try {
             // Send POST request to Django API
@@ -24,14 +38,10 @@ const CreateAccount = () => {
                 password,
                 email,
             });
+            localStorage.setItem('token', response.data.token);
+            window.location.href = `https://accounts.spotify.com/authorize?client_id=${spotifyClientId}&response_type=code&redirect_uri=${spotifyRedirectUri}&scope=user-top-read%20user-library-read`;
 
-            setMessage('Account created successfully!');
-            console.log('User created:', response.data);  // Log backend response
-
-            // Redirect to the login page after successful account creation
-            navigate('/login');
         } catch (error) {
-            console.error('Error:', error.response); // Log full error response
             if (error.response && error.response.data) {
                 setMessage(Object.values(error.response.data).join(', '));
             } else {

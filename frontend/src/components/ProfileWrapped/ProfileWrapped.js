@@ -1,4 +1,5 @@
 import './ProfileWrapped.css';
+import React from 'react';
 
 const ProfileWrapped = () => {
     return (

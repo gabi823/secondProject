@@ -8,36 +8,41 @@ import axios from 'axios';
 const Profile = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [taste, setTaste] = useState('');
     const [wrappedData, setWrappedData] = useState([]);
-    const navigate = useNavigate();
-    const [error, setError] = useState('');
-    const [message, setMessage] = useState('');
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get('/api/profile/', {
-                    headers: {Authorization: `Token ${token}`}
-                });
-                const {username, email, top_artist, wraps} = response.data;
-                setUsername(username);
-                setEmail(email);
-                setTaste(top_artist || 'No artist data');
-                setWrapped(wraps || []);
-            } catch (error) {
-                setError('Failed to load profile data.');
-            }
-        };
-
-        fetchData();
+        fetchUserData();
+        fetchWrappedData();
     }, []);
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
-    }
+    const fetchUserData = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get('/api/profile/', {
+                headers: { Authorization: `Token ${token}` }
+            });
+            setUsername(response.data.username);
+            setEmail(response.data.email);
+        } catch (error) {
+            console.error('Failed to fetch user data:', error);
+        }
+    };
+
+    const fetchWrappedData = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get('/spotify/data', {
+                headers: { Authorization: `Token ${token}` }
+            });
+
+            // Get user's wraps if they exist
+            if (response.data.wraps) {
+                setWrappedData(response.data.wraps);
+            }
+        } catch (error) {
+            console.error('Failed to fetch wrapped data:', error);
+        }
+    };
 
     const deleteWrap = async (wrapId) => {
         try {
@@ -46,9 +51,8 @@ const Profile = () => {
                 headers: { Authorization: `Token ${token}` }
             });
             setWrappedData(wrappedData.filter(wrap => wrap.id !== wrapId));
-            setMessage('Wrap deleted successfully!');
         } catch (error) {
-            setError('Failed to delete wrap.');
+            console.error('Failed to delete wrap.');
         }
     };
 
@@ -98,26 +102,32 @@ const Profile = () => {
 
                 {/* Profile Wrapped Container */}
                 <div className="profile-wrapped-container">
-                    {wrappedData.map((wrap) => (
-                        <div key={wrap.id} className="wrapped-section">
-                            <img
-                                src="https://via.placeholder.com/160x160"
-                                alt="Wrapped"
-                                className="wrapped-image"
-                            />
-                            <div className="wrapped-title">
-                                {wrap.title}<br/>
-                                <span className="wrapped-date">Date Created: {wrap.date_created}</span>
+                    {wrappedData.length > 0 ? (
+                        wrappedData.map((wrap) => (
+                            <div key={wrap.id} className="wrapped-section">
+                                <img
+                                    src="/api/placeholder/160/160"
+                                    alt="Wrapped"
+                                    className="wrapped-image"
+                                />
+                                <div className="wrapped-title">
+                                    Your Wrapped #{wrap.id}<br/>
+                                    <span className="wrapped-date">Date Created: {new Date(wrap.created_at).toLocaleDateString()}</span>
+                                </div>
+                                <img
+                                    src="/api/placeholder/28/28"
+                                    alt="delete"
+                                    className="icon"
+                                    onClick={() => deleteWrap(wrap.id)}
+                                    style={{ cursor: 'pointer' }}
+                                />
                             </div>
-                            <img
-                                src="https://via.placeholder.com/28x28"
-                                alt="delete-icon"
-                                className="icon"
-                                onClick={() => deleteWrap(wrap.id)}
-                            />
+                        ))
+                    ) : (
+                        <div style={{ textAlign: 'center', marginBottom: '20px', fontFamily: 'Manrope' }}>
+                            No wraps created yet
                         </div>
-                    ))}
-                    <ProfileWrapped/> {/*need some array to loop through user data and make all the profile wrapped*/}
+                    )}
 
 
                     <div className="create-new-wrapped">

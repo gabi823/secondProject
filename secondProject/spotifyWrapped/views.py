@@ -34,6 +34,18 @@ SPOTIFY_CLIENT_SECRET = settings.SPOTIFY_CLIENT_SECRET
 SPOTIFY_REDIRECT_URI = settings.SPOTIFY_REDIRECT_URI
 
 
+@api_view(['GET'])
+def get_spotify_credentials(request):
+    """API endpoint to provide Spotify credentials for React."""
+    data = {
+        'client_id': settings.SPOTIFY_CLIENT_ID,
+        'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
+    }
+    return JsonResponse(data)
+
+def serve_react(request):
+    return render(request, 'index.html')
+
 # --- User Authentication API Views ---
 @api_view(['POST'])
 def register(request):
@@ -94,7 +106,11 @@ def spotify_callback(request):
     """
     # Process the request and get the authorization code
     code = request.GET.get('code')
+    error = request.GET.get('error')
     token_url = 'https://accounts.spotify.com/api/token'
+
+    if error:
+        return JsonResponse({"error": f"Spotify authentication failed: {error}"}, status=400)
 
     if code:
         # Exchange authorization code for access token
@@ -109,6 +125,9 @@ def spotify_callback(request):
             },
         )
 
+        if response.status_code != 200:
+            return JsonResponse({"error": "Failed to exchange authorization code for tokens"}, status=400)
+
         response_data = response.json()
         access_token = response_data.get('access_token')
         refresh_token = response_data.get('refresh_token')
@@ -119,6 +138,10 @@ def spotify_callback(request):
         headers = {'Authorization': f'Bearer {access_token}'}
         user_profile_url = 'https://api.spotify.com/v1/me'
         user_data_response = requests.get(user_profile_url, headers=headers)
+
+        if user_data_response.status_code != 200:
+            return JsonResponse({"error": "Failed to fetch Spotify user profile"}, status=400)
+
         user_data = user_data_response.json()
 
         # Extract user data
@@ -135,12 +158,13 @@ def spotify_callback(request):
         user.token_expiry = token_expiry
         user.save()
 
-        return JsonResponse({"message": "Spotify account linked successfully", "display_name": display_name}, status = 200)
+        # Redirect to the frontend after successful login
+        return redirect('http://localhost:3000/profile')  # Update to your desired URL
+
     return JsonResponse({"error": "Spotify authentication failed"}, status = 400)
 
 
 # --- Artist and React Data Views ---
-
 
 class ArtistViewSet(viewsets.ModelViewSet):
     """ViewSet for managing Artist model."""
