@@ -10,7 +10,7 @@
     padding: 0 70px;
     box-sizing: border-box;
     opacity: 0.85;
-    border-bottom: 1px rgba(0, 0, 0, 0.75) solid;
+    border-bottom: 1px rgba(0, 0, 0, 1) solid;
 
 }
 
@@ -63,9 +63,9 @@
 
 .hamburger-icon .bar {
     width: 25px;
-    height: 3px;
+    height: 1px;
     background-color: black;
-    margin: 4px 0;
+    margin: 3px 0;
     transition: 0.4s;
 }
 
@@ -74,7 +74,7 @@
     display: none;
     flex-direction: column;
     position: absolute;
-    top: 45px;
+    top: 70px;
     left: 0;
     width: 100%;
     background-color: white;
@@ -97,13 +97,25 @@
 }
 
 /* Responsive styles */
-@media (max-width: 600px) {
+@media (max-width: 393px) {
+    .navbar {
+        padding: 0 20px; /* Reduced padding for smaller screen */
+         height: 100px;
+        justify-content: space-between;
+    }
+    .navbar-logo-title {
+        justify-content: flex-start;
+    }
+
+     .navbar-title {
+    }
     .navbar-links {
         display: none; /* Hide desktop links */
     }
 
     .hamburger-icon {
         display: flex; /* Show hamburger icon on mobile */
+
     }
 
     .mobile-menu {
