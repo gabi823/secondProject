@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.css"; // Import the CSS file
 import logo from "../../images/logo.png";
@@ -9,6 +9,19 @@ const NavBar = () => {
     const toggleMobileMenu = () => {
         setMenuOpen(!menuOpen);
     };
+    // Close the menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest('.navbar') && menuOpen) {
+                setMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [menuOpen]);
+
+
 
     return (
         <header className="navbar">
