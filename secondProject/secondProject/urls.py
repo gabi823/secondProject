@@ -54,4 +54,5 @@ urlpatterns = [
         'document_root': frontend_dir
     }),
 
+    path('personality/', views.personality_view, name='personality'),
 ]
