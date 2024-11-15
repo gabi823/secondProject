@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import './NavBarLoggedIn.css'; // Import the CSS file
+import logo from '../../images/logo.png';
 
 const NavBarLoggedIn = () => {
     return (
@@ -13,7 +14,7 @@ const NavBarLoggedIn = () => {
                 <Link to="/">
                     <img
                         className="navbar-logo"
-                        src="https://via.placeholder.com/50x30"
+                        src={logo}
                         alt="Logo"
                     />
                 </Link>

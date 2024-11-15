@@ -1,4 +1,14 @@
-/* Welcome.css */
+/* Loading message styling */
+.loading-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* Container for the entire component */
 .welcome-container {
     width: 100%;
     height: 100%;
@@ -11,52 +21,59 @@
 }
 
 /* Common styling for each image column */
-.image-column {
-    overflow: hidden;
-    position: relative;
-    width: auto;
+.image-column-left, .image-column-middle, .image-column-right {
     height: auto;
-    padding: 10px;
-}
-
-.image-column-inner {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
     gap: 20px;
+    padding: 10px;
+    overflow: hidden;
 }
 
-.image-column1 .image-column-inner {
+/* Add specific animation to each column */
+.image-column1 {
     animation: scrollDown 60s linear infinite;
 }
 
-.image-column2 .image-column-inner {
+.image-column2 {
+    animation: scrollDown 70s linear infinite;
+}
+
+.image-column3 {
     animation: scrollDown 60s linear infinite;
 }
 
-
-.image-column3 .image-column-inner {
-    animation: scrollDown 60s linear infinite;
-}
-
-/* Carousel animations */
+/* Carousel animation for columns */
 @keyframes scrollDown {
     0% {
         transform: translateY(0);
     }
     100% {
-        transform: translateY(-75%);
+        transform: translateY(-50%);
     }
 }
 
+@keyframes scrollUp {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(50%);
+    }
+}
 
 /* Style images to fit their container */
-.carousel-image1,
-.carousel-image3 {
+.carousel-image1, .carousel-image3 {
     width: 310px;
     height: 310px;
+    object-fit: cover;
 }
 
 .carousel-image2 {
     width: 210px;
     height: 210px;
+    object-fit: cover;
 }
