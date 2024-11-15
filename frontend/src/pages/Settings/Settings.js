@@ -30,12 +30,22 @@ const Settings = () => {
                     </div>
 
                     {/* Email Section */}
-                    <div className="settings-section">
-                        <h2>Email</h2>
-                        <p>The email associated with your account.</p>
-                        <div className="settings-info-container">
-                            <span className="settings-username">youremail@email.com</span>
-                            <button className="change-button">CHANGE</button>
+                    <div className="settings-row">
+                        {/* Email Section */}
+                        <div className="settings-section">
+                            <h2>Email</h2>
+                            <p>The email associated with your account.</p>
+                            <div className="email-info-container">
+                                <p className="settings-username"><b>youremail@email.com</b></p>
+                                <button className="change-button">CHANGE</button>
+                            </div>
+                        </div>
+
+                        {/* CHANGE PASSWORD Section */}
+                        <div className="settings-section">
+                            <h2>Password</h2>
+                            <p>Change your nostalgify account password.</p>
+                            <button className="password-button">CHANGE</button>
                         </div>
                     </div>
 

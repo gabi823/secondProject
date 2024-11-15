@@ -9,6 +9,7 @@ const Welcome = () => {
         column2: [],
         column3: []
     });
+    const [imagesLoaded, setImagesLoaded] = useState(false);
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -16,17 +17,19 @@ const Welcome = () => {
                 const response = await axios.get('http://localhost:8000/api/fetch-playlist-images/');
                 const fetchedImages = response.data.images;
 
-                // Divide images into three columns for the grid
+                // Divide images into three columns for the grid and duplicate them for smooth scrolling
+                const column1Images = fetchedImages.slice(0, 30);
+                const column2Images = fetchedImages.slice(30, 70);
+                const column3Images = fetchedImages.slice(70, 100);
+
                 const newImages = {
-                    column1: fetchedImages.slice(0, 4),
-                    column2: fetchedImages.slice(4, 9),
-                    column3: fetchedImages.slice(9, 12)
+                    column1: [...column1Images, ...column1Images],
+                    column2: [...column2Images, ...column2Images],
+                    column3: [...column3Images, ...column3Images],
                 };
 
                 setImages(newImages);
-
-                // Log the images to check the state
-                console.log("Fetched Images:", newImages);
+                setImagesLoaded(true); // Only set to true after images are fetched and set
             } catch (error) {
                 console.error("Error fetching images:", error);
             }
@@ -35,29 +38,30 @@ const Welcome = () => {
         fetchImages();
     }, []);
 
-    // Log images before rendering
-    console.log("Current images state:", images);
-
     return (
         <>
             <NavBar />
-            <div className="welcome-container">
-                <div className="image-column image-column1">
-                    {images.column1.map((src, index) => (
-                        <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image" />
-                    ))}
+            {imagesLoaded ? (
+                <div className="welcome-container">
+                    <div className="image-column-left image-column1">
+                        {images.column1.map((src, index) => (
+                            <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image1" />
+                        ))}
+                    </div>
+                    <div className="image-column-middle image-column2">
+                        {images.column2.map((src, index) => (
+                            <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image2" />
+                        ))}
+                    </div>
+                    <div className="image-column-right image-column3">
+                        {images.column3.map((src, index) => (
+                            <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image3" />
+                        ))}
+                    </div>
                 </div>
-                <div className="image-column image-column2">
-                    {images.column2.map((src, index) => (
-                        <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image" />
-                    ))}
-                </div>
-                <div className="image-column image-column3">
-                    {images.column3.map((src, index) => (
-                        <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image" />
-                    ))}
-                </div>
-            </div>
+            ) : (
+                <div className="loading-message">loading...</div> // Display a loading message until images are loaded
+            )}
         </>
     );
 };

@@ -384,5 +384,5 @@ def fetch_playlist_images(request):
     tracks = response.json().get('items', [])
     images = [track['track']['album']['images'][0]['url'] for track in tracks if track['track']['album']['images']]
 
-    return JsonResponse({'images': images[:12]})  # Limit the number of images as needed
+    return JsonResponse({'images': images[:100]})  # Limit the number of images as needed
 

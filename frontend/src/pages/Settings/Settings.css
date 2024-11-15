@@ -76,10 +76,15 @@
 }
 
 /* Container for text and button */
-.settings-info-container {
+.settings-info-container, .email-info-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.email-info-container {
+    margin-top: 25px;
+    margin-bottom: 0px;
 }
 
 .settings-username {
@@ -88,7 +93,7 @@
     font-weight: 600;
 }
 
-.change-button, .logout-button, .delete-button {
+.change-button, .logout-button, .delete-button, .email-button, .password-button {
     color: #1807FF;
     font-size: 1rem;
     font-family: Manrope;
@@ -106,12 +111,9 @@
     gap: 20px;
 }
 
-.logout-button{
-    font-size: 1.25rem;
-    margin-top: 40px;
+.email-button {
+    margin-top: 20px;
 }
-
-.delete-button {
-    font-size: 1.25rem;
+.logout-button {
     margin-top: 20px;
 }
