@@ -12,90 +12,37 @@
     right: 0;
     bottom: 0;
     z-index: -1;
-    margin-top: 90px;
-
+    overflow: hidden;
+    padding-top: 175px; /* Adjust this padding to control vertical spacing */
 }
 
-/* First row of images */
-.images-row {
+/* Top row styling with left scrolling animation */
+.images-row-top {
     display: flex;
-    justify-content: center;
-    align-items: center;
     gap: 20px;
+    padding: 10px;
 }
 
-
-.image1 {
-  animation-delay: calc(30s / 8 * (8 - 1) * -1);
+/* Bottom row styling with right scrolling animation */
+.images-row-bottom {
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    margin-top: 100px;
+    position: relative;
 }
 
-.image2 {
-  animation-delay: calc(30s / 8 * (8 - 2) * -1);
-}
-
-.image3 {
-  animation-delay: calc(30s / 8 * (8 - 3) * -1);
-}
-
-.image4 {
-  animation-delay: calc(30s / 8 * (8 - 4) * -1);
-}
-
-.image5 {
-  animation-delay: calc(30s / 8 * (8 - 5) * -1);
-}
-
-.image6 {
-  animation-delay: calc(30s / 8 * (8 - 6) * -1);
-}
-
-.image7 {
-  animation-delay: calc(30s / 8 * (8 - 7) * -1);
-}
-
-.image8 {
-  animation-delay: calc(30s / 8 * (8 - 8) * -1);
-}
-
-/* Image style */
-.imageTop {
+/* Image styling */
+.carousel-image {
     width: 161px;
     height: 161px;
-    position: absolute;
-    left: max(calc(200px * 8), 100%);
-    animation-name: scrollLeft;
-    animation-duration: 30s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
+    object-fit: cover;
 }
 
-@keyframes scrollLeft {
-  to {
-    left: -200px;
-  }
-}
-
-/* Second row of images */
-.images-row-second {
-    margin-top: 300px;
-    gap: 10px;
-}
-
-.imageBottom {
+.carousel-image-top {
     width: 161px;
     height: 161px;
-    position: absolute;
-    left: -200px;
-    animation-name: scrollRight;
-    animation-duration: 30s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-}
-
-@keyframes scrollRight {
-  to {
-    left: max(calc(200px * 8), 100%);
-  }
+    object-fit: cover;
 }
 
 /* Create Account Form Container */
