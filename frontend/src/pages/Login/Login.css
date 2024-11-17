@@ -1,5 +1,3 @@
-/* Login.css */
-
 /* Background images container */
 .images-container {
     display: flex;
@@ -13,22 +11,23 @@
     bottom: 0;
     z-index: -1;
     overflow: hidden;
-    padding-top: 100px; /* Adjust this padding to control vertical spacing */
+    padding-top: 175px; /* Adjust this padding to control vertical spacing */
 }
 
-/* Common styling for each image row */
-.images-row {
+/* Top row styling with left scrolling animation */
+.images-row-top {
     display: flex;
     gap: 20px;
     padding: 10px;
 }
 
-.images-row-top {
-    animation: scrollLeft 30s linear infinite;
-}
-
+/* Bottom row styling with right scrolling animation */
 .images-row-bottom {
-    animation: scrollRight 30s linear infinite;
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    margin-top: 100px;
+    position: relative;
 }
 
 /* Image styling */
@@ -38,19 +37,12 @@
     object-fit: cover;
 }
 
-/* Left scrolling animation */
-@keyframes scrollLeft {
-  to {
-    left: -200px;
-  }
+.carousel-image-top {
+    width: 161px;
+    height: 161px;
+    object-fit: cover;
 }
 
-/* Right scrolling animation */
-@keyframes scrollRight {
-  to {
-    left: max(calc(200px * 8), 100%);
-  }
-}
 
 /* Login box styling */
 .login-container {

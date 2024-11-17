@@ -56,15 +56,6 @@
     }
 }
 
-@keyframes scrollUp {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(50%);
-    }
-}
-
 /* Style images to fit their container */
 .carousel-image1, .carousel-image3 {
     width: 310px;

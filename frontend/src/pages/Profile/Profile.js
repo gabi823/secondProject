@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 import ProfileWrapped from "../../components/ProfileWrapped/ProfileWrapped";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from 'framer-motion';
 import './Profile.css';
 import axios from 'axios';
 
@@ -19,13 +20,13 @@ const Profile = () => {
             try {
                 const token = localStorage.getItem('token');
                 const response = await axios.get('/api/profile/', {
-                    headers: {Authorization: `Token ${token}`}
+                    headers: { Authorization: `Token ${token}` }
                 });
-                const {username, email, top_artist, wraps} = response.data;
+                const { username, email, top_artist, wraps } = response.data;
                 setUsername(username);
                 setEmail(email);
                 setTaste(top_artist || 'No artist data');
-                //setWrapped(wraps || []);
+                setWrappedData(wraps || []);
             } catch (error) {
                 setError('Failed to load profile data.');
             }
@@ -37,7 +38,7 @@ const Profile = () => {
     const handleLogout = () => {
         localStorage.removeItem('token');
         navigate('/login');
-    }
+    };
 
     const deleteWrap = async (wrapId) => {
         try {
@@ -52,25 +53,35 @@ const Profile = () => {
         }
     };
 
+    // Framer Motion animation variants
+    const fadeUpVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+    };
+
     return (
         <>
             <NavBarLoggedIn />
-            <div className="profile-container">
-                {/* Profile Container */}
-                <div className="profile-section">
+            <motion.div
+                className="profile-container"
+                initial="hidden"
+                animate="visible"
+                variants={fadeUpVariants}
+            >
+                {/* Profile Section */}
+                <motion.div
+                    className="profile-section"
+                    variants={fadeUpVariants}
+                >
                     <div className="profile-image-container">
                         <img
-                            src="https://via.placeholder.com/300" // Replace with your image source
+                            src="https://via.placeholder.com/300"
                             alt="Profile"
                             className="profile-image"
                         />
                     </div>
-                    <div className="username">
-                        {username}
-                    </div>
-                    <div className="email">
-                        {email}
-                    </div>
+                    <div className="username">{username}</div>
+                    <div className="email">{email}</div>
 
                     <div className="taste-container">
                         <img
@@ -89,24 +100,30 @@ const Profile = () => {
                     </div>
                     <Link to="/settings">
                         <div className="settings-link">
-                            <div className="settings-text">
-                                Settings
-                            </div>
+                            <div className="settings-text">Settings</div>
                         </div>
                     </Link>
-                </div>
+                </motion.div>
 
-                {/* Profile Wrapped Container */}
-                <div className="profile-wrapped-container">
+                {/* Profile Wrapped Section */}
+                <motion.div
+                    className="profile-wrapped-container"
+                    variants={fadeUpVariants}
+                >
                     {wrappedData.map((wrap) => (
-                        <div key={wrap.id} className="wrapped-section">
+                        <motion.div
+                            key={wrap.id}
+                            className="wrapped-section"
+                            variants={fadeUpVariants}
+                        >
                             <img
                                 src="https://via.placeholder.com/160x160"
                                 alt="Wrapped"
                                 className="wrapped-image"
                             />
                             <div className="wrapped-title">
-                                {wrap.title}<br/>
+                                {wrap.title}
+                                <br />
                                 <span className="wrapped-date">Date Created: {wrap.date_created}</span>
                             </div>
                             <img
@@ -115,10 +132,9 @@ const Profile = () => {
                                 className="icon"
                                 onClick={() => deleteWrap(wrap.id)}
                             />
-                        </div>
+                        </motion.div>
                     ))}
-                    <ProfileWrapped/> {/*need some array to loop through user data and make all the profile wrapped*/}
-
+                    <ProfileWrapped />
 
                     <div className="create-new-wrapped">
                         <Link to="/selectionscreen" className="create-new-link">
@@ -128,10 +144,10 @@ const Profile = () => {
                             +
                         </Link>
                     </div>
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
         </>
     );
-}
+};
 
 export default Profile;
