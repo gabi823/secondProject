@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import NavBar from '../../components/NavBar/NavBar.js';
 import './Welcome.css';
 import axios from 'axios';
+import { motion } from 'framer-motion';
+
 
 const Welcome = () => {
     const [images, setImages] = useState({
@@ -38,11 +40,23 @@ const Welcome = () => {
         fetchImages();
     }, []);
 
+
+    // Framer Motion animation variants
+    const fadeUpVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 1 } },
+    };
+
+
     return (
         <>
             <NavBar />
             {imagesLoaded ? (
-                <div className="welcome-container">
+                <motion.div className="welcome-container"
+                initial="hidden"
+                animate="visible"
+                variants={fadeUpVariants}
+                >
                     <div className="image-column-left image-column1">
                         {images.column1.map((src, index) => (
                             <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image1" />
@@ -58,9 +72,9 @@ const Welcome = () => {
                             <img key={index} src={src} alt={`image${index + 1}`} className="carousel-image3" />
                         ))}
                     </div>
-                </div>
+                </motion.div>
             ) : (
-                <div className="loading-message">loading...</div> // Display a loading message until images are loaded
+                <div className="loading-message">    </div> // Display a loading message until images are loaded
             )}
         </>
     );
