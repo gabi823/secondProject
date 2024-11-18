@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTrail, useSpring, animated } from "@react-spring/web";
+import { motion } from "framer-motion";
 import "./WrappedArtists.css";
 
 const WrappedArtists = () => {
@@ -9,16 +11,34 @@ const WrappedArtists = () => {
         y: 300, // Y coordinate for the center
     };
     const artists = [
-        { name: "The Weeknd", img: "https://via.placeholder.com/100x100" },
-        { name: "Bruno Mars", img: "https://via.placeholder.com/100x100" },
-        { name: "Billie Eilish", img: "https://via.placeholder.com/100x100" },
-        { name: "Rihanna", img: "https://via.placeholder.com/100x100" },
-        { name: "Justin Bieber", img: "https://via.placeholder.com/100x100" },
-        { name: "Ariana Grande", img: "https://via.placeholder.com/100x100" },
-        { name: "Ed Sheeran", img: "https://via.placeholder.com/100x100" },
         { name: "SZA", img: "https://via.placeholder.com/100x100" },
         { name: "Lana Del Rey", img: "https://via.placeholder.com/100x100" },
+        { name: "Ed Sheeran", img: "https://via.placeholder.com/100x100" },
+        { name: "Ariana Grande", img: "https://via.placeholder.com/100x100" },
+        { name: "Justin Bieber", img: "https://via.placeholder.com/100x100" },
+        { name: "Rihanna", img: "https://via.placeholder.com/100x100" },
+        { name: "Billie Eilish", img: "https://via.placeholder.com/100x100" },
+        { name: "Bruno Mars", img: "https://via.placeholder.com/100x100" },
+        { name: "The Weeknd", img: "https://via.placeholder.com/100x100" },
     ];
+
+    // Animations for surrounding artists
+    const trail = useTrail(artists.length, {
+        opacity: 1,
+        transform: "scale(1)",
+        from: { opacity: 0, transform: "scale(0)" },
+        config: { tension: 200, friction: 20, duration: 500 },
+        delay: 150, // Start animation after a short delay
+        immediate: true,
+    });
+
+    // Animation for the central artist
+    const centralArtistAnimation = useSpring({
+        opacity: 1,
+        transform: "scale(1)",
+        from: { opacity: 0, transform: "scale(0)" },
+        delay: 1000 + artists.length * 100, // Start after surrounding artists are revealed
+    });
 
     return (
         <div className="artists-container">
@@ -36,40 +56,77 @@ const WrappedArtists = () => {
 
             {/* Container for all artists */}
             <div className="artist-wrapper">
-                {/* Main artist in the center */}
-                <div className="central-artist">
-                    <img
-                        src="https://via.placeholder.com/200x200"
-                        alt="Taylor Swift"
-                        className="central-artist-img"
-                    />
-                    <div style={{ fontSize: "24px", fontWeight: "700", marginTop: "10px", fontFamily: "Manrope" }}>1. Taylor Swift</div>
-                </div>
-
                 {/* Surrounding artists in a circle */}
-                {artists.map((artist, index) => {
+                {trail.map((style, index) => {
                     const angle = (index / artists.length) * 2 * Math.PI; // Calculate the angle for each artist
-                    const x = centerPosition.x + radius * Math.cos(angle); // X position
-                    const y = centerPosition.y + radius * Math.sin(angle); // Y position
+                    const x = centerPosition.x + radius * Math.cos(angle) - 100; // X position
+                    const y = centerPosition.y + radius * Math.sin(angle) - 100; // Y position
 
                     return (
-                        <div
-                            key={index}
-                            className="surrounding-artist"
-                            style={{
-                                top: `${y}px`,
-                                left: `${x}px`,
-                            }}
+                        <motion.div
+                            whileHover={{scale: 1.05, transition: {duration: 0.01}}}
                         >
-                            <img
-                                src={artist.img}
-                                alt={artist.name}
-                                className="surrounding-artist-img"
-                            />
-                            <div style={{ fontSize: "16px", fontWeight: "700", marginTop: "5px", fontFamily: "Manrope" }}>{index + 2}. {artist.name}</div>
-                        </div>
+                            <animated.div
+                                key={index}
+                                className="surrounding-artist"
+                                style={{
+                                    ...style,
+                                    position: "absolute",
+                                    top: `${y}px`,
+                                    left: `${x}px`,
+                                }}
+                            >
+                                <img
+                                    src={artists[index].img}
+                                    alt={artists[index].name}
+                                    className="surrounding-artist-img"
+                                />
+                                <div
+                                    style={{
+                                        fontSize: "16px",
+                                        fontWeight: "700",
+                                        marginTop: "5px",
+                                        fontFamily: "Manrope",
+                                    }}
+                                >
+                                    {10 - index}. {artists[index].name}
+                                </div>
+                            </animated.div>
+                        </motion.div>
                     );
                 })}
+
+                {/* Main artist in the center */}
+                <motion.div
+                    whileHover={{scale: 1.05, transition: {duration: 0.01}}}
+                >
+                    <animated.div
+                        className="central-artist"
+                        style={{
+                            ...centralArtistAnimation,
+                            position: "absolute",
+                            top: `${centerPosition.y}px`,
+                            left: `${centerPosition.x}px`,
+                            transform: `translate(-50%, -50%)`, // Center the central artist
+                        }}
+                    >
+                        <img
+                            src="https://via.placeholder.com/200x200"
+                            alt="Taylor Swift"
+                            className="central-artist-img"
+                        />
+                        <div
+                            style={{
+                                fontSize: "24px",
+                                fontWeight: "700",
+                                marginTop: "10px",
+                                fontFamily: "Manrope",
+                            }}
+                        >
+                            1. Taylor Swift
+                        </div>
+                    </animated.div>
+                </motion.div>
             </div>
 
             {/* Next Page Link */}
