@@ -10,6 +10,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
 from django.utils.text import normalize_newlines
+from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from . models import *
 from rest_framework.response import Response
@@ -24,6 +25,7 @@ from rest_framework.authtoken.models import Token
 from .serializer import UserSerializer
 
 from .models import SpotifyUser
+import urllib.parse
 
 
 # Create your views here.
@@ -33,6 +35,8 @@ SPOTIFY_CLIENT_ID = settings.SPOTIFY_CLIENT_ID
 SPOTIFY_CLIENT_SECRET = settings.SPOTIFY_CLIENT_SECRET
 SPOTIFY_REDIRECT_URI = settings.SPOTIFY_REDIRECT_URI
 SPOTIFY_REFRESH_TOKEN = settings.SPOTIFY_REFRESH_TOKEN
+SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize'
+SPOTIFY_SCOPES = 'user-read-private user-read-email'
 
 
 # --- User Authentication API Views ---
@@ -57,7 +61,19 @@ def register(request):
     if serializer.is_valid():
         user = serializer.save()
         token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key}, status=status.HTTP_201_CREATED)
+
+        # Build the Spotify login URL
+        spotify_login_url = f"{SPOTIFY_AUTH_URL}?{urllib.parse.urlencode({
+            'client_id': SPOTIFY_CLIENT_ID,
+            'response_type': 'code',
+            'redirect_uri': SPOTIFY_REDIRECT_URI,
+            'scope': SPOTIFY_SCOPES,
+        })}"
+
+        return Response({
+            "spotify_url": spotify_login_url,
+            "token": token.key  # Include token for local storage
+        }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # User login
