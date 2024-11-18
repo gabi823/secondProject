@@ -111,6 +111,7 @@ def spotify_callback(request):
     code = request.GET.get('code')
     error = request.GET.get('error')
     token_url = 'https://accounts.spotify.com/api/token'
+    # print("inside")
 
     if error:
         return JsonResponse({"error": f"Spotify authentication failed: {error}"}, status=400)
@@ -141,9 +142,12 @@ def spotify_callback(request):
         headers = {'Authorization': f'Bearer {access_token}'}
         user_profile_url = 'https://api.spotify.com/v1/me'
         user_data_response = requests.get(user_profile_url, headers=headers)
+        print("Data response status code...")
+        print(user_data_response.status_code)
+        print(user_data_response.content)
 
         if user_data_response.status_code != 200:
-            return JsonResponse({"error": "Failed to fetch Spotify user profile"}, status=400)
+            return JsonResponse({"error": "Failed to fetch Spotify user profileeeeeee"}, status=400)
 
         user_data = user_data_response.json()
 
@@ -153,7 +157,18 @@ def spotify_callback(request):
         external_url = user_data.get('external_urls').get('spotify')
 
         # Check if the user already exists in the database
-        user, created = SpotifyUser.objects.get_or_create(spotify_id=spotify_id)
+        user, created = SpotifyUser.objects.get_or_create(
+            spotify_id=spotify_id,
+            defaults={
+                'user': request.user,
+                'display_name': display_name,
+                'external_url': external_url,
+                'access_token': access_token,
+                'refresh_token': refresh_token,
+                'token_expiry': token_expiry,
+            }  # Adjust depending on your model structure
+        )
+
         user.display_name = display_name
         user.external_url = external_url
         user.access_token = access_token

@@ -9,5 +9,5 @@ router.register(r'artists', ArtistViewSet, basename='artists')
 urlpatterns = [
     path('', include(router.urls)),
     path('register/', views.register, name='register'),
-    path('api/spotify-credentials/', get_spotify_credentials, name='spotify-credentials'),
+    # path('api/spotify-credentials/', get_spotify_credentials, name='spotify-credentials'),
 ]

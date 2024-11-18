@@ -27,6 +27,7 @@ urlpatterns = [
     # Admin and Home
     path('admin/', admin.site.urls),
     path('api/', include('spotifyWrapped.urls')),
+    path('api/spotify-credentials/', get_spotify_credentials, name='spotify-credentials'),
     path('', home_view, name='home'),
 
     # Spotify Authentication and Profile Management

@@ -5,6 +5,7 @@ class SpotifyUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='spotify_profile')
     spotify_id = models.CharField(max_length=100, unique=True)
     display_name = models.CharField(max_length=100)
+    external_url = models.URLField(null=True, blank=True)
     access_token = models.CharField(max_length=255, blank=True, null=True)
     refresh_token = models.CharField(max_length=255, blank=True, null=True)
     token_expiry = models.DateTimeField(null=True, blank=True)
