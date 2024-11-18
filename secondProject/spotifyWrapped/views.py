@@ -36,6 +36,20 @@ SPOTIFY_REFRESH_TOKEN = settings.SPOTIFY_REFRESH_TOKEN
 
 
 # --- User Authentication API Views ---
+
+@api_view(['GET'])
+def get_spotify_credentials(request):
+    """API endpoint to provide Spotify credentials for React."""
+    print("DEBUG: Spotify Client ID:", settings.SPOTIFY_CLIENT_ID)  # Add this temporarily
+    data = {
+        'client_id': settings.SPOTIFY_CLIENT_ID,
+        'redirect_uri': SPOTIFY_REDIRECT_URI,
+    }
+    return JsonResponse(data)
+
+def serve_react(request):
+    return render(request, 'index.html')
+
 @api_view(['POST'])
 def register(request):
     """API endpoint for user registration."""
@@ -95,7 +109,11 @@ def spotify_callback(request):
     """
     # Process the request and get the authorization code
     code = request.GET.get('code')
+    error = request.GET.get('error')
     token_url = 'https://accounts.spotify.com/api/token'
+
+    if error:
+        return JsonResponse({"error": f"Spotify authentication failed: {error}"}, status=400)
 
     if code:
         # Exchange authorization code for access token
@@ -110,6 +128,9 @@ def spotify_callback(request):
             },
         )
 
+        if response.status_code != 200:
+            return JsonResponse({"error": "Failed to exchange authorization code for tokens"}, status=400)
+
         response_data = response.json()
         access_token = response_data.get('access_token')
         refresh_token = response_data.get('refresh_token')
@@ -120,6 +141,10 @@ def spotify_callback(request):
         headers = {'Authorization': f'Bearer {access_token}'}
         user_profile_url = 'https://api.spotify.com/v1/me'
         user_data_response = requests.get(user_profile_url, headers=headers)
+
+        if user_data_response.status_code != 200:
+            return JsonResponse({"error": "Failed to fetch Spotify user profile"}, status=400)
+
         user_data = user_data_response.json()
 
         # Extract user data
@@ -136,7 +161,9 @@ def spotify_callback(request):
         user.token_expiry = token_expiry
         user.save()
 
-        return JsonResponse({"message": "Spotify account linked successfully", "display_name": display_name}, status = 200)
+        # Redirect to the frontend after successful login
+        return redirect('http://localhost:3000/profile')  # Update to your desired URL
+
     return JsonResponse({"error": "Spotify authentication failed"}, status = 400)
 
 

@@ -39,6 +39,7 @@ const Login = () => {
         try {
             const response = await axios.post('/api/login/', { username, password });
             const token = response.data.token;
+
             localStorage.setItem('token', token);
             navigate('/profile');
         } catch (error) {
@@ -128,7 +129,12 @@ const Login = () => {
                             required
                         />
                         <div className="login-button-container" variants={fadeUpVariants}>
-                            <button type="submit" className="login-button">Login</button>
+                            <button
+                                type="submit"
+                                className="login-button"
+                            >
+                                Login
+                            </button>
                         </div>
                     </form>
                     {error && <p className="login-error">{error}</p>}
