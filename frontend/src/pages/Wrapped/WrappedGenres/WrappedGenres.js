@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import './WrappedGenres.css';
 
 const genres = [
@@ -8,58 +9,74 @@ const genres = [
     { rank: 3, name: "Rap" },
     { rank: 4, name: "K-Pop" },
     { rank: 5, name: "Rock" },
-    { rank: 6, name: "R&B" },
+    { rank: 6, name: "RNB" },
     { rank: 7, name: "Jazz" },
     { rank: 8, name: "Hip Hop" },
 ];
 
 const WrappedGenres = () => {
     return (
-        <>
-            <div className="wrapped-genres-container">
-      <div className="header">
-        <h1 className="title">Your Top Genres</h1>
-        <Link
-          to="/profile"
-          className="exit-button"
-          onClick={() => console.log("Exit clicked")}
-        >
-          &times;
-        </Link>
-      </div>
-
-                {/* Genre Texts */}
-                <div className="genre pop">1. Pop</div>
-                <div className="genre indie-pop">2. Indie Pop</div>
-                <div className="genre rap">3. Rap</div>
-                <div className="genre k-pop">4. K-Pop</div>
-                <div className="genre rock">5. Rock</div>
-                <div className="genre rnb">6. R&B</div>
-                <div className="genre jazz">7. Jazz</div>
-                <div className="genre hip-hop">8. Hip Hop</div>
-
-                {/* Vertical Lines under the first five genres */}
-                <div className="line line-pop"></div>
-                <div className="line line-indie-pop"></div>
-                <div className="line line-rap"></div>
-                <div className="line line-k-pop"></div>
-                <div className="line line-rock"></div>
-
-                {/* Vertical Lines above the last three genres */}
-                <div className="line line-rnb"></div>
-                <div className="line line-jazz"></div>
-                <div className="line line-hip-hop"></div>
+        <div className="wrapped-genres-container">
+            {/* Static Header */}
+            <div className="header">
+                <h1 className="title">Your Top Genres</h1>
+                <Link
+                    to="/profile"
+                    className="exit-button"
+                    onClick={() => console.log("Exit clicked")}
+                >
+                    &times;
+                </Link>
             </div>
 
-            {/* Next Page Arrow */}
+            {/* Genres */}
+            {genres.map((genre, index) => (
+                <motion.div
+                    key={genre.rank}
+                    className={`genre ${genre.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.2 }}
+                >
+                    {genre.rank}. {genre.name}
+                </motion.div>
+            ))}
+
+            {/* Lines for Top Five */}
+            <div className="lines-top">
+                {[...Array(5)].map((_, index) => (
+                    <motion.div
+                        key={index}
+                        className={`line line-${genres[index].name.toLowerCase().replace(/\s+/g, '-')}`}
+                        initial={{ opacity: 0, y: 50 }} // Lines coming from the bottom
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.2 + 0.1 }}
+                    />
+                ))}
+            </div>
+
+            {/* Lines for Bottom Three */}
+            <div className="lines-bottom">
+                {[...Array(3)].map((_, index) => (
+                    <motion.div
+                        key={index + 5}
+                        className={`line line-${genres[index + 5].name.toLowerCase().replace(/\s+/g, '-')}`}
+                        initial={{ opacity: 0, y: -50 }} // Lines coming from the top
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: (index + 5) * 0.2 + 0.1 }}
+                    />
+                ))}
+            </div>
+
+            {/* Static Next Button */}
             <Link
-        to="/top-artists" // Replace with the actual path to the next page
-        className="next-button"
-        onClick={() => console.log("Next page clicked")}
-      >
-        &#8594;
-      </Link>
-        </>
+                to="/top-artists"
+                className="next-button"
+                onClick={() => console.log("Next page clicked")}
+            >
+                &#8594;
+            </Link>
+        </div>
     );
 };
 

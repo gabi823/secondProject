@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import './WrappedSongs.css'; // Import the CSS file
 
 const songs = [
@@ -32,8 +33,16 @@ const WrappedSongs = () => {
       </div>
 
       <div className="song-grid">
-        {songs.map((song) => (
-          <div key={song.rank} className="song-item">
+        {songs.map((song, index) => (
+          <motion.div
+            key={song.rank}
+            className="song-item"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.2, duration: 0.5 }}
+            whileHover={{ scale: 1.05, transition: { duration: 0.01 } }}
+            whileTap={{ scale: 0.95 }}
+          >
             <img
               src="https://via.placeholder.com/161x161"
               alt={`${song.title} cover`}
@@ -44,7 +53,7 @@ const WrappedSongs = () => {
               <div className="song-title">{song.title}</div>
               <div className="artist">{song.artist}</div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
