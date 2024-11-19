@@ -45,9 +45,10 @@ const CreateAccount = () => {
                 email,
             });
             localStorage.setItem('token', response.data.token);
-            console.log(spotifyClientId)
-            console.log(spotifyRedirectUri)
-            window.location.href = `https://accounts.spotify.com/authorize?client_id=${spotifyClientId}&response_type=code&redirect_uri=${spotifyRedirectUri}`;
+            console.log(spotifyClientId);
+            console.log(spotifyRedirectUri);
+            window.location.href = response.data.spotify_url;
+                // `https://accounts.spotify.com/authorize?client_id=${spotifyClientId}&response_type=code&redirect_uri=${spotifyRedirectUri}`;
 
         } catch (error) {
             if (error.response && error.response.data) {
