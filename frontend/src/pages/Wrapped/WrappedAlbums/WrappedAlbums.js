@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./WrappedAlbums.css";
+import { motion } from 'framer-motion';
+
 
 const WrappedAlbums = () => {
     // State to track the current index of the top image
@@ -33,6 +35,12 @@ const WrappedAlbums = () => {
         setCurrentIndex(0); // Reset to the initial state
     };
 
+    // Framer Motion animation variants
+    const fadeUpVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+    };
+
     return (
         <>
             <div className="header-container">
@@ -46,7 +54,11 @@ const WrappedAlbums = () => {
                 </Link>
             </div>
 
-            <div className="albums-container">
+            <motion.div className="albums-container"
+                initial="hidden"
+                animate="visible"
+                variants={fadeUpVariants}
+            >
                 <div className="album-wrapper">
                     {[...Array(10)].map((_, index) => (
                         <img
@@ -75,7 +87,7 @@ const WrappedAlbums = () => {
                 </div>
 
 
-            </div>
+            </motion.div>
 
             <Link
                 to="/listening-personality"
