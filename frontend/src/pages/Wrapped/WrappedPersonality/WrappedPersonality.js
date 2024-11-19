@@ -8,30 +8,36 @@ const WrappedPersonality = ({ personalityIndex = 0 }) => {
 
     return (
         <>
-            <div className="header">
+            <div className="header-container">
                 <h1 className="header-title">Your Listening Personality</h1>
-                <Link to="/profile" className="exit-button" onClick={() => console.log("Exit clicked")}>&times;</Link>
+                <Link
+                    to="/profile"
+                    className="exit-link"
+                    onClick={() => console.log("Exit clicked")}
+                >
+                    &times;
+                </Link>
             </div>
             <div className='whole-container'>
-            <div className="personality-container">
-                <div className="bottom-line"></div>
-                <div className="outer-circle"></div>
-                <div className="middle-circle"></div>
-                <div className="inner-circle"></div>
-                <div className="dotted-circle"></div>
-                <div className="core-circle" style={{ backgroundColor: color }}></div>
-                <div className="personality-name">{name}</div>
-                <div className="personality-description">{description}</div>
-            </div>
+                <div className="personality-container">
+                    <div className="bottom-line"></div>
+                    <div className="outer-circle"></div>
+                    <div className="middle-circle"></div>
+                    <div className="inner-circle"></div>
+                    <div className="dotted-circle"></div>
+                    <div className="core-circle" style={{backgroundColor: color}}></div>
+                    <div className="personality-name">{name}</div>
+                    <div className="personality-description">{description}</div>
+                </div>
             </div>
 
             <Link
-        to="/your-playlist" // Replace with the actual path to the next page
-        className="next-button"
-        onClick={() => console.log("Next page clicked")}
-      >
-        &#8594;
-      </Link>
+                to="/your-playlist" // Replace with the actual path to the next page
+                className="next-button"
+                onClick={() => console.log("Next page clicked")}
+            >
+                &#8594;
+            </Link>
         </>
     );
 };
