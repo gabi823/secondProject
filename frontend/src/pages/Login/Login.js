@@ -42,6 +42,7 @@ const Login = () => {
         try {
             const response = await axios.post('/api/login/', { username, password });
             const token = response.data.token;
+
             localStorage.setItem('token', token);
             navigate('/profile');
         } catch (error) {

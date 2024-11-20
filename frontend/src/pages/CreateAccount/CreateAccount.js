@@ -12,10 +12,54 @@ const CreateAccount = () => {
     const [email, setEmail] = useState('');
     const [topRowImages, setTopRowImages] = useState([]);
     const [bottomRowImages, setBottomRowImages] = useState([]);
+    const [spotifyClientId, setSpotifyClientId] = useState('');
+    const [spotifyRedirectUri, setSpotifyRedirectUri] = useState('');
     const [message, setMessage] = useState('');
     const [imagesLoaded, setImagesLoaded] = useState(false);
     const [fetchError, setFetchError] = useState('');
     const navigate = useNavigate();
+
+    // Fetch Spotify credentials from backend
+    useEffect(() => {
+        const fetchSpotifyCredentials = async () => {
+            try {
+                console.log('Fetching Spotify credentials...');
+                const response = await axios.get('http://localhost:8000/api/spotify-credentials/');
+                console.log('Received credentials:', response.data);  // Add this
+                setSpotifyClientId(response.data.client_id);
+                setSpotifyRedirectUri(response.data.redirect_uri);
+            } catch (error) {
+                console.error('Error fetching Spotify credentials:', error);
+            }
+        };
+
+        fetchSpotifyCredentials();
+    }, []);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            // Send POST request to Django API
+            const response = await axios.post('http://localhost:8000/api/register/', {
+                username,
+                password,
+                email,
+            });
+            localStorage.setItem('token', response.data.token);
+            console.log(spotifyClientId);
+            console.log(spotifyRedirectUri);
+            window.location.href = response.data.spotify_url;
+                // `https://accounts.spotify.com/authorize?client_id=${spotifyClientId}&response_type=code&redirect_uri=${spotifyRedirectUri}`;
+
+        } catch (error) {
+            if (error.response && error.response.data) {
+                setMessage(Object.values(error.response.data).join(', '));
+            } else {
+                setMessage('Account creation failed. Please try again.');
+            }
+        }
+    }
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -37,35 +81,6 @@ const CreateAccount = () => {
 
         fetchImages();
     }, []);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        // Log user input before sending it to backend
-        console.log('Form Data:', { username, password, email });
-
-        try {
-            // Send POST request to Django API
-            const response = await axios.post('/api/register/', {
-                username,
-                password,
-                email,
-            });
-
-            setMessage('Account created successfully!');
-            console.log('User created:', response.data);  // Log backend response
-
-            // Redirect to the login page after successful account creation
-            navigate('/login');
-        } catch (error) {
-            console.error('Error:', error.response); // Log full error response
-            if (error.response && error.response.data) {
-                setMessage(Object.values(error.response.data).join(', '));
-            } else {
-                setMessage('Account creation failed. Please try again.');
-            }
-        }
-    }
 
     // Framer Motion animation settings
     const fadeUpVariants = {
