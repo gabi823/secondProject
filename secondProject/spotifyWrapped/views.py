@@ -94,13 +94,19 @@ def user_login(request):
     """API endpoint for user login."""
     username = request.data.get("username")
     password = request.data.get("password")
+
+    print(f"DEBUG: Username: {username}, Password: {password}")
+
     user = authenticate(username=username, password=password)
 
     if user is not None:
         auth_login(request, user)
         token, created = Token.objects.get_or_create(user=user)
+        print("DEBUG: User authenticated successfully.")
         return Response({"token": token.key}, status=status.HTTP_200_OK)
-    return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        print("DEBUG: Authentication failed.")
+        return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # --- Spotify Integration View ---
