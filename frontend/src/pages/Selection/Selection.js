@@ -3,7 +3,6 @@ import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 import { motion } from 'framer-motion';
 import './Selection.css';
 import axios from 'axios';
-import placeholder from "../../images/placeholder.png";
 
 const Selection = () => {
     const [images, setImages] = useState({
