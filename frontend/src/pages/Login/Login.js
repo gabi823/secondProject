@@ -12,6 +12,7 @@ const Login = () => {
     const [topRowImages, setTopRowImages] = useState([]);
     const [bottomRowImages, setBottomRowImages] = useState([]);
     const [fetchError, setFetchError] = useState('');
+    const [imagesLoaded, setImagesLoaded] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,8 +24,10 @@ const Login = () => {
                 const topImages = images.slice(0, 10);
                 const bottomImages = images.slice(10, 20);
 
-                setTopRowImages([...topImages, ...topImages]); // Duplicate for continuous scrolling
+                // Duplicate the images to create a seamless loop
+                setTopRowImages([...topImages, ...topImages]);
                 setBottomRowImages([...bottomImages, ...bottomImages]);
+                setImagesLoaded(true); // Mark images as loaded
             } catch (error) {
                 console.error('Error fetching images:', error);
                 setFetchError('Failed to fetch images.');
@@ -42,6 +45,7 @@ const Login = () => {
             localStorage.setItem('token', token);
             navigate('/profile');
         } catch (error) {
+            console.error('Login error:', error);
             setError('Login failed. Please check your credentials.');
         }
     };
@@ -52,47 +56,55 @@ const Login = () => {
         visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
     };
 
-    const fadeDownVariants = {
-        hidden: { opacity: 0, y: 0 },
-        visible: { opacity: 1, y: 8, transition: { duration: 0.5 } },
-    };
-
     return (
         <>
-            <NavBar />
+            <NavBar/>
             <motion.div
-                initial="hidden"
-                animate="visible"
                 className="images-container"
+                initial="hidden" // Fixed typo
+                animate="visible" // Corrected spelling
+                variants={fadeUpVariants}
             >
                 {fetchError && <p className="fetch-error">{fetchError}</p>}
-                <div className="images-row images-row-top">
-                    {topRowImages.map((src, index) => (
-                        <motion.img
-                            key={index}
-                            className="carousel-image-top"
-                            src={src}
-                            alt={`Top image ${index + 1}`}
-                            initial="hidden"
-                            animate="visible"
-                            variants={fadeDownVariants}
-                        />
-                    ))}
-                </div>
-                <div className="images-row images-row-bottom">
-                    {bottomRowImages.map((src, index) => (
-                        <motion.img
-                            key={index}
-                            className="carousel-image"
-                            src={src}
-                            alt={`Bottom image ${index + 1}`}
-                            initial="hidden"
-                            animate="visible"
-                            variants={fadeUpVariants}
-                        />
-                    ))}
-                </div>
+                {imagesLoaded ? (
+                    <>
+                        <div className="images-row images-row-top">
+                            {topRowImages.map((src, index) => (
+                                <motion.img
+                                    key={index}
+                                    className="carousel-image"
+                                    src={src}
+                                    alt={`Top image ${index + 1}`}
+                                    initial="hidden"
+                                    animate="visible"
+                                    variants={fadeUpVariants}
+                                />
+                            ))}
+                        </div>
+                        <div className="images-row images-row-bottom">
+                            {bottomRowImages
+                                .slice()
+                                .reverse()
+                                .map((src, index) => (
+                                    <motion.img
+                                        key={index}
+                                        className="carousel-image"
+                                        src={src}
+                                        alt={`Bottom image ${index + 1}`}
+                                        initial="hidden"
+                                        animate="visible"
+                                        variants={fadeUpVariants}
+                                    />
+                                ))}
+                        </div>
+                    </>
+                ) : (
+                    <div className="loading-container">
+                        <div className="loading-spinner"></div>
+                    </div>
+                )}
             </motion.div>
+
 
             <motion.div
                 className="login-container"
@@ -101,34 +113,30 @@ const Login = () => {
                 variants={fadeUpVariants}
             >
                 <div className="login-box">
-                    <div className="login-title" variants={fadeUpVariants}>
+                    <div className="login-title">
                         Login
                     </div>
                     <form onSubmit={handleSubmit} className="login-form">
-                        <label className="login-label" variants={fadeUpVariants}>
-                            Username:
-                        </label>
+                        <label className="login-label">Username:</label>
                         <input
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             className="login-input"
-                            variants={fadeUpVariants}
                             required
                         />
-                        <label className="login-label" variants={fadeUpVariants}>
-                            Password:
-                        </label>
+                        <label className="login-label">Password:</label>
                         <input
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="login-input"
-                            variants={fadeUpVariants}
                             required
                         />
-                        <div className="login-button-container" variants={fadeUpVariants}>
-                            <button type="submit" className="login-button">Login</button>
+                        <div className="login-button-container">
+                            <button type="submit" className="login-button">
+                                Login
+                            </button>
                         </div>
                     </form>
                     {error && <p className="login-error">{error}</p>}

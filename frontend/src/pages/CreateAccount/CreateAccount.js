@@ -13,6 +13,8 @@ const CreateAccount = () => {
     const [topRowImages, setTopRowImages] = useState([]);
     const [bottomRowImages, setBottomRowImages] = useState([]);
     const [message, setMessage] = useState('');
+    const [imagesLoaded, setImagesLoaded] = useState(false);
+    const [fetchError, setFetchError] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,6 +29,7 @@ const CreateAccount = () => {
 
                 setTopRowImages([...topImages, ...topImages]);  // Duplicate for continuous scrolling
                 setBottomRowImages([...bottomImages, ...bottomImages]);
+                setImagesLoaded(true);
             } catch (error) {
                 console.error('Error fetching images:', error);
             }
@@ -70,49 +73,57 @@ const CreateAccount = () => {
         visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
     };
 
-    const fadeDownVariants = {
-        hidden: { opacity: 0, y: 0 },
-        visible: { opacity: 1, y: 8, transition: { duration: 0.5 } },
-    };
-
     return (
         <>
             <NavBar/>
             <motion.div
-                initial="hidden"
-                animate="visible"
                 className="images-container"
+                initial="hidden" // Fixed typo
+                animate="visible" // Corrected spelling
+                variants={fadeUpVariants}
             >
-                <div className="images-row images-row-top">
-                    {topRowImages.map((src, index) => (
-                        <motion.img
-                            key={index}
-                            className="carousel-image-top"
-                            src={src}
-                            alt={`Top image ${index + 1}`}
-                            initial="hidden"
-                            animate="visible"
-                            variants={fadeDownVariants}
-                        />
-                    ))}
-                </div>
-                <div className="images-row images-row-bottom">
-                    {bottomRowImages.map((src, index) => (
-                        <motion.img
-                            key={index}
-                            className="carousel-image"
-                            src={src}
-                            alt={`Bottom image ${index + 1}`}
-                            initial="hidden"
-                            animate="visible"
-                            variants={fadeUpVariants}
-                        />
-                    ))}
-                </div>
+                {fetchError && <p className="fetch-error">{fetchError}</p>}
+                {imagesLoaded ? (
+                    <>
+                        <div className="images-row images-row-top">
+                            {topRowImages.map((src, index) => (
+                                <motion.img
+                                    key={index}
+                                    className="carousel-image"
+                                    src={src}
+                                    alt={`Top image ${index + 1}`}
+                                    initial="hidden"
+                                    animate="visible"
+                                    variants={fadeUpVariants}
+                                />
+                            ))}
+                        </div>
+                        <div className="images-row images-row-bottom">
+                            {bottomRowImages
+                                .slice()
+                                .reverse()
+                                .map((src, index) => (
+                                    <motion.img
+                                        key={index}
+                                        className="carousel-image"
+                                        src={src}
+                                        alt={`Bottom image ${index + 1}`}
+                                        initial="hidden"
+                                        animate="visible"
+                                        variants={fadeUpVariants}
+                                    />
+                                ))}
+                        </div>
+                    </>
+                ) : (
+                    <div className="loading-container">
+                        <div className="loading-spinner"></div>
+                    </div>
+                )}
             </motion.div>
 
             <motion.div
-                className="login-container"
+                className="create-account-container"
                 initial="hidden"
                 animate="visible"
                 variants={fadeUpVariants}
