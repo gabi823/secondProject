@@ -155,4 +155,9 @@
     font-family: 'Manrope';
     font-weight: 1000;
 }
+.next-page-link {
+        bottom: 10px; /* Adjusted for smaller screen */
+        right: 10px; /* Adjusted for smaller screen */
+        font-size: 28px; /* Adjusted size for readability */
+    }
 }
