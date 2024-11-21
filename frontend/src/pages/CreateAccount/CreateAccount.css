@@ -140,22 +140,13 @@
 @media (max-width: 393px) {
     .create-account-container {
         padding: 0 20px; /* Add horizontal padding */
-        margin-top: 140px; /* Shift it up */
+        margin-top: -40px;
     }
     .images-container {
-        transform: translateY(-20px); /* Shift up */
+        margin-top: 200px;
     }
     .create-button {
         width: 80%;
         font-size: 15px;
     }
-
-    .imageBottom {
-        transform: translateY(40px);
-    }
-    .imageTop {
-        transform: translateY(-40px);
-    }
-
-
 }
