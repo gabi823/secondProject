@@ -20,6 +20,8 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+REACT_APP_DIR = os.path.join(BASE_DIR, '../frontend/build')
+
 # Path to the secrets.json file
 secrets_file_path = os.path.join(BASE_DIR, 'secrets.json')
 
@@ -34,7 +36,7 @@ with open(secrets_file_path) as f:
 SECRET_KEY = secrets["SECRET_KEY"]
 SPOTIFY_CLIENT_ID = secrets['SPOTIFY_CLIENT_ID']
 SPOTIFY_CLIENT_SECRET = secrets['SPOTIFY_CLIENT_SECRET']
-SPOTIFY_REDIRECT_URI = secrets['SPOTIFY_REDIRECT_URI']
+SPOTIFY_REDIRECT_URI = secrets.get('SPOTIFY_REDIRECT_URI')
 SPOTIFY_REFRESH_TOKEN = secrets['SPOTIFY_REFRESH_TOKEN']
 
 
