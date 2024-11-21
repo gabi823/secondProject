@@ -80,6 +80,7 @@ const Profile = () => {
                             className="profile-image"
                         />
                     </div>
+
                     <div className="username">{username || "Username"}</div>
                     <div className="email">{email || "email@1234.com"}</div>
 
@@ -101,22 +102,7 @@ const Profile = () => {
                             className="wrapped-section"
                             variants={fadeUpVariants}
                         >
-                            <img
-                                src="https://via.placeholder.com/160x160"
-                                alt="Wrapped"
-                                className="wrapped-image"
-                            />
-                            <div className="wrapped-title">
-                                {wrap.title}
-                                <br />
-                                <span className="wrapped-date">Date Created: {wrap.date_created}</span>
-                            </div>
-                            <img
-                                src="https://via.placeholder.com/28x28"
-                                alt="delete-icon"
-                                className="icon"
-                                onClick={() => deleteWrap(wrap.id)}
-                            />
+                            <ProfileWrapped />
                         </motion.div>
                     ))}
                     <ProfileWrapped />

@@ -2,10 +2,13 @@
 .settings-container {
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 20px;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    height: 100vh;
+    margin-top: -140px;
 }
 
 /* Left section for title and back button */
@@ -15,7 +18,7 @@
     align-items: flex-start;
     gap: 10px;
     margin-right: 75px;
-    margin-top: 15px;
+    margin-bottom: 475px;
 }
 
 .settings-title {

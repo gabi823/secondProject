@@ -42,15 +42,7 @@ const Settings = () => {
                     </motion.div>
 
                     {/* Email and Password Sections */}
-                    <motion.div className="settings-row" variants={fadeUpVariants}>
-                        <div className="settings-section">
-                            <h2>Email</h2>
-                            <p>The email associated with your account.</p>
-                            <div className="email-info-container">
-                                <p className="settings-username"><b>youremail@email.com</b></p>
-                                <button className="change-button">CHANGE</button>
-                            </div>
-                        </div>
+                    <motion.div className="password-section" variants={fadeUpVariants}>
                         <div className="settings-section">
                             <h2>Password</h2>
                             <p>Change your nostalgify account password.</p>

@@ -127,6 +127,7 @@ const WrappedSummary = ({ userData = {} }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexDirection: 'column',
+                gap: '0px'
             }}
             variants={containerVariants}
             initial="hidden"
@@ -135,11 +136,12 @@ const WrappedSummary = ({ userData = {} }) => {
             <motion.div
                 style={{
                     width: 659,
-                    height: 728,
-                    position: 'relative',
+                    height: 770,
+                    position: 'absolute',
                     background: 'white',
                     borderRadius: 20,
                     border: '1px solid black',
+                    marginBottom: '0px'
                 }}
                 variants={itemVariants}
           initial="hidden"
@@ -392,63 +394,66 @@ const WrappedSummary = ({ userData = {} }) => {
             ))}
           </motion.div>
 
-          <motion.div
-            style={{
-              width: 411,
-              height: 205,
-              left: 217,
-              top: 480,
-              position: 'absolute',
-            }}
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {topAlbums.map((album, index) => (
-              <div key={index} style={{ marginBottom: '10px' }}>
+                <motion.div
+                    style={{
+                        width: 411,
+                        height: 205,
+                        left: 217,
+                        top: 480,
+                        position: 'absolute',
+                    }}
+                    variants={itemVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    {topAlbums.map((album, index) => (
+                        <div key={index} style={{marginBottom: '10px'}}>
                 <span
-                  style={{
-                    color: 'black',
-                    fontSize: 20,
-                    fontFamily: 'Manrope',
-                    fontWeight: 700,
-                  }}
+                    style={{
+                        color: 'black',
+                        fontSize: 20,
+                        fontFamily: 'Manrope',
+                        fontWeight: 700,
+                    }}
                 >
                   {index + 1}. {album.title}
                 </span>
-                <span
-                  style={{
-                    color: 'black',
-                    fontSize: 16,
-                    fontFamily: 'Manrope',
-                    fontWeight: 500,
-                    marginLeft: '8px',
-                  }}
-                >
+                            <span
+                                style={{
+                                    color: 'black',
+                                    fontSize: 16,
+                                    fontFamily: 'Manrope',
+                                    fontWeight: 500,
+                                    marginLeft: '8px',
+                                }}
+                            >
                   {album.artist}
                 </span>
-              </div>
-            ))}
-          </motion.div>
+                        </div>
+                    ))}
+
+                    <button
+                        style={{
+                            marginTop: '10px',
+                            marginLeft: '30px',
+                            padding: '10px 20px',
+                            fontSize: '16px',
+                            fontFamily: 'Manrope',
+                            fontWeight: '400',
+                            color: 'black',
+                            border: 'solid',
+                            borderWidth: 1,
+                            borderRadius: '10px',
+                            cursor: 'pointer',
+                            backgroundColor: 'white',
+                        }}
+                    >
+                        Save to Profile
+                    </button>
+
+                </motion.div>
+            </motion.div>
         </motion.div>
-        <button
-          style={{
-            marginTop: '20px',
-            padding: '10px 20px',
-            fontSize: '16px',
-            fontFamily: 'Manrope',
-            fontWeight: '400',
-            color: 'black',
-            border: 'solid',
-            borderWidth: 1,
-            borderRadius: '10px',
-            cursor: 'pointer',
-            backgroundColor: 'white',
-          }}
-        >
-          Save to Profile
-        </button>
-      </motion.div>
     </>
   );
 };
