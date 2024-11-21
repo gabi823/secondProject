@@ -82,22 +82,6 @@ const Profile = () => {
                     </div>
                     <div className="username">{username}</div>
                     <div className="email">{email}</div>
-
-                    <div className="taste-container">
-                        <img
-                            src="https://via.placeholder.com/64x64"
-                            alt="Artist"
-                            className="artist-image"
-                        />
-                        <div>
-                            <div style={{ color: 'black', fontSize: '18px', fontFamily: 'Manrope', fontWeight: '600' }}>
-                                Taste
-                            </div>
-                            <div style={{ color: 'black', fontSize: '14px', fontFamily: 'Manrope', fontWeight: '400' }}>
-                                Sabrina Carpenter
-                            </div>
-                        </div>
-                    </div>
                     <Link to="/settings">
                         <div className="settings-link">
                             <div className="settings-text">Settings</div>
@@ -116,22 +100,7 @@ const Profile = () => {
                             className="wrapped-section"
                             variants={fadeUpVariants}
                         >
-                            <img
-                                src="https://via.placeholder.com/160x160"
-                                alt="Wrapped"
-                                className="wrapped-image"
-                            />
-                            <div className="wrapped-title">
-                                {wrap.title}
-                                <br />
-                                <span className="wrapped-date">Date Created: {wrap.date_created}</span>
-                            </div>
-                            <img
-                                src="https://via.placeholder.com/28x28"
-                                alt="delete-icon"
-                                className="icon"
-                                onClick={() => deleteWrap(wrap.id)}
-                            />
+                            <ProfileWrapped />
                         </motion.div>
                     ))}
                     <ProfileWrapped />

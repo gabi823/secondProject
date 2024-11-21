@@ -5,11 +5,13 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: -1;
+    z-index: -10;
     overflow: hidden;
-    margin-top: 300px;
+    margin-top: -60px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Common styling for image rows */
@@ -29,7 +31,7 @@
 
 /* Bottom row styling with right scrolling animation */
 .images-row-bottom {
-    margin-top: 300px;
+    margin-top: 500px;
     animation: scrollRight 35s linear infinite;
 }
 
@@ -75,21 +77,14 @@
 
 
 
-
-
-
-
-
-
-
-
 .login-container {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    z-index: 1;
+    z-index: -9;
     min-height: 100vh;
+
 }
 
 .login-box {
