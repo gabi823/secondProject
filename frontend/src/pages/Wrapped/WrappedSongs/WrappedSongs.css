@@ -74,3 +74,54 @@
     color: black;
     cursor: pointer;
 }
+
+@media (max-width: 393px) {
+    /* Center the title */
+    .title {
+        text-align: center; /* Center title horizontally */
+        font-size: 24px; /* Adjust title font size for smaller screens */
+        margin: 0 auto;
+    }
+
+    /* Adjust song-grid for vertical layout */
+    .song-grid {
+        display: flex;
+        flex-direction: column; /* Stack items vertically */
+        gap: 20px;
+        margin-top: 20px; /* Adjust top margin */
+        overflow-y: auto; /* Enable scrolling if content overflows */
+        max-height: 80vh; /* Limit height to make scrolling smoother */
+        margin-top: 60px; /* Increased top margin to shift content down */
+        margin-bottom: 60px;
+    }
+
+    .song-item {
+        display: flex;
+        flex-direction: row; /* Align image and text in a row */
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 15px; /* Space between items */
+    }
+
+    .song-cover {
+        width: 100px; /* Reduce image size */
+        height: 100px;
+    }
+
+    .rank {
+        font-size: 40px; /* Adjust rank size for smaller screens */
+    }
+
+    .song-title {
+        font-size: 18px; /* Adjust song title size */
+    }
+
+    .artist {
+        font-size: 16px; /* Adjust artist name size */
+    }
+
+    /* Make sure the next button is still positioned correctly */
+    .next-button {
+        font-size: 28px; /* Adjust next button size */
+    }
+}

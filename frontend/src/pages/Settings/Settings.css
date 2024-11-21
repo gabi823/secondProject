@@ -117,3 +117,126 @@
 .logout-button {
     margin-top: 20px;
 }
+
+@media (max-width: 393px) {
+    .settings-container {
+        display: flex;
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center align all items */
+        justify-content: flex-start; /* Start alignment for scrolling */
+        padding: 15px; /* Add padding for spacing */
+        width: 100%; /* Ensure it spans the full screen */
+        box-sizing: border-box; /* Include padding in width */
+        overflow-y: auto; /* Enable vertical scrolling */
+        gap: 20px; /* Add consistent spacing between sections */
+        overflow-y: auto;
+    }
+
+    /* Center the title and back link */
+    .settings-left-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center align title and back link */
+        text-align: center; /* Center text inside */
+        gap: 10px;
+        width: 100%; /* Ensure full-width alignment */
+        margin: 0; /* Remove external margins */
+    }
+
+    .settings-title {
+        font-size: 1.8rem; /* Slightly smaller font size */
+        font-family: Manrope;
+        font-weight: 700;
+        margin: 0; /* Remove extra margins */
+        text-align: center; /* Explicitly center the title */
+        padding-top: 20px;
+    }
+
+    .settings-back-link {
+        border: none;
+        background: none;
+        color: black;
+        font-size: 1rem;
+        font-family: Manrope;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        margin: 0;
+    }
+
+    /* Settings items container adjustments */
+    .settings-items-container {
+        display: flex;
+        flex-direction: column; /* Stack sections vertically */
+        align-items: stretch; /* Ensure sections span the full width */
+        justify-content: center; /* Center align horizontally */
+        width: 100%; /* Full width for container */
+        max-width: 360px; /* Limit max width */
+        gap: 20px; /* Spacing between sections */
+    }
+
+    /* Individual settings sections */
+    .settings-section {
+        background: white;
+        border-radius: 10px;
+        border: 1px solid black;
+        width: 100%; /* Ensure sections span full width */
+        padding: 15px; /* Add padding for spacing */
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column; /* Stack content inside */
+        align-items: flex-start; /* Align content to the start */
+        text-align: left; /* Ensure left alignment of text */
+    }
+
+    .settings-section h2 {
+        font-size: 1.25rem; /* Slightly smaller heading */
+        font-family: Manrope;
+        font-weight: 600;
+        margin: 0 0 10px 0; /* Add space below heading */
+    }
+
+    .settings-section p {
+        font-size: 0.9rem;
+        font-family: Manrope;
+        font-weight: 400;
+        margin: 0 0 10px 0; /* Add space below paragraph */
+    }
+
+    /* Ensure consistent alignment for info containers */
+    .settings-info-container, .email-info-container {
+        display: flex;
+        flex-direction: column; /* Ensure items stack vertically */
+        align-items: flex-start; /* Align items to the start */
+        width: 100%; /* Stretch to full width of section */
+        gap: 10px; /* Add spacing between items */
+    }
+
+    /* Adjusting email and password buttons */
+    .email-info-container {
+        margin-top: 25px;
+    }
+
+    /* Log out and delete account container adjustments */
+    .settings-row {
+        display: flex;
+        flex-direction: column; /* Stack items vertically */
+        align-items: stretch; /* Stretch items to match container width */
+        gap: 20px; /* Add spacing between the two sections */
+        width: 100%; /* Ensure it spans the full width */
+    }
+
+    /* Buttons for email, logout, and delete */
+    .change-button,
+    .logout-button,
+    .delete-button {
+        color: #1807FF;
+        font-size: 0.9rem;
+        font-family: Manrope;
+        font-weight: 700;
+        border: none;
+        background: none;
+        cursor: pointer;
+        text-align: right;
+    }
+}

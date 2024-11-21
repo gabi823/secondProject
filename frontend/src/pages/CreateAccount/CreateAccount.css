@@ -133,3 +133,26 @@
 .create-button:hover {
     background: #f0f0f0;
 }
+
+@media (max-width: 393px) {
+    .create-account-container {
+        padding: 0 20px; /* Add horizontal padding */
+        margin-top: 140px; /* Shift it up */
+    }
+    .images-container {
+        transform: translateY(-20px); /* Shift up */
+    }
+    .create-button {
+        width: 80%;
+        font-size: 15px;
+    }
+
+    .imageBottom {
+        transform: translateY(40px);
+    }
+    .imageTop {
+        transform: translateY(-40px);
+    }
+
+
+}
