@@ -6,7 +6,8 @@
     flex-direction: row;
     gap: 60px;
     padding: 20px;
-    margin-top: 65px;
+    margin-top: -70px;
+    height:100vh;
 }
 
 /* Profile Container */
@@ -59,20 +60,6 @@
     height: 21px;
 }
 
-/* Taste Container */
-.taste-container {
-    width: 220px;
-    height: 75px;
-    background: white;
-    border-radius: 10px;
-    border: 1px black solid;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 10px;
-    gap: 15px;
-}
-
 .artist-image {
     width: 64px;
     height: 64px;
@@ -89,15 +76,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-decoration: none;
 }
 
 .settings-text {
     color: black;
     font-size: 16px;
     font-family: Manrope, serif;
-    font-weight: 600;
+    font-weight: 400;
     text-align: center;
-    text-decoration: none;
+    text-decoration: none!important;
 }
 
 /* Profile Wrapped Container */
