@@ -179,7 +179,7 @@
     .login-container {
        padding: 20px; /* Add padding around the container */
         box-sizing: border-box;
-        margin-top: 85px;
+        margin-top: 55px;
     }
     .login-box {
         width: 100%; /* Make the login box responsive */
@@ -196,5 +196,9 @@
     }
     .images-container {
         transform: translateY(-40px);
+    }
+    .login-button {
+        font-size: 15px;
+         width: 40%;
     }
 }

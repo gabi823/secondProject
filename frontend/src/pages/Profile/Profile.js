@@ -80,24 +80,9 @@ const Profile = () => {
                             className="profile-image"
                         />
                     </div>
-                    <div className="username">{username}</div>
-                    <div className="email">{email}</div>
+                    <div className="username">{username || "Username"}</div>
+                    <div className="email">{email || "email@1234.com"}</div>
 
-                    <div className="taste-container">
-                        <img
-                            src="https://via.placeholder.com/64x64"
-                            alt="Artist"
-                            className="artist-image"
-                        />
-                        <div>
-                            <div style={{ color: 'black', fontSize: '18px', fontFamily: 'Manrope', fontWeight: '600' }}>
-                                Taste
-                            </div>
-                            <div style={{ color: 'black', fontSize: '14px', fontFamily: 'Manrope', fontWeight: '400' }}>
-                                Sabrina Carpenter
-                            </div>
-                        </div>
-                    </div>
                     <Link to="/settings">
                         <div className="settings-link">
                             <div className="settings-text">Settings</div>
