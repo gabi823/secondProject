@@ -28,6 +28,9 @@ const CreateAccount = () => {
                 console.log('Received credentials:', response.data);  // Add this
                 setSpotifyClientId(response.data.client_id);
                 setSpotifyRedirectUri(response.data.redirect_uri);
+
+                // Log the Spotify Redirect URI after setting it
+                console.log("Spotify Redirect URI (frontend):", response.data.redirect_uri);
             } catch (error) {
                 console.error('Error fetching Spotify credentials:', error);
             }

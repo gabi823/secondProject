@@ -31,7 +31,7 @@ urlpatterns = [
     path('', home_view, name='home'),
 
     # Spotify Authentication and Profile Management
-    path('callback/', views.spotify_callback, name='spotify_callback'),
+    path('spotify-callback/', views.spotify_callback, name='spotify_callback'),
     path('spotify/login/', views.spotify_login, name='spotify_login'),
     path('spotify/profile/', views.profile_page, name='profile_page'),
     path('spotify/logout/', views.logout_view, name='spotify_logout'),
@@ -42,9 +42,9 @@ urlpatterns = [
     path('delete_account/', views.delete_account, name='delete_account'),
 
     # Frontend routes - serve React app
-    path('createaccount/', views.serve_react, name='create_account'),
-    path('login/', views.serve_react, name='login'),
-    path('about/', views.serve_react, name='about'),
+    path('createaccount/', ReactAppView.as_view(), name='create_account'),
+    path('login/', ReactAppView.as_view(), name='login'),
+    path('about/', ReactAppView.as_view(), name='about'),
 
     # User Authentication API
     path('api/register/', views.register, name='register'),
@@ -61,9 +61,6 @@ urlpatterns = [
     # API Routes
     path('api/react/', views.ReactView.as_view(), name='react_view'),
     path('api/artists/', views.ArtistViewSet.as_view({'get': 'list'}), name='artist_view'),
-    re_path(r'^.*$', serve, {
-        'path': 'index.html',
-        'document_root': frontend_dir
-    }),
+    re_path(r'^.*$', ReactAppView.as_view(), name='react_catch_all'),
 
 ]
