@@ -68,3 +68,36 @@
     height: 210px;
     object-fit: cover;
 }
+
+
+@media (max-width: 393px) {
+    .carousel-image1, .carousel-image3 {
+        width: 140px;
+        height: 140px;
+        position: relative;
+        margin: 0;
+        overflow: visible;
+    }
+    .carousel-image1 {
+        margin-left: -25px;
+
+    }
+    .carousel-image3 {
+        margin-right: -25px;
+
+    }
+
+    .carousel-image2 {
+        width: 140px;
+        height: 140px;
+    }
+     .welcome-container {
+        overflow: visible; /* Allow images to extend beyond the container */
+    }
+
+     .image-column-left, .image-column-middle, .image-column-right {
+         gap: 10px;
+         padding: 5px;
+     }
+
+}

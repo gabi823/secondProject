@@ -117,3 +117,42 @@
     color: black;
     cursor: pointer;
 }
+
+@media (max-width: 393px) {
+    .albums-container {
+         margin-top: -170px;
+
+    }
+    .album-image {
+    width: 205px;
+    height: 205px;
+    }
+
+    .reveal-text {
+    width: 267px;
+    height: 33px;
+    position: absolute;
+    left: 50%;
+    top: 690px;
+    transform: translateX(-50%);
+    text-align: center;
+    color: black;
+    font-size: 17px;
+    font-family: 'Manrope';
+    font-weight: 400;
+}
+
+.album-title {
+    width: 983px;
+    height: 47px;
+    position: absolute;
+    left: 50%;
+    top: 650px;
+    transform: translateX(-50%);
+    text-align: center;
+    color: black;
+    font-size: 24px;
+    font-family: 'Manrope';
+    font-weight: 1000;
+}
+}

@@ -50,6 +50,9 @@
     100% {
         transform: translateX(0);
     }
+    to {
+        left: max(calc(200px * 8), 100%);
+      }
 }
 
 /* Image styling */
@@ -60,7 +63,26 @@
     flex-shrink: 0;
 }
 
-/* Login box styling */
+@keyframes scrollRight {
+  to {
+    left: max(calc(200px * 8), 100%);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .login-container {
     display: flex;
     align-items: center;
@@ -151,4 +173,28 @@
     font-size: 16px;
     text-align: center;
     margin-top: 20px;
+}
+
+@media (max-width: 393px) {
+    .login-container {
+       padding: 20px; /* Add padding around the container */
+        box-sizing: border-box;
+        margin-top: 85px;
+    }
+    .login-box {
+        width: 100%; /* Make the login box responsive */
+        max-width: 320px; /* Limit its size to prevent stretching */
+        padding: 40px 20px;
+    }
+    .login-input {
+        width: 80%;
+        margin-left: 10%;
+    }
+    .login-label {
+        width: 80%;
+        margin-left: 10%;
+    }
+    .images-container {
+        transform: translateY(-40px);
+    }
 }
