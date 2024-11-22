@@ -7,7 +7,6 @@
     bottom: 0;
     z-index: -10;
     overflow: hidden;
-    margin-top: -150px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,6 +25,7 @@
 
 /* Top row styling with left scrolling animation */
 .images-row-top {
+    margin-top: 60px;
     animation: scrollLeft 30s linear infinite;
 }
 
@@ -96,7 +96,7 @@
     background: white;
     border-radius: 20px;
     border: 1px solid black;
-    margin-top: -180px;
+    margin-top: -150px;
 }
 
 .login-title {

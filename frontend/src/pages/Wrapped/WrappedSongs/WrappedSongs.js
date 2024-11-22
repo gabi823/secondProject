@@ -32,6 +32,7 @@ const WrappedSongs = () => {
         </Link>
       </div>
 
+        <div className="wrapper">
       <div className="song-grid">
         {songs.map((song, index) => (
           <motion.div
@@ -56,6 +57,7 @@ const WrappedSongs = () => {
           </motion.div>
         ))}
       </div>
+            </div>
 
       <Link
         to="/top-genres" // Replace with the actual path to the next page

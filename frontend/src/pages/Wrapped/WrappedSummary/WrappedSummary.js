@@ -135,8 +135,8 @@ const WrappedSummary = ({ userData = {} }) => {
         >
             <motion.div
                 style={{
-                    width: 659,
-                    height: 770,
+                    width: 600,
+                    height: 670,
                     position: 'absolute',
                     background: 'white',
                     borderRadius: 20,
@@ -163,7 +163,7 @@ const WrappedSummary = ({ userData = {} }) => {
             <motion.h1
               style={{
                 color: 'black',
-                fontSize: 38,
+                fontSize: 35,
                 fontFamily: 'Manrope',
                 fontWeight: 700,
                 wordWrap: 'break-word',
@@ -179,7 +179,7 @@ const WrappedSummary = ({ userData = {} }) => {
             <motion.h2
               style={{
                 color: 'black',
-                fontSize: 18,
+                fontSize: 15,
                 fontFamily: 'Manrope',
                 fontWeight: 500,
                 wordWrap: 'break-word',
@@ -198,8 +198,8 @@ const WrappedSummary = ({ userData = {} }) => {
             style={{
               width: 231,
               height: 232,
-              left: 391,
-              top: 130,
+              left: 380,
+              top: 100,
               position: 'absolute',
             }}
             variants={itemVariants}
@@ -208,11 +208,12 @@ const WrappedSummary = ({ userData = {} }) => {
           >
             <motion.div
               style={{
-                width: 231,
-                height: 232,
+                width: 190,
+                height: 190,
                 background: '#D9D9D9',
                 borderRadius: '50%',
                 overflow: 'hidden',
+                  marginBottom: "5px"
               }}
               variants={itemVariants}
               initial="hidden"
@@ -229,8 +230,8 @@ const WrappedSummary = ({ userData = {} }) => {
             style={{
               width: 172,
               height: 28,
-              left: 421,
-              top: 370,
+              left: 410,
+              top: 300,
               position: 'absolute',
             }}
             variants={itemVariants}
@@ -240,10 +241,11 @@ const WrappedSummary = ({ userData = {} }) => {
             <motion.h3
               style={{
                 color: 'black',
-                fontSize: 24,
+                fontSize: 17,
                 fontFamily: 'Manrope',
                 fontWeight: 800,
                 display: 'inline',
+                  marginTop: "5px"
               }}
               variants={itemVariants}
               initial="hidden"
@@ -254,7 +256,7 @@ const WrappedSummary = ({ userData = {} }) => {
             <motion.span
               style={{
                 color: 'black',
-                fontSize: 24,
+                fontSize: 17,
                 fontFamily: 'Manrope',
                 fontWeight: 500,
               }}
@@ -273,13 +275,14 @@ const WrappedSummary = ({ userData = {} }) => {
               width: 190,
               height: 29,
               left: 26,
-              top: 140,
+              top: 120,
               position: 'absolute',
               color: 'black',
-              fontSize: 24,
+              fontSize: 20,
               fontFamily: 'Manrope',
               fontWeight: 700,
               textDecoration: 'underline',
+                marginBottom: '3px'
             }}
             variants={itemVariants}
             initial="hidden"
@@ -292,10 +295,10 @@ const WrappedSummary = ({ userData = {} }) => {
               width: 190,
               height: 29,
               left: 27,
-              top: 430,
+              top: 360,
               position: 'absolute',
               color: 'black',
-              fontSize: 24,
+              fontSize: 20,
               fontFamily: 'Manrope',
               fontWeight: 700,
               textDecoration: 'underline',
@@ -310,11 +313,11 @@ const WrappedSummary = ({ userData = {} }) => {
             style={{
               width: 190,
               height: 29,
-              left: 219,
-              top: 430,
+              left: 200,
+              top: 360,
               position: 'absolute',
               color: 'black',
-              fontSize: 24,
+              fontSize: 20,
               fontFamily: 'Manrope',
               fontWeight: 700,
               textDecoration: 'underline',
@@ -332,7 +335,7 @@ const WrappedSummary = ({ userData = {} }) => {
               width: 359,
               height: 199,
               left: 26,
-              top: 195,
+              top: 170,
               position: 'absolute',
             }}
             variants={itemVariants}
@@ -344,7 +347,7 @@ const WrappedSummary = ({ userData = {} }) => {
                 <span
                   style={{
                     color: 'black',
-                    fontSize: 20,
+                    fontSize: 15,
                     fontFamily: 'Manrope',
                     fontWeight: 700,
                   }}
@@ -354,7 +357,7 @@ const WrappedSummary = ({ userData = {} }) => {
                 <span
                   style={{
                     color: 'black',
-                    fontSize: 16,
+                    fontSize: 12,
                     fontFamily: 'Manrope',
                     fontWeight: 500,
                     marginLeft: '8px',
@@ -371,7 +374,7 @@ const WrappedSummary = ({ userData = {} }) => {
               width: 170,
               height: 164,
               left: 26,
-              top: 480,
+              top: 400,
               position: 'absolute',
             }}
             variants={itemVariants}
@@ -383,7 +386,7 @@ const WrappedSummary = ({ userData = {} }) => {
                 key={index}
                 style={{
                   color: 'black',
-                  fontSize: 20,
+                  fontSize: 15,
                   fontFamily: 'Manrope',
                   fontWeight: 700,
                   marginBottom: '8px',
@@ -398,8 +401,8 @@ const WrappedSummary = ({ userData = {} }) => {
                     style={{
                         width: 411,
                         height: 205,
-                        left: 217,
-                        top: 480,
+                        left: 200,
+                        top: 400,
                         position: 'absolute',
                     }}
                     variants={itemVariants}
@@ -411,7 +414,7 @@ const WrappedSummary = ({ userData = {} }) => {
                 <span
                     style={{
                         color: 'black',
-                        fontSize: 20,
+                        fontSize: 15,
                         fontFamily: 'Manrope',
                         fontWeight: 700,
                     }}
@@ -421,7 +424,7 @@ const WrappedSummary = ({ userData = {} }) => {
                             <span
                                 style={{
                                     color: 'black',
-                                    fontSize: 16,
+                                    fontSize: 12,
                                     fontFamily: 'Manrope',
                                     fontWeight: 500,
                                     marginLeft: '8px',
@@ -434,12 +437,12 @@ const WrappedSummary = ({ userData = {} }) => {
 
                     <button
                         style={{
-                            marginTop: '10px',
-                            marginLeft: '30px',
+                            marginTop: '30px',
+                            marginLeft: '20px',
                             padding: '10px 20px',
-                            fontSize: '16px',
+                            fontSize: '14px',
                             fontFamily: 'Manrope',
-                            fontWeight: '400',
+                            fontWeight: '600',
                             color: 'black',
                             border: 'solid',
                             borderWidth: 1,
