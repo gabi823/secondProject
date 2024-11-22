@@ -32,7 +32,7 @@ urlpatterns = [
 
     # Spotify Authentication and Profile Management
     path('spotify-callback/', views.spotify_callback, name='spotify_callback'),
-    path('spotify/login/', views.spotify_login, name='spotify_login'),
+    path('api/spotify/login/', views.spotify_login, name='spotify_login'),
     path('spotify/profile/', views.profile_page, name='profile_page'),
     path('spotify/logout/', views.logout_view, name='spotify_logout'),
     path('api/profile/', views.get_profile, name='get_profile'),
@@ -50,6 +50,8 @@ urlpatterns = [
     path('api/register/', views.register, name='register'),
     path('api/login/', views.user_login, name='login'),
 
+    # Checking Spotify Link
+    path('api/check-spotify-link/', views.check_spotify_link, name='check_spotify_link'),
     # Spotify Data and Wraps
     path('unlink_spotify/', views.unlink_spotify, name='unlink_spotify'),
     path('spotify/data', views.spotify_data, name='spotify_data'),

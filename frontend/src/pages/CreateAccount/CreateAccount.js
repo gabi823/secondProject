@@ -49,23 +49,13 @@ const CreateAccount = () => {
                 password,
                 email,
             });
-            console.log('Actual spotify_url value:', response.data.spotify_url);
-            console.log('Full responseeeeeeeeeee:', response.data);
+
+            console.log('Registration response:', response.data);
 
             localStorage.setItem('token', response.data.token);
 
-            //if (response.data.spotify_url) {
-                //console.log('Redirecting to Spotify URL:', response.data.spotify_url);
-                //window.location.href = response.data.spotify_url;
+            navigate('/profile');
 
-            const spotifyUrl = response.data.spotify_url;
-            if (spotifyUrl) {
-                console.log('Redirecting to:', spotifyUrl);
-                window.open(spotifyUrl, '_self')
-                setTimeout(() => {
-                    window.location.replace(spotifyUrl);
-                }, 100);
-            }
         } catch (error) {
             if (error.response && error.response.data) {
                 setMessage(Object.values(error.response.data).join(', '));
