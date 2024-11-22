@@ -53,8 +53,8 @@
 }
 
 .central-artist-img {
-    width: 300px;
-    height: 300px;
+    width: 230px;
+    height: 230px;
     border-radius: 50%;
 }
 
@@ -66,8 +66,8 @@
 }
 
 .surrounding-artist-img {
-    width: 175px;
-    height: 175px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
 }
 

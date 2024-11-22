@@ -28,6 +28,7 @@
 
 /* Top row styling with left scrolling animation */
 .images-row-top {
+    margin-top: 60px;
     animation: scrollLeft 30s linear infinite;
 }
 
@@ -71,7 +72,7 @@
     justify-content: center;
     position: relative;
     min-height: 100vh;
-    margin-top: -95px;
+    margin-top: -75px;
     z-index: -9;
 }
 

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import "./WrappedArtists.css";
 
 const WrappedArtists = () => {
-    const radius = 325; // Increased radius for more space between central and surrounding artists
+    const radius = 280; // Increased radius for more space between central and surrounding artists
     const centerPosition = {
         x: 300, // X coordinate for the center
         y: 300, // Y coordinate for the center
@@ -59,8 +59,8 @@ const WrappedArtists = () => {
                 {/* Surrounding artists in a circle */}
                 {trail.map((style, index) => {
                     const angle = (index / artists.length) * 2 * Math.PI; // Calculate the angle for each artist
-                    const x = centerPosition.x + radius * Math.cos(angle) - 100; // X position
-                    const y = centerPosition.y + radius * Math.sin(angle) - 100; // Y position
+                    const x = centerPosition.x + radius * Math.cos(angle) - 75; // X position
+                    const y = centerPosition.y + radius * Math.sin(angle) - 75; // Y position
 
                     return (
                         <motion.div
@@ -85,7 +85,7 @@ const WrappedArtists = () => {
                                     style={{
                                         fontSize: "16px",
                                         fontWeight: "700",
-                                        marginTop: "5px",
+                                        marginTop: "3px",
                                         fontFamily: "Manrope",
                                     }}
                                 >
