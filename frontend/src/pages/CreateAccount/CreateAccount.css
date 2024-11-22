@@ -149,4 +149,16 @@
         width: 80%;
         font-size: 15px;
     }
+    .images-row-top {
+        margin-top: -520px;
+    }
+
+    .images-row-bottom {
+        margin-top: 600px;
+    }
+    .create-account-form {
+        padding-top: 40px;
+        padding-bottom: 40px;
+
+    }
 }
