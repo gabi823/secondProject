@@ -80,8 +80,10 @@ const Profile = () => {
                             className="profile-image"
                         />
                     </div>
-                    <div className="username">{username}</div>
-                    <div className="email">{email}</div>
+
+                    <div className="username">{username || "Username"}</div>
+                    <div className="email">{email || "email@1234.com"}</div>
+
                     <Link to="/settings">
                         <div className="settings-link">
                             <div className="settings-text">Settings</div>

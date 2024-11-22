@@ -94,19 +94,25 @@
     }
 
     .genre {
-        font-size: 4vw;
+        font-size: 5vw;
         transform: rotate(90deg);
     }
 
-    .pop { top: 32vh; left: 7vw; }
-    .indie-pop { top: 45vh; left: 19vw; }
-    .rap { top: 52vh; left: 42vw; }
-    .k-pop { top: 63vh; left: 59vw; }
-    .rock { top: 72vh; left: 79vw; }
+    .pop, .indie-pop, .rap, .k-pop, .rock, .rnb, .jazz, .hip-hop {
+        background-color: white; /* White background */
+        padding: 2px 4px; /* Background spacing */
+        z-index: 10;
+    }
 
-    .rnb { top: 55vh; left: 79vw; }
-    .jazz { top: 45vh; left: 60vw; }
-    .hip-hop { top: 34vh; left: 39vw; }
+    .pop { top: 32vh; left: 2vw;}
+    .indie-pop { top: 45vh; left: 12vw; }
+    .rap { top: 52vh; left: 36vw; }
+    .k-pop { top: 63vh; left: 51vw; }
+    .rock { top: 72vh; left: 70vw; }
+
+    .rnb { top: 55vh; left: 72vw; }
+    .jazz { top: 45vh; left: 53vw; }
+    .hip-hop { top: 34vh; left: 30vw; }
 
 
     .line-pop { top: 30vh; bottom: 0; left: 10vw; }
