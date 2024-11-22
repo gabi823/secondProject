@@ -46,205 +46,128 @@ SPOTIFY_SCOPES = 'user-read-private user-read-email'
 
 @api_view(['POST'])
 def register(request):
-    print("DEBUG IN REGISTER: SPOTIFY_REDIRECT_URI =", SPOTIFY_REDIRECT_URI)
-    """API endpoint for user registration."""
+    """API endpoint for user registration with auto-login."""
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
+        # Auto-login the user
+        auth_login(request, user)
         token, created = Token.objects.get_or_create(user=user)
 
-        auth_params = {
-            'client_id': SPOTIFY_CLIENT_ID,
-            'response_type': 'code',
-            'redirect_uri': SPOTIFY_REDIRECT_URI,
-            'scope': SPOTIFY_SCOPES,
-            'show_dialog': 'true'
-        }
-
-        spotify_login_url = f"https://accounts.spotify.com/authorize?{urllib.parse.urlencode(auth_params)}"
-
-        print("Generated Spotify URL:", spotify_login_url)
+        print(f"DEBUG: User registered and logged in: {user.username}")
 
         return Response({
-            "spotify_url": spotify_login_url,
-            "token": token.key  # Include token for local storage
+            "success": True,
+            "token": token.key,
+            "username": user.username,
+            "redirect": "profile",
+            "message": "Registration successful",
+            "hasSpotifyLinked": False
         }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+"""checks spotify linked status after logging in"""
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_spotify_link(request):
+    """Check if user has linked their Spotify account."""
+    try:
+        print(f"DEBUG: Checking Spotify link for user: {request.user.username}")
+        spotify_user = SpotifyUser.objects.get(user=request.user)
+
+        # Add token refresh check here
+        if spotify_user.token_expiry and spotify_user.token_expiry <= timezone.now():
+            print("DEBUG: Token expired, refreshing...")
+            try:
+                new_token = refresh_spotify_token(spotify_user.refresh_token)
+                spotify_user.access_token = new_token
+                spotify_user.token_expiry = timezone.now() + timedelta(hours=1)
+                spotify_user.save()
+                print("DEBUG: Token refreshed successfully")
+            except Exception as e:
+                print(f"DEBUG: Token refresh failed: {str(e)}")
+                return Response({
+                    "hasSpotifyLinked": False,
+                    "error": "Token refresh failed"
+                })
+
+        return Response({
+            "hasSpotifyLinked": True,
+            "spotifyData": {
+                "display_name": spotify_user.display_name,
+                "spotify_id": spotify_user.spotify_id
+            }
+        })
+    except SpotifyUser.DoesNotExist:
+        print(f"DEBUG: No Spotify user found for: {request.user.username}")
+        return Response({
+            "hasSpotifyLinked": False,
+            "message": "No Spotify account linked"
+        })
+    except Exception as e:
+        print(f"DEBUG: Error in check_spotify_link: {str(e)}")
+        return Response({
+            "error": str(e),
+            "hasSpotifyLinked": False
+        }, status=500)
+
+
 def spotify_callback(request):
-    """
-    Handles the callback from Spotify after the user logs in.
-    """
-
-    print("=== Session Debug Information ===")
-    print(f"DEBUG: Session ID: {request.session.session_key}")
-    print(f"DEBUG: Is user authenticated? {request.user.is_authenticated}")
-    print(f"DEBUG: Current logged-in user: {request.user.username}")
-    print(f"DEBUG: Request META: {request.META.get('HTTP_REFERER', 'No referer')}")
-
-    # Process the request and get the authorization code
+    """Handles Spotify OAuth callback and account linking."""
     code = request.GET.get('code')
-    error = request.GET.get('error')
-    token_url = 'https://accounts.spotify.com/api/token'
-    # print("inside")
+    state = request.GET.get('state')  # This will be the user ID
 
-    if error:
-        print(f"DEBUG: Spotify authentication failed with error: {error}")
-        return JsonResponse({"error": f"Spotify authentication failed: {error}"}, status=400)
+    if not code:
+        return redirect('http://localhost:3000/profile?error=spotify_auth_failed')
 
-    if not request.user.is_authenticated:
-        print("DEBUG: User is not authenticated at callback!")
-        return JsonResponse({"error": "User not authenticated"}, status=401)
-
-    if code:
-        print(f"DEBUG: Received authorization code: {code}")
-        # Exchange authorization code for access token
-        response = requests.post(
-            token_url,
+    try:
+        user = User.objects.get(id=state)
+        # Exchange code for tokens
+        token_response = requests.post(
+            'https://accounts.spotify.com/api/token',
             data={
                 'grant_type': 'authorization_code',
                 'code': code,
                 'redirect_uri': SPOTIFY_REDIRECT_URI,
                 'client_id': SPOTIFY_CLIENT_ID,
                 'client_secret': SPOTIFY_CLIENT_SECRET,
-            },
-        )
-
-        print(f"DEBUG: Token exchange response status: {response.status_code}")
-
-        if response.status_code != 200:
-            print(f"DEBUG: Token exchange failed: {response.content}")
-            return JsonResponse({"error": "Failed to exchange authorization code for tokens"}, status=400)
-
-        response_data = response.json()
-        access_token = response_data.get('access_token')
-        refresh_token = response_data.get('refresh_token')
-        expires_in = response_data.get('expires_in', 3600)
-        token_expiry = timezone.now() + timedelta(seconds=expires_in)
-
-        # Use the access token to fetch user profile information
-        headers = {'Authorization': f'Bearer {access_token}'}
-        user_profile_url = 'https://api.spotify.com/v1/me'
-        user_data_response = requests.get(user_profile_url, headers=headers)
-
-        print("DEBUG: Spotify API Response Status Code:", user_data_response.status_code)
-        print("DEBUG: Spotify API Response Content:", user_data_response.content)
-
-        if user_data_response.status_code != 200:
-            print(f"DEBUG: Failed to fetch Spotify profile: {user_data_response.content}")
-            return JsonResponse({"error": "Failed to fetch Spotify user profileeeeeee"}, status=400)
-
-        user_data = user_data_response.json()
-
-        # Extract user data
-        spotify_id = user_data.get('id')
-        display_name = user_data.get('display_name')
-        external_url = user_data.get('external_urls', {}).get('spotify')
-        django_user = request.user
-
-        print(f"=== User Association Debug ===")
-        print(f"DEBUG: Django User: {django_user.username}")
-        print(f"DEBUG: Spotify ID: {spotify_id}")
-        print(f"DEBUG: Display Name: {display_name}")
-
-        # First, check if this Spotify account is already linked to another user
-        existing_spotify_user = SpotifyUser.objects.filter(spotify_id=spotify_id).first()
-        if existing_spotify_user and existing_spotify_user.user != django_user:
-            print(f"DEBUG: Spotify account already linked to user: {existing_spotify_user.user.username}")
-            return JsonResponse({
-                "error": "This Spotify account is already linked to another user"
-            }, status=400)
-
-        # Now safely update or create the SpotifyUser
-        spotify_user, created = SpotifyUser.objects.update_or_create(
-            user=django_user,
-            defaults={
-                'spotify_id': spotify_id,
-                'display_name': display_name,
-                'external_url': external_url,
-                'access_token': access_token,
-                'refresh_token': refresh_token,
-                'token_expiry': token_expiry,
             }
         )
 
-        print(f"DEBUG: SpotifyUser {'created' if created else 'updated'} for {django_user.username}")
+        if token_response.status_code != 200:
+            return redirect('http://localhost:3000/profile?error=token_exchange_failed')
 
-        # Verify the association was successful
-        verification = SpotifyUser.objects.get(user=django_user)
-        print(f"=== Final Verification ===")
-        print(f"DEBUG: Verified user association: {verification.user.username}")
-        print(f"DEBUG: Verified Spotify ID: {verification.spotify_id}")
+        token_data = token_response.json()
 
-        # # Handle unauthenticated users
-        # if request.user.is_authenticated:
-        #     django_user = request.user
-        # else:
-        #     return JsonResponse({"error": "User not authenticated"}, status=400)
+        # Get Spotify user data
+        headers = {'Authorization': f"Bearer {token_data['access_token']}"}
+        user_response = requests.get('https://api.spotify.com/v1/me', headers=headers)
 
-        # -------BLOCK--------
+        if user_response.status_code != 200:
+            return redirect('http://localhost:3000/profile?error=spotify_profile_failed')
 
-        # print(f"DEBUG: Logged-in Django user: {django_user.username}")
-        #
-        # # Create or update the SpotifyUser instance for the logged-in user
-        # try:
-        #     # Try to fetch the existing SpotifyUser for the logged-in user
-        #     spotify_user = SpotifyUser.objects.get(user=django_user)
-        #     # Update the SpotifyUser fields
-        #     spotify_user.spotify_id = spotify_id
-        #     spotify_user.display_name = display_name
-        #     spotify_user.external_url = external_url
-        #     spotify_user.access_token = access_token
-        #     spotify_user.refresh_token = refresh_token
-        #     spotify_user.token_expiry = token_expiry
-        #     spotify_user.save()
-        #     print(f"DEBUG: Updated SpotifyUser for Django user: {django_user.username}")
-        # except SpotifyUser.DoesNotExist:
-        #     # Create a new SpotifyUser for the logged-in user
-        #     spotify_user = SpotifyUser.objects.create(
-        #         user=django_user,
-        #         spotify_id=spotify_id,
-        #         display_name=display_name,
-        #         external_url=external_url,
-        #         access_token=access_token,
-        #         refresh_token=refresh_token,
-        #         token_expiry=token_expiry,
-        #     )
-        #     print(f"DEBUG: Created new SpotifyUser for Django user: {django_user.username}")
-        #
-        # # Debugging after saving
-        # print(f"DEBUG: Associated SpotifyUser with display_name: {spotify_user.display_name} and user: {spotify_user.user.username}")
+        spotify_data = user_response.json()
 
-        # -------BLOCK--------
+        # Create or update SpotifyUser
+        SpotifyUser.objects.update_or_create(
+            user=user,
+            defaults={
+                'spotify_id': spotify_data['id'],
+                'display_name': spotify_data['display_name'],
+                'access_token': token_data['access_token'],
+                'refresh_token': token_data['refresh_token'],
+                'token_expiry': timezone.now() + timedelta(seconds=3600)
+            }
+        )
 
-        # # Create or update the SpotifyUser instance
-        # spotify_user, created = SpotifyUser.objects.get_or_create(
-        #     user=django_user,  # This ensures we link the logged-in user
-        #     defaults={
-        #         'spotify_id': spotify_id,
-        #         'display_name': display_name,
-        #         'external_url': external_url,
-        #         'access_token': access_token,
-        #         'refresh_token': refresh_token,
-        #         'token_expiry': token_expiry,
-        #     }
-        # )
-        #
-        # # Update fields if the SpotifyUser already exists
-        # if not created:
-        #     spotify_user.user = django_user
-        #     spotify_user.spotify_id = spotify_id
-        #     spotify_user.display_name = display_name
-        #     spotify_user.external_url = external_url
-        #     spotify_user.access_token = access_token
-        #     spotify_user.refresh_token = refresh_token
-        #     spotify_user.token_expiry = token_expiry
-        #     spotify_user.save()
+        return redirect('http://localhost:3000/profile?linked=success')
 
-        # Redirect to the frontend after successful login
-        return redirect('http://localhost:3000/profile')
-
-    return JsonResponse({"error": "Spotify authentication failed"}, status = 400)
+    except User.DoesNotExist:
+        return redirect('http://localhost:3000/profile?error=user_not_found')
+    except Exception as e:
+        return redirect(f'http://localhost:3000/profile?error={str(e)}')
 
 @api_view(['GET'])
 def get_spotify_credentials(request):
@@ -297,20 +220,34 @@ def unlink_spotify(request):
         return Response({"message": "Spotify account unlinked successfully"}, status=status.HTTP_200_OK)
     return Response({"error": "Spotify profile not found"}, status=status.HTTP_404_NOT_FOUND)
 
-@login_required
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def spotify_login(request):
-    """
-    Redirects the user to Spotify's authorization URL for login.
-    """
-    scopes = 'user-library-read user-top-read'
-    url = (
-        'https://accounts.spotify.com/authorize'
-        f'?client_id={SPOTIFY_CLIENT_ID}'
-        f'&response_type=code'
-        f'&redirect_uri={SPOTIFY_REDIRECT_URI}'
-        f'&scope={scopes}'
-    )
-    return redirect(url)
+    """Initiates Spotify account linking process."""
+    try:
+        scopes = 'user-library-read user-top-read user-read-private user-read-email'
+        auth_params = {
+            'client_id': settings.SPOTIFY_CLIENT_ID,
+            'response_type': 'code',
+            'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
+            'scope': scopes,
+            'state': str(request.user.id),
+            'show_dialog': 'true'
+        }
+
+        auth_url = f"https://accounts.spotify.com/authorize?{urllib.parse.urlencode(auth_params)}"
+        print(f"DEBUG: Generated Spotify auth URL: {auth_url}")  # Debug print
+
+        return Response({
+            "auth_url": auth_url,
+            "status": "success"
+        })
+    except Exception as e:
+        return Response({
+            "error": str(e),
+            "status": "error"
+        }, status=400)
 
 
 # --- Artist and React Data Views ---
@@ -437,12 +374,28 @@ def update_email(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_profile(request):
-    """Retrieve current user profile details (username and email)."""
-    user = request.user
-    return Response({
-        "username": user.username,
-        "email": user.email
-    }, status=status.HTTP_200_OK)
+    """Retrieve current user profile details."""
+    try:
+        user = request.user
+        spotify_user = None
+        try:
+            spotify_user = SpotifyUser.objects.get(user=user)
+        except SpotifyUser.DoesNotExist:
+            pass
+
+        data = {
+            "username": user.username,
+            "email": user.email,
+            "top_artist": spotify_user.display_name if spotify_user else None,
+            "wraps": []  # Add your wraps data here if you have any
+        }
+        return Response(data, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(f"Error in get_profile: {str(e)}")  # Debug print
+        return Response(
+            {"error": "Failed to fetch profile data"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -451,27 +404,37 @@ def delete_account(request):
     user.delete()
     return Response({"message": "Account deleted successfully"}, status=status.HTTP_200_OK)
 
+
 def refresh_spotify_token(refresh_token):
     """Function to refresh the Spotify access token when it expires."""
-
-    # Use the global refresh token if no user-specific token is provided
-    refresh_token = refresh_token or settings.SPOTIFY_REFRESH_TOKEN
-
     if not refresh_token:
         raise ValueError("No refresh token provided")
 
+    print(f"DEBUG: Attempting to refresh token")
+
     token_url = 'https://accounts.spotify.com/api/token'
-    response = requests.post(
-        token_url,
-        data={
-            'grant_type': 'refresh_token',
-            'refresh_token': refresh_token,
-            'client_id': SPOTIFY_CLIENT_ID,
-            'client_secret': SPOTIFY_CLIENT_SECRET,
-        }
-    )
-    response_data = response.json()
-    return response_data.get('access_token')
+    try:
+        response = requests.post(
+            token_url,
+            data={
+                'grant_type': 'refresh_token',
+                'refresh_token': refresh_token,
+                'client_id': SPOTIFY_CLIENT_ID,
+                'client_secret': SPOTIFY_CLIENT_SECRET,
+            }
+        )
+
+        print(f"DEBUG: Token refresh response status: {response.status_code}")
+
+        if response.status_code != 200:
+            print(f"DEBUG: Token refresh failed: {response.text}")
+            raise ValueError(f"Failed to refresh token: {response.text}")
+
+        response_data = response.json()
+        return response_data.get('access_token')
+    except Exception as e:
+        print(f"DEBUG: Error refreshing token: {str(e)}")
+        raise
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
