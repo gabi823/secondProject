@@ -126,17 +126,15 @@
         display: flex;
         flex-direction: column; /* Stack items vertically */
         align-items: center; /* Center align all items */
-        justify-content: flex-start; /* Start alignment for scrolling */
         padding: 15px; /* Add padding for spacing */
         width: 100%; /* Ensure it spans the full screen */
         box-sizing: border-box; /* Include padding in width */
-        overflow-y: auto; /* Enable vertical scrolling */
         gap: 20px; /* Add consistent spacing between sections */
-        overflow-y: auto;
     }
 
     /* Center the title and back link */
     .settings-left-section {
+        position: sticky;
         display: flex;
         flex-direction: column;
         align-items: center; /* Center align title and back link */
@@ -144,6 +142,8 @@
         gap: 10px;
         width: 100%; /* Ensure full-width alignment */
         margin: 0; /* Remove external margins */
+        top: 0;
+        z-index: 10;
     }
 
     .settings-title {
@@ -152,7 +152,8 @@
         font-weight: 700;
         margin: 0; /* Remove extra margins */
         text-align: center; /* Explicitly center the title */
-        padding-top: 20px;
+        padding-top: 150px;
+
     }
 
     .settings-back-link {
@@ -176,6 +177,8 @@
         width: 100%; /* Full width for container */
         max-width: 360px; /* Limit max width */
         gap: 20px; /* Spacing between sections */
+        padding-top: 100px;
+        overflow-y: auto;
     }
 
     /* Individual settings sections */

@@ -1,6 +1,6 @@
 /* Background images container */
 .images-container {
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     right: 0;
@@ -64,19 +64,6 @@
     object-fit: cover;
     flex-shrink: 0;
 }
-
-@keyframes scrollRight {
-  to {
-    left: max(calc(200px * 8), 100%);
-  }
-}
-
-
-
-
-
-
-
 .login-container {
     display: flex;
     align-items: center;
@@ -84,7 +71,6 @@
     position: relative;
     z-index: -9;
     min-height: 100vh;
-
 }
 
 .login-box {
@@ -172,28 +158,46 @@
 
 @media (max-width: 393px) {
     .login-container {
-       padding: 20px; /* Add padding around the container */
+        padding: 20px; /* Add padding around the container */
         box-sizing: border-box;
-        margin-top: 55px;
+        margin-top: 20px;
     }
+
     .login-box {
         width: 100%; /* Make the login box responsive */
         max-width: 320px; /* Limit its size to prevent stretching */
         padding: 40px 20px;
     }
+
     .login-input {
         width: 80%;
         margin-left: 10%;
     }
+
     .login-label {
         width: 80%;
         margin-left: 10%;
     }
-    .images-container {
-        transform: translateY(-40px);
-    }
+
     .login-button {
         font-size: 15px;
-         width: 40%;
+        width: 40%;
+    }
+
+    .images-row-top {
+        margin-top: -500px;
+
+    }
+
+    .images-row-bottom {
+        margin-bottom: 300px;
+    }
+
+    .carousel-image {
+    width: 161px;
+    height: 161px;
+    object-fit: cover;
+    flex-shrink: 0;
     }
 }
+
