@@ -541,6 +541,7 @@ def fetch_playlist_images(request):
 
     # Use the global refresh token to get an access token
     access_token = refresh_spotify_token(SPOTIFY_REFRESH_TOKEN)
+    print(access_token)
 
     if not access_token:
         return JsonResponse({'error': 'Failed to obtain Spotify access token'}, status=400)
