@@ -73,7 +73,7 @@
     position: relative;
     min-height: 100vh;
     margin-top: -75px;
-    z-index: 1;
+    z-index: 10;
 }
 
 .create-account-form {
