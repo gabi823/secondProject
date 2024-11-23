@@ -41,17 +41,13 @@ urlpatterns = [
     path('api/logout/', views.logout_view, name='logout_view'),
     path('delete_account/', views.delete_account, name='delete_account'),
 
-    # Frontend routes - serve React app
-    path('createaccount/', ReactAppView.as_view(), name='create_account'),
-    path('login/', ReactAppView.as_view(), name='login'),
-    path('about/', ReactAppView.as_view(), name='about'),
-
     # User Authentication API
     path('api/register/', views.register, name='register'),
     path('api/login/', views.user_login, name='login'),
 
     # Checking Spotify Link
     path('api/check-spotify-link/', views.check_spotify_link, name='check_spotify_link'),
+
     # Spotify Data and Wraps
     path('unlink_spotify/', views.unlink_spotify, name='unlink_spotify'),
     path('spotify/data', views.spotify_data, name='spotify_data'),
@@ -63,6 +59,12 @@ urlpatterns = [
     # API Routes
     path('api/react/', views.ReactView.as_view(), name='react_view'),
     path('api/artists/', views.ArtistViewSet.as_view({'get': 'list'}), name='artist_view'),
+
+    # Frontend routes - serve React app
+    path('createaccount/', ReactAppView.as_view(), name='create_account'),
+    path('login/', ReactAppView.as_view(), name='login'),
+    path('about/', ReactAppView.as_view(), name='about'),
+
     re_path(r'^.*$', ReactAppView.as_view(), name='react_catch_all'),
 
 ]

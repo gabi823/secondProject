@@ -34,7 +34,7 @@ const Profile = () => {
             // Check Spotify link
             try {
                 console.log('Checking Spotify link...');
-                const response = await fetch('/api/check-spotify-link/', {
+                const response = await fetch('http://localhost:8000/api/check-spotify-link/', {
                     headers: {
                         'Authorization': `Token ${token}`,
                         'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ const Profile = () => {
         };
 
         initializeProfile();
-    }, [navigate]);
+    }, [navigate, hasSpotifyLinked]);
 
 
 const checkSpotifyLink = async () => {
