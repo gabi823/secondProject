@@ -74,8 +74,20 @@ def register(request):
 def check_spotify_link(request):
     """Check if user has linked their Spotify account."""
     try:
+        print("=== DEBUG CHECK_SPOTIFY_LINK ===")
         print(f"DEBUG: Checking Spotify link for user: {request.user.username}")
+        print(f"User ID: {request.user.id}")
+        print(f"User authenticated: {request.user.is_authenticated}")
+
+        # Query all SpotifyUsers to debug
+        all_spotify_users = SpotifyUser.objects.all()
+        print("All SpotifyUsers in database:")
+        for su in all_spotify_users:
+            print(f"- Django User: {su.user.username}, Spotify Display Name: {su.display_name}")
+
         spotify_user = SpotifyUser.objects.get(user=request.user)
+        print(f"Found SpotifyUser: {spotify_user.display_name}")
+        print("=== END DEBUG ===")
 
         # Add token refresh check here
         if spotify_user.token_expiry and spotify_user.token_expiry <= timezone.now():
@@ -102,6 +114,9 @@ def check_spotify_link(request):
         })
     except SpotifyUser.DoesNotExist:
         print(f"DEBUG: No Spotify user found for: {request.user.username}")
+        print("All SpotifyUsers in database:")
+        for su in SpotifyUser.objects.all():
+            print(f"- Django User: {su.user.username}, Spotify Display Name: {su.display_name}")
         return Response({
             "hasSpotifyLinked": False,
             "message": "No Spotify account linked"
@@ -115,15 +130,21 @@ def check_spotify_link(request):
 
 
 def spotify_callback(request):
+    print("DEBUG: spotify_callback triggered")
     """Handles Spotify OAuth callback and account linking."""
     code = request.GET.get('code')
     state = request.GET.get('state')  # This will be the user ID
+    print(f"DEBUG: Received code: {code}")
+    print(f"DEBUG: Received state (user ID): {state}")
+    print(f"DEBUG: Request GET params: {request.GET}")
 
     if not code:
         return redirect('http://localhost:3000/profile?error=spotify_auth_failed')
 
     try:
         user = User.objects.get(id=state)
+        print(f"DEBUG: Found user: {user.username}")
+
         # Exchange code for tokens
         token_response = requests.post(
             'https://accounts.spotify.com/api/token',
@@ -136,37 +157,57 @@ def spotify_callback(request):
             }
         )
 
-        if token_response.status_code != 200:
-            return redirect('http://localhost:3000/profile?error=token_exchange_failed')
-
+        print(f"DEBUG: Token response status: {token_response.status_code}")
         token_data = token_response.json()
+        print(f"DEBUG: Token response: {token_data}")
+
+        if token_response.status_code != 200:
+            print(f"DEBUG: Token exchange failed: {token_response.text}")
+            return redirect('http://localhost:3000/profile?error=token_exchange_failed')
 
         # Get Spotify user data
         headers = {'Authorization': f"Bearer {token_data['access_token']}"}
         user_response = requests.get('https://api.spotify.com/v1/me', headers=headers)
+        print(f"DEBUG: User response status: {user_response.status_code}")
+        spotify_data = user_response.json()
+        print(f"DEBUG: User response: {user_response.json()}")
 
         if user_response.status_code != 200:
+            print(f"DEBUG: Spotify profile fetch failed: {user_response.text}")
             return redirect('http://localhost:3000/profile?error=spotify_profile_failed')
 
-        spotify_data = user_response.json()
+        try:
+            # Create or update SpotifyUser
+            print(f"DEBUG: Attempting to create/update SpotifyUser for {user.username}")
+            spotify_user, created = SpotifyUser.objects.update_or_create(
+                user=user,
+                defaults={
+                    'spotify_id': spotify_data.get('id', ''),
+                    'display_name': spotify_data.get('display_name', ''),
+                    'access_token': token_data['access_token'],
+                    'refresh_token': token_data.get('refresh_token', ''),
+                    'token_expiry': timezone.now() + timedelta(seconds=3600)
+                }
+            )
+            print(f"DEBUG: SpotifyUser created: {created}, Spotify ID: {spotify_user.spotify_id}")
+        except Exception as e:
+            print(f"DEBUG: Error creating SpotifyUser: {str(e)}")
+            return redirect(f'http://localhost:3000/profile?error=spotify_user_creation_failed:{str(e)}')
 
-        # Create or update SpotifyUser
-        SpotifyUser.objects.update_or_create(
-            user=user,
-            defaults={
-                'spotify_id': spotify_data['id'],
-                'display_name': spotify_data['display_name'],
-                'access_token': token_data['access_token'],
-                'refresh_token': token_data['refresh_token'],
-                'token_expiry': timezone.now() + timedelta(seconds=3600)
-            }
-        )
+        # Fetch and store Spotify data
+        try:
+            fetch_all_spotify_data(spotify_user)
+            print("DEBUG: Successfully fetched all Spotify data")
+        except Exception as e:
+            print(f"DEBUG: Error fetching Spotify data: {str(e)}")
 
         return redirect('http://localhost:3000/profile?linked=success')
 
     except User.DoesNotExist:
+        print(f"DEBUG: User with ID {state} not found")
         return redirect('http://localhost:3000/profile?error=user_not_found')
     except Exception as e:
+        print(f"DEBUG: Unexpected error in spotify_callback: {str(e)}")
         return redirect(f'http://localhost:3000/profile?error={str(e)}')
 
 @api_view(['GET'])
@@ -226,6 +267,7 @@ def unlink_spotify(request):
 def spotify_login(request):
     """Initiates Spotify account linking process."""
     try:
+        print(f"DEBUG: User ID being set as state: {request.user.id}")
         scopes = 'user-library-read user-top-read user-read-private user-read-email'
         auth_params = {
             'client_id': settings.SPOTIFY_CLIENT_ID,

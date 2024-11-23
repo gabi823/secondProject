@@ -65,7 +65,7 @@ const CreateAccount = () => {
         }
     }
 
-    useEffect(() => {
+     useEffect(() => {
         const fetchImages = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/fetch-playlist-images/');
@@ -77,7 +77,6 @@ const CreateAccount = () => {
 
                 setTopRowImages([...topImages, ...topImages]);  // Duplicate for continuous scrolling
                 setBottomRowImages([...bottomImages, ...bottomImages]);
-                setImagesLoaded(true);
             } catch (error) {
                 console.error('Error fetching images:', error);
             }
