@@ -242,10 +242,28 @@ def user_login(request):
 
     if user is not None:
         auth_login(request, user)
-        print(f"DEBUG: Logged in user: {user.username}")
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key}, status=status.HTTP_200_OK)
-    return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
+        # Create or get the auth token
+        token, _ = Token.objects.get_or_create(user=user)
+
+        # Explicitly set session data
+        request.session['user_id'] = user.id
+        request.session['username'] = user.username
+        request.session.save()  # Force save the session
+
+        # Return both token and user data
+        return Response({
+            "token": token.key,
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email
+            },
+            "isLoggedIn": True
+        }, status=status.HTTP_200_OK)
+    return Response({
+        "error": "Invalid credentials",
+        "isLoggedIn": False
+    }, status=status.HTTP_400_BAD_REQUEST)
 
 
 # --- Spotify Integration View ---
@@ -290,6 +308,24 @@ def spotify_login(request):
             "error": str(e),
             "status": "error"
         }, status=400)
+
+
+@api_view(['GET'])
+def check_login(request):
+    """Check if user is logged in and return relevant data."""
+    if request.user.is_authenticated:
+        # Get or create token for authenticated user
+        token, _ = Token.objects.get_or_create(user=request.user)
+        return JsonResponse({
+            "isLoggedIn": True,
+            "user": {
+                "id": request.user.id,
+                "username": request.user.username,
+                "email": request.user.email
+            },
+            "token": token.key
+        }, status=200)
+    return JsonResponse({"isLoggedIn": False}, status=200)
 
 
 # --- Artist and React Data Views ---
