@@ -120,25 +120,6 @@ const checkSpotifyLink = async () => {
     }
 };
 
-//    useEffect(() => {
-//        const fetchData = async () => {
-//            try {
-//                const token = localStorage.getItem('token');
-//                const response = await axios.get('/api/profile/', {
-//                    headers: { Authorization: `Token ${token}` }
-//                });
-//                const { username, email, top_artist, wraps } = response.data;
-//                setUsername(username);
-//                setEmail(email);
-//                setTaste(top_artist || 'No artist data');
-//                setWrappedData(wraps || []);
-//            } catch (error) {
-//                setError('Failed to load profile data.');
-//            }
-//        };
-//
-//        fetchData();
-//    }, []);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -165,7 +146,7 @@ const checkSpotifyLink = async () => {
     };
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div>   </div>;
     }
 
     return (

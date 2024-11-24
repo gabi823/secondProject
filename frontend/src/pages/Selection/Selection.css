@@ -6,7 +6,6 @@
     align-items: center;
     padding: 20px;
     box-sizing: border-box;
-    margin-left: 50px;
 }
 
 
@@ -15,7 +14,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 300px;
+    gap: 200px;
     max-width: 1200px;
     margin: auto;
     width: 100%;
@@ -136,15 +135,25 @@
     position: relative;
     margin-top: -500px;
     z-index: -1;
-    animation: scrollDown 40s linear infinite;
+    animation: scrollDownSelection 40s linear infinite;
 }
 /* Carousel animation for columns */
-@keyframes scrollDown {
+@keyframes scrollDownSelection {
     0% {
         transform: translateY(0);
+        opacity: 0; /* Fade in starts from invisible */
+    }
+    3% {
+        transform: translateY(0);
+        opacity: 1; /* Fully visible */
+    }
+    97% {
+        transform: translateY(-300%);
+        opacity: 1; /* Fully visible while scrolling */
     }
     100% {
-        transform: translateY(-50%);
+        transform: translateY(-300%);
+        opacity: 0; /* Fade out at the end */
     }
 }
 
@@ -153,6 +162,8 @@
     height: 230px;
     object-fit: cover;
 }
+
+
 @media (max-width: 393px) {
     .main-container {
         flex-direction: column; /* Stack elements vertically */

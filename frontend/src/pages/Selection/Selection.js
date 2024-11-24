@@ -17,7 +17,7 @@ const Selection = () => {
                 const fetchedImages = response.data.images;
 
                 // Divide images into a single column and duplicate for smooth scrolling if needed
-                const column1Images = fetchedImages.slice(0, 10);
+                const column1Images = fetchedImages.slice(0, 20);
 
                 const newImages = {
                     column1: [...column1Images, ...column1Images], // Duplicate for smooth scrolling
