@@ -65,6 +65,8 @@ urlpatterns = [
     path('login/', ReactAppView.as_view(), name='login'),
     path('about/', ReactAppView.as_view(), name='about'),
 
+    path('api/check-login/', views.check_login, name='check_login'),
+
     re_path(r'^.*$', ReactAppView.as_view(), name='react_catch_all'),
 
 ]

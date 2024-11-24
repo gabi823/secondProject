@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from '../../components/NavBar/NavBar.js';
+import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 import './Welcome.css';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-
 
 const Welcome = () => {
     const [images, setImages] = useState({
@@ -12,34 +12,67 @@ const Welcome = () => {
         column3: []
     });
     const [imagesLoaded, setImagesLoaded] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
+        const checkAuthStatus = async () => {
+            try {
+                // Get the token from localStorage
+                const token = localStorage.getItem('token');
+
+                // If there's no token, user is not logged in
+                if (!token) {
+                    setIsLoggedIn(false);
+                    return;
+                }
+
+                // Check login status with the token
+                const response = await axios.get('http://localhost:8000/api/check-login/', {
+                    headers: {
+                        'Authorization': `Token ${token}`
+                    },
+                    withCredentials: true
+                });
+
+                if (response.data.isLoggedIn) {
+                    setIsLoggedIn(true);
+                    setUser(response.data.user);
+                } else {
+                    setIsLoggedIn(false);
+                    localStorage.removeItem('token');
+                }
+            } catch (error) {
+                console.error("Error checking login status:", error);
+                setIsLoggedIn(false);
+                localStorage.removeItem('token');
+            }
+        };
+
         const fetchImages = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/fetch-playlist-images/');
                 const fetchedImages = response.data.images;
 
-                // Divide images into three columns for the grid and duplicate them for smooth scrolling
                 const column1Images = fetchedImages.slice(0, 30);
                 const column2Images = fetchedImages.slice(30, 70);
                 const column3Images = fetchedImages.slice(70, 100);
 
-                const newImages = {
+                setImages({
                     column1: [...column1Images, ...column1Images],
                     column2: [...column2Images, ...column2Images],
                     column3: [...column3Images, ...column3Images],
-                };
-
-                setImages(newImages);
-                setImagesLoaded(true); // Only set to true after images are fetched and set
+                });
+                setImagesLoaded(true);
             } catch (error) {
                 console.error("Error fetching images:", error);
             }
         };
 
+        checkAuthStatus();
         fetchImages();
     }, []);
-
 
     // Framer Motion animation variants
     const fadeUpVariants = {
@@ -47,15 +80,15 @@ const Welcome = () => {
         visible: { opacity: 1, y: 0, transition: { duration: 1 } },
     };
 
-
     return (
         <>
-            <NavBar />
+        {isLoggedIn ? <NavBarLoggedIn /> : <NavBar />}
             {imagesLoaded ? (
-                <motion.div className="welcome-container"
-                initial="hidden"
-                animate="visible"
-                variants={fadeUpVariants}
+                <motion.div
+                    className="welcome-container"
+                    initial="hidden"
+                    animate="visible"
+                    variants={fadeUpVariants}
                 >
                     <div className="image-column-left image-column1">
                         {images.column1.map((src, index) => (
@@ -74,7 +107,7 @@ const Welcome = () => {
                     </div>
                 </motion.div>
             ) : (
-                <div className="loading-message">    </div> // Display a loading message until images are loaded
+                <div className="loading-message">   </div>
             )}
         </>
     );

@@ -192,6 +192,10 @@ SESSION_COOKIE_AGE = 86400  # 24 hours in seconds
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Session won't expire when the browser is closed
 SESSION_SAVE_EVERY_REQUEST = True  # Save the session to ensure updates
 
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+
 # Redirect after successful login or logout
 LOGIN_REDIRECT_URL = '/spotify/data/'  # Redirect users to the Spotify data page after login
 LOGOUT_REDIRECT_URL = '/spotify/login/'  # Redirect users to the login page after logout
