@@ -1,15 +1,74 @@
-import React from 'react';
+import React, {useState} from 'react';
 import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 import { Link } from "react-router-dom";
 import { motion } from 'framer-motion';
 import "./Settings.css";
 
 const Settings = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+
     // Animation Variants
     const fadeUpVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
     };
+
+    const handleLogout = async () => {
+        setIsLoading(true);
+        try {
+            const token = localStorage.getItem('token');
+            await fetch('http://localhost:8000/api/logout/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Token ${token}`
+                }
+            });
+
+            // Clear local storage and redirect
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+        } catch (error) {
+            console.error('Logout failed:', error);
+            setIsLoading(false);
+        }
+    };
+
+    const handleDeleteAccount = async () => {
+    if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        setIsDeleting(true);
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('No authentication token found');
+            }
+
+            const response = await fetch('http://localhost:8000/api/delete_account/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                mode: 'cors'  // Add this line explicitly
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Delete failed:', errorText);
+                throw new Error(`Delete failed: ${response.status}`);
+            }
+
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Error deleting account:', error);
+            alert('Failed to delete account. Please try again.');
+        } finally {
+            setIsDeleting(false);
+        }
+    }
+};
 
     return (
         <>
@@ -41,7 +100,7 @@ const Settings = () => {
                         </div>
                     </motion.div>
 
-                    {/* Email and Password Sections */}
+
                     <motion.div className="password-section" variants={fadeUpVariants}>
                         <div className="settings-section">
                             <h2>Password</h2>
@@ -55,12 +114,12 @@ const Settings = () => {
                         <div className="settings-section">
                             <h2>Log Out</h2>
                             <p>Log out of your account in this browser.</p>
-                            <button className="logout-button">LOG OUT</button>
+                            <button className="logout-button" onClick={handleLogout} disable={isLoading}>{isLoading ? 'LOGGING OUT...' : 'LOG OUT'}</button>
                         </div>
                         <div className="settings-section">
                             <h2>Delete Account</h2>
                             <p>Delete your nostalgify account and its data.</p>
-                            <button className="delete-button">DELETE ACCOUNT</button>
+                            <button className="delete-button" onClick={handleDeleteAccount} disabled={isDeleting}>{isDeleting ? 'DELETING...' : 'DELETE ACCOUNT'}</button>
                         </div>
                     </motion.div>
                 </motion.div>

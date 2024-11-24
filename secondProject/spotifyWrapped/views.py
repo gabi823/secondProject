@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
 from django.http import HttpResponse
 import os
@@ -130,20 +131,14 @@ def check_spotify_link(request):
 
 
 def spotify_callback(request):
-    print("DEBUG: spotify_callback triggered")
-    """Handles Spotify OAuth callback and account linking."""
     code = request.GET.get('code')
-    state = request.GET.get('state')  # This will be the user ID
-    print(f"DEBUG: Received code: {code}")
-    print(f"DEBUG: Received state (user ID): {state}")
-    print(f"DEBUG: Request GET params: {request.GET}")
+    state = request.GET.get('state')
 
     if not code:
         return redirect('http://localhost:3000/profile?error=spotify_auth_failed')
 
     try:
         user = User.objects.get(id=state)
-        print(f"DEBUG: Found user: {user.username}")
 
         # Exchange code for tokens
         token_response = requests.post(
@@ -157,57 +152,68 @@ def spotify_callback(request):
             }
         )
 
-        print(f"DEBUG: Token response status: {token_response.status_code}")
-        token_data = token_response.json()
-        print(f"DEBUG: Token response: {token_data}")
-
         if token_response.status_code != 200:
-            print(f"DEBUG: Token exchange failed: {token_response.text}")
             return redirect('http://localhost:3000/profile?error=token_exchange_failed')
 
-        # Get Spotify user data
+        token_data = token_response.json()
+
+        # Get Spotify user data with detailed debugging
         headers = {'Authorization': f"Bearer {token_data['access_token']}"}
         user_response = requests.get('https://api.spotify.com/v1/me', headers=headers)
-        print(f"DEBUG: User response status: {user_response.status_code}")
-        spotify_data = user_response.json()
-        print(f"DEBUG: User response: {user_response.json()}")
 
         if user_response.status_code != 200:
-            print(f"DEBUG: Spotify profile fetch failed: {user_response.text}")
             return redirect('http://localhost:3000/profile?error=spotify_profile_failed')
 
-        try:
-            # Create or update SpotifyUser
-            print(f"DEBUG: Attempting to create/update SpotifyUser for {user.username}")
-            spotify_user, created = SpotifyUser.objects.update_or_create(
-                user=user,
-                defaults={
-                    'spotify_id': spotify_data.get('id', ''),
-                    'display_name': spotify_data.get('display_name', ''),
-                    'access_token': token_data['access_token'],
-                    'refresh_token': token_data.get('refresh_token', ''),
-                    'token_expiry': timezone.now() + timedelta(seconds=3600)
-                }
-            )
-            print(f"DEBUG: SpotifyUser created: {created}, Spotify ID: {spotify_user.spotify_id}")
-        except Exception as e:
-            print(f"DEBUG: Error creating SpotifyUser: {str(e)}")
-            return redirect(f'http://localhost:3000/profile?error=spotify_user_creation_failed:{str(e)}')
+        spotify_data = user_response.json()
 
-        # Fetch and store Spotify data
-        try:
-            fetch_all_spotify_data(spotify_user)
-            print("DEBUG: Successfully fetched all Spotify data")
-        except Exception as e:
-            print(f"DEBUG: Error fetching Spotify data: {str(e)}")
+        # Debug print the entire response
+        print("\n=== SPOTIFY API RESPONSE DATA ===")
+        print("Full response:", spotify_data)
+        print("\nKey fields:")
+        print(f"id: {spotify_data.get('id')}")
+        print(f"uri: {spotify_data.get('uri')}")
+        print(f"display_name: {spotify_data.get('display_name')}")
+        print(f"external_urls: {spotify_data.get('external_urls')}")
+
+        # Extract username from Spotify URI
+        spotify_uri = spotify_data.get('uri', '')
+        spotify_username = spotify_uri.split(':')[-1] if spotify_uri else None
+
+        # Create or update SpotifyUser with explicit field mapping
+        spotify_user, created = SpotifyUser.objects.update_or_create(
+            user=user,
+            defaults={
+                'spotify_id': spotify_data.get('id'),  # This should be the actual Spotify ID
+                'spotify_username': spotify_username,  # This should be the username
+                'display_name': spotify_data.get('display_name'),
+                'external_url': spotify_data.get('external_urls', {}).get('spotify'),
+                'profile_image_url': (
+                    spotify_data.get('images', [{}])[0].get('url')
+                    if spotify_data.get('images')
+                    else None
+                ),
+                'access_token': token_data['access_token'],
+                'refresh_token': token_data.get('refresh_token'),
+                'token_expiry': timezone.now() + timedelta(seconds=3600)
+            }
+        )
+
+        # Debug print the saved data
+        print("\n=== SAVED SPOTIFY USER DATA ===")
+        print(f"Spotify ID saved: {spotify_user.spotify_id}")
+        print(f"Spotify Username saved: {spotify_user.spotify_username}")
+        print(f"Display Name saved: {spotify_user.display_name}")
+        print("================================\n")
+
+        # Fetch additional Spotify data
+        fetch_all_spotify_data(spotify_user)
 
         return redirect('http://localhost:3000/profile?linked=success')
 
     except User.DoesNotExist:
-        print(f"DEBUG: User with ID {state} not found")
         return redirect('http://localhost:3000/profile?error=user_not_found')
     except Exception as e:
-        print(f"DEBUG: Unexpected error in spotify_callback: {str(e)}")
+        print(f"Error in spotify_callback: {str(e)}")
         return redirect(f'http://localhost:3000/profile?error={str(e)}')
 
 @api_view(['GET'])
@@ -475,13 +481,20 @@ def get_profile(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
+@csrf_exempt
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def delete_account(request):
-    user = request.user
-    user.delete()
-    return Response({"message": "Account deleted successfully"}, status=status.HTTP_200_OK)
-
+    try:
+        user = request.user
+        user.delete()
+        return Response({"message": "Account deleted successfully"}, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(f"Error deleting account: {str(e)}")  # Debug print
+        return Response(
+            {"error": "Failed to delete account"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 def refresh_spotify_token(refresh_token):
     """Function to refresh the Spotify access token when it expires."""
