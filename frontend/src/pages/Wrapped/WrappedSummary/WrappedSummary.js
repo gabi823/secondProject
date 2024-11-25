@@ -67,109 +67,79 @@ const WrappedSummary = ({ userData = {} }) => {
         </Link>
       </div>
 
-        <motion.div
-            className="background"
-            initial="hidden"
-            animate="visible"
-            variants={fadeUpVariants}
-        >
-            <div className="image-row-top">
-                {[...Array(2)].map((_, i) => (
-                    <React.Fragment key={i}>
-                        {Array.from({length: 9}).map((_, index) => (
-                            <img
-                                key={index + i * 9}
-                                src="https://via.placeholder.com/161x161"
-                                alt={`Placeholder image ${index + 1 + i * 9}`}
-                                className="carousel-image"
-                            />
-                        ))}
-                    </React.Fragment>
+      <motion.div
+        className="background"
+        initial="hidden"
+        animate="visible"
+        variants={fadeUpVariants}
+      >
+        <div className="image-row-top">
+          {[...Array(2)].map((_, i) => (
+            <React.Fragment key={i}>
+              {Array.from({length: 9}).map((_, index) => (
+                <img
+                  key={index + i * 9}
+                  src="https://via.placeholder.com/161x161"
+                  alt={`Placeholder image ${index + 1 + i * 9}`}
+                  className="carousel-image"
+                />
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+        <div className="image-row-middle">
+          {[...Array(2)].map((_, i) => (
+            <React.Fragment key={i}>
+              {Array.from({length: 9})
+                .reverse()
+                .map((_, index) => (
+                  <img
+                    key={index + i * 9}
+                    src="https://via.placeholder.com/161x161"
+                    alt={`Placeholder image ${index + 1 + i * 9}`}
+                    className="carousel-image"
+                  />
                 ))}
-            </div>
-            <div className="image-row-middle">
-                {[...Array(2)].map((_, i) => (
-                    <React.Fragment key={i}>
-                        {Array.from({length: 9})
-                            .reverse() // Reverse the images
-                            .map((_, index) => (
-                                <img
-                                    key={index + i * 9}
-                                    src="https://via.placeholder.com/161x161"
-                                    alt={`Placeholder image ${index + 1 + i * 9}`}
-                                    className="carousel-image"
-                                />
-                            ))}
-                    </React.Fragment>
-                ))}
-            </div>
-            <div className="image-row-bottom">
-                {[...Array(2)].map((_, i) => (
-                    <React.Fragment key={i}>
-                        {Array.from({length: 9}).map((_, index) => (
-                            <img
-                                key={index + i * 9}
-                                src="https://via.placeholder.com/161x161"
-                                alt={`Placeholder image ${index + 1 + i * 9}`}
-                                className="carousel-image"
-                            />
-                        ))}
-                    </React.Fragment>
-                ))}
-            </div>
-        </motion.div>
+            </React.Fragment>
+          ))}
+        </div>
+        <div className="image-row-bottom">
+          {[...Array(2)].map((_, i) => (
+            <React.Fragment key={i}>
+              {Array.from({length: 9}).map((_, index) => (
+                <img
+                  key={index + i * 9}
+                  src="https://via.placeholder.com/161x161"
+                  alt={`Placeholder image ${index + 1 + i * 9}`}
+                  className="carousel-image"
+                />
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+      </motion.div>
 
+      <motion.div
+        className="container"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         <motion.div
-            style={{
-                width: '100vw',
-                height: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                gap: '0px'
-            }}
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-        >
-            <motion.div
-                style={{
-                    width: 600,
-                    height: 670,
-                    position: 'absolute',
-                    background: 'white',
-                    borderRadius: 20,
-                    border: '1px solid black',
-                    marginBottom: '0px'
-                }}
-                variants={itemVariants}
+          className="card"
+          variants={itemVariants}
           initial="hidden"
           animate="visible"
         >
           {/* Title and subtitle */}
           <motion.div
-            style={{
-              width: 589,
-              height: 87,
-              left: 27,
-              top: 30,
-              position: 'absolute',
-            }}
+            className="title-section"
             variants={itemVariants}
             initial="hidden"
             animate="visible"
           >
             <motion.h1
-              style={{
-                color: 'black',
-                fontSize: 35,
-                fontFamily: 'Manrope',
-                fontWeight: 700,
-                wordWrap: 'break-word',
-                lineHeight: 1.2,
-                margin: 0,
-              }}
+              className="title"
               variants={itemVariants}
               initial="hidden"
               animate="visible"
@@ -177,14 +147,7 @@ const WrappedSummary = ({ userData = {} }) => {
               {title}
             </motion.h1>
             <motion.h2
-              style={{
-                color: 'black',
-                fontSize: 15,
-                fontFamily: 'Manrope',
-                fontWeight: 500,
-                wordWrap: 'break-word',
-                margin: 0,
-              }}
+              className="subtitle"
               variants={itemVariants}
               initial="hidden"
               animate="visible"
@@ -195,26 +158,13 @@ const WrappedSummary = ({ userData = {} }) => {
 
           {/* Top Artist Section */}
           <motion.div
-            style={{
-              width: 231,
-              height: 232,
-              left: 380,
-              top: 100,
-              position: 'absolute',
-            }}
+            className="top-artist-image-container"
             variants={itemVariants}
             initial="hidden"
             animate="visible"
           >
             <motion.div
-              style={{
-                width: 190,
-                height: 190,
-                background: '#D9D9D9',
-                borderRadius: '50%',
-                overflow: 'hidden',
-                  marginBottom: "5px"
-              }}
+              className="top-artist-circle"
               variants={itemVariants}
               initial="hidden"
               animate="visible"
@@ -222,31 +172,17 @@ const WrappedSummary = ({ userData = {} }) => {
               <img
                 src={topArtist.image}
                 alt={topArtist.name}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </motion.div>
           </motion.div>
           <motion.div
-            style={{
-              width: 172,
-              height: 28,
-              left: 410,
-              top: 300,
-              position: 'absolute',
-            }}
+            className="top-artist-rank"
             variants={itemVariants}
             initial="hidden"
             animate="visible"
           >
             <motion.h3
-              style={{
-                color: 'black',
-                fontSize: 17,
-                fontFamily: 'Manrope',
-                fontWeight: 800,
-                display: 'inline',
-                  marginTop: "5px"
-              }}
+              className="top-artist-rank-number"
               variants={itemVariants}
               initial="hidden"
               animate="visible"
@@ -254,12 +190,7 @@ const WrappedSummary = ({ userData = {} }) => {
               #{topArtist.rank}
             </motion.h3>
             <motion.span
-              style={{
-                color: 'black',
-                fontSize: 17,
-                fontFamily: 'Manrope',
-                fontWeight: 500,
-              }}
+              className="top-artist-name"
               variants={itemVariants}
               initial="hidden"
               animate="visible"
@@ -269,59 +200,29 @@ const WrappedSummary = ({ userData = {} }) => {
             </motion.span>
           </motion.div>
 
-          {/* Sections for Top Songs, Genres, and Albums */}
+          {/* Top Songs Section Title */}
           <motion.div
-            style={{
-              width: 190,
-              height: 29,
-              left: 26,
-              top: 120,
-              position: 'absolute',
-              color: 'black',
-              fontSize: 20,
-              fontFamily: 'Manrope',
-              fontWeight: 700,
-              textDecoration: 'underline',
-                marginBottom: '3px'
-            }}
+            className="top-songs-section-title"
             variants={itemVariants}
             initial="hidden"
             animate="visible"
           >
             Top Songs
           </motion.div>
+
+          {/* Top Genres Section Title */}
           <motion.div
-            style={{
-              width: 190,
-              height: 29,
-              left: 27,
-              top: 360,
-              position: 'absolute',
-              color: 'black',
-              fontSize: 20,
-              fontFamily: 'Manrope',
-              fontWeight: 700,
-              textDecoration: 'underline',
-            }}
+            className="top-genres-section-title"
             variants={itemVariants}
             initial="hidden"
             animate="visible"
           >
             Top Genres
           </motion.div>
+
+          {/* Top Albums Section Title */}
           <motion.div
-            style={{
-              width: 190,
-              height: 29,
-              left: 200,
-              top: 360,
-              position: 'absolute',
-              color: 'black',
-              fontSize: 20,
-              fontFamily: 'Manrope',
-              fontWeight: 700,
-              textDecoration: 'underline',
-            }}
+            className="top-albums-section-title"
             variants={itemVariants}
             initial="hidden"
             animate="visible"
@@ -329,40 +230,19 @@ const WrappedSummary = ({ userData = {} }) => {
             Top Albums
           </motion.div>
 
-          {/* Dynamic lists for each category with inline formatting */}
+          {/* Dynamic lists for each category */}
           <motion.div
-            style={{
-              width: 359,
-              height: 199,
-              left: 26,
-              top: 170,
-              position: 'absolute',
-            }}
+            className="top-songs-section"
             variants={itemVariants}
             initial="hidden"
             animate="visible"
           >
             {topSongs.map((song, index) => (
-              <div key={index} style={{ marginBottom: '10px' }}>
-                <span
-                  style={{
-                    color: 'black',
-                    fontSize: 15,
-                    fontFamily: 'Manrope',
-                    fontWeight: 700,
-                  }}
-                >
+              <div key={index} className="top-songs-item">
+                <span className="top-songs-title">
                   {index + 1}. {song.title}
                 </span>
-                <span
-                  style={{
-                    color: 'black',
-                    fontSize: 12,
-                    fontFamily: 'Manrope',
-                    fontWeight: 500,
-                    marginLeft: '8px',
-                  }}
-                >
+                <span className="top-songs-artist">
                   {song.artist}
                 </span>
               </div>
@@ -370,13 +250,7 @@ const WrappedSummary = ({ userData = {} }) => {
           </motion.div>
 
           <motion.div
-            style={{
-              width: 170,
-              height: 164,
-              left: 26,
-              top: 400,
-              position: 'absolute',
-            }}
+            className="top-genres-section"
             variants={itemVariants}
             initial="hidden"
             animate="visible"
@@ -384,79 +258,38 @@ const WrappedSummary = ({ userData = {} }) => {
             {topGenres.map((genre, index) => (
               <div
                 key={index}
-                style={{
-                  color: 'black',
-                  fontSize: 15,
-                  fontFamily: 'Manrope',
-                  fontWeight: 700,
-                  marginBottom: '8px',
-                }}
+                className="top-genres-item"
               >
                 {index + 1}. {genre}
               </div>
             ))}
           </motion.div>
 
-                <motion.div
-                    style={{
-                        width: 411,
-                        height: 205,
-                        left: 200,
-                        top: 400,
-                        position: 'absolute',
-                    }}
-                    variants={itemVariants}
-                    initial="hidden"
-                    animate="visible"
-                >
-                    {topAlbums.map((album, index) => (
-                        <div key={index} style={{marginBottom: '10px'}}>
-                <span
-                    style={{
-                        color: 'black',
-                        fontSize: 15,
-                        fontFamily: 'Manrope',
-                        fontWeight: 700,
-                    }}
-                >
+          <motion.div
+            className="top-albums-section"
+            variants={itemVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {topAlbums.map((album, index) => (
+              <div key={index} className="top-albums-item">
+                <span className="top-albums-title">
                   {index + 1}. {album.title}
                 </span>
-                            <span
-                                style={{
-                                    color: 'black',
-                                    fontSize: 12,
-                                    fontFamily: 'Manrope',
-                                    fontWeight: 500,
-                                    marginLeft: '8px',
-                                }}
-                            >
+                <span className="top-albums-artist">
                   {album.artist}
                 </span>
-                        </div>
-                    ))}
+              </div>
+            ))}
 
-                    <button
-                        style={{
-                            marginTop: '30px',
-                            marginLeft: '20px',
-                            padding: '10px 20px',
-                            fontSize: '14px',
-                            fontFamily: 'Manrope',
-                            fontWeight: '600',
-                            color: 'black',
-                            border: 'solid',
-                            borderWidth: 1,
-                            borderRadius: '10px',
-                            cursor: 'pointer',
-                            backgroundColor: 'white',
-                        }}
-                    >
-                        Save to Profile
-                    </button>
-
-                </motion.div>
-            </motion.div>
+            <button
+              className="save-button"
+            >
+              Save to Profile
+            </button>
+          </motion.div>
         </motion.div>
+      </motion.div>
     </>
   );
 };
