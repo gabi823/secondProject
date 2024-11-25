@@ -1,4 +1,4 @@
-/* Header styling */
+/* Existing styles */
 .header {
   position: absolute;
   top: 20px;
@@ -27,7 +27,6 @@
   color: black;
 }
 
-/* Background styling */
 .background {
   position: absolute;
   top: 0;
@@ -35,21 +34,20 @@
   right: 0;
   bottom: 0;
   z-index: -1;
-  overflow: hidden; /* Hide overflowing images */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
-    gap: 20px;
+  gap: 20px;
 }
 
-/* Image row styling */
 .image-row-top,
 .image-row-middle,
 .image-row-bottom {
   display: flex;
   align-items: center;
   gap: 28px;
-  flex-wrap: nowrap; /* Prevent wrapping */
+  flex-wrap: nowrap;
 }
 
 .image-row-top {
@@ -64,7 +62,6 @@
   animation: scrollLeft 35s linear infinite;
 }
 
-/* Keyframes */
 @keyframes scrollLeft {
   0% {
     transform: translateX(0);
@@ -83,9 +80,374 @@
   }
 }
 
-/* Carousel image styling */
 .carousel-image {
   width: 161px;
   height: 161px;
   flex-shrink: 0;
+}
+
+/* New styles extracted from inline styles */
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.card {
+  width: 600px;
+  height: 670px;
+  position: absolute;
+  background: white;
+  border-radius: 20px;
+  border: 1px solid black;
+  margin-bottom: 0px;
+}
+
+.title-section {
+  width: 589px;
+  height: 87px;
+  left: 27px;
+  top: 30px;
+  position: absolute;
+}
+
+.title {
+  color: black;
+  font-size: 35px;
+  font-family: 'Manrope';
+  font-weight: 700;
+  word-wrap: break-word;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.subtitle {
+  color: black;
+  font-size: 15px;
+  font-family: 'Manrope';
+  font-weight: 500;
+  word-wrap: break-word;
+  margin: 0;
+}
+
+.top-artist-image-container {
+  width: 231px;
+  height: 232px;
+  left: 380px;
+  top: 100px;
+  position: absolute;
+}
+
+.top-artist-circle {
+  width: 190px;
+  height: 190px;
+  background: #D9D9D9;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.top-artist-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.top-artist-rank {
+  width: 172px;
+  height: 28px;
+  left: 410px;
+  top: 300px;
+  position: absolute;
+}
+
+.top-artist-rank-number {
+  color: black;
+  font-size: 17px;
+  font-family: 'Manrope';
+  font-weight: 800;
+  display: inline;
+  margin-top: 5px;
+}
+
+.top-artist-name {
+  color: black;
+  font-size: 17px;
+  font-family: 'Manrope';
+  font-weight: 500;
+}
+
+.section-title {
+  color: black;
+  font-size: 20px;
+  font-family: 'Manrope';
+  font-weight: 700;
+  text-decoration: underline;
+  margin-bottom: 3px;
+}
+
+.top-songs-section {
+  width: 359px;
+  height: 199px;
+  left: 26px;
+  top: 170px;
+  position: absolute;
+}
+
+.top-songs-item {
+  margin-bottom: 10px;
+}
+
+.top-songs-title {
+  color: black;
+  font-size: 15px;
+  font-family: 'Manrope';
+  font-weight: 700;
+}
+
+.top-songs-artist {
+  color: black;
+  font-size: 12px;
+  font-family: 'Manrope';
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.top-genres-section {
+  width: 170px;
+  height: 164px;
+  left: 26px;
+  top: 400px;
+  position: absolute;
+}
+
+.top-genres-item {
+  color: black;
+  font-size: 15px;
+  font-family: 'Manrope';
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.top-albums-section {
+  width: 411px;
+  height: 205px;
+  left: 200px;
+  top: 400px;
+  position: absolute;
+}
+
+.top-albums-item {
+  margin-bottom: 10px;
+}
+
+.top-albums-title {
+  color: black;
+  font-size: 15px;
+  font-family: 'Manrope';
+  font-weight: 700;
+}
+
+.top-albums-artist {
+  color: black;
+  font-size: 12px;
+  font-family: 'Manrope';
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.save-button {
+  margin-top: 30px;
+  margin-left: 20px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-family: 'Manrope';
+  font-weight: 600;
+  color: black;
+  border: solid 1px;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.top-songs-section-title {
+  width: 190px;
+  height: 29px;
+  left: 26px;
+  top: 120px;
+  position: absolute;
+  color: black;
+  font-size: 20px;
+  font-family: 'Manrope';
+  font-weight: 700;
+  text-decoration: underline;
+  margin-bottom: 3px;
+}
+
+.top-genres-section-title {
+  width: 190px;
+  height: 29px;
+  left: 27px;
+  top: 360px;
+  position: absolute;
+  color: black;
+  font-size: 20px;
+  font-family: 'Manrope';
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.top-albums-section-title {
+  width: 190px;
+  height: 29px;
+  left: 200px;
+  top: 360px;
+  position: absolute;
+  color: black;
+  font-size: 20px;
+  font-family: 'Manrope';
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* Existing styles */
+/* ... */
+
+/* Media Query for 393px screen width */
+@media (max-width: 393px) {
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    max-width: 393px;
+  }
+
+  .container {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    position: absolute; /* Maintained to establish a positioning context for the card */
+    overflow-x: hidden;
+  }
+
+  .card {
+    width: 355px;
+    position: relative; /* Changed from absolute to relative for 393px view */
+    z-index: 1; /* Maintained to keep the card in front of the background images */
+    border-radius: 20px;
+    align-items: center;
+    margin-top: -50px;
+    justify-content: center;
+    justify-items: center;
+  }
+
+  .title-section {
+    width: 100%;
+    height: auto;
+    left: 0;
+    top: 20px;
+    align-items: center;
+    justify-items: center;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    align-items: center;
+  }
+
+  .top-artist-image-container {
+    width: 100%;
+    height: auto;
+    left: 78px;
+    top: 265px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .top-artist-circle {
+    width: 130px;
+    height: 130px;
+  }
+  .top-artist-rank {
+    width: 100%;
+    height: auto;
+    left: 75px;
+    text-align: center;
+    top: 405px;
+  }
+
+  .top-songs-section-title {
+    width: 100%;
+    height: auto;
+    left: -90px;
+    top: 75px;
+    text-align: center;
+
+  }
+  .top-songs-section {
+    width: 100%;
+    height: auto;
+    left: 0;
+    top: 110px;
+    padding: 0 15px;
+  }
+  .top-genres-section-title {
+    width: 100%;
+    height: auto;
+    left: -90px;
+    top: 265px;
+    text-align: center;
+  }
+
+  .top-genres-section {
+    width: 100%;
+    height: auto;
+    left: 20px;
+    top: 295px;
+    padding: 0 20px;
+  }
+
+  .top-albums-section-title {
+    width: 100%;
+    height: auto;
+    left: -90px;
+    top: 450px;
+    text-align: center;
+  }
+  .top-albums-section {
+    width: 100%;
+    height: auto;
+    left: -5px;
+    top: 480px;
+    padding: 0 20px;
+  }
+
+  .save-button {
+    margin-top: 35px;
+    margin-left: 100px;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+  }
+  * {
+    max-width: 100%;
+  }
+
+  .carousel-image {
+    width: 141px;
+    height: 141px;
+    flex-shrink: 0;
+    margin-bottom: 25px;
+
+}
 }
