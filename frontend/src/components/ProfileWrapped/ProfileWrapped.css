@@ -42,3 +42,25 @@
     color: black;
     margin-left: 30px;
 }
+
+@media (max-width: 393px) {
+    .wrapped-image {
+        width: 90px; /* Further reduce image size */
+        height: 90px;
+    }
+
+    .wrapped-title {
+        font-size: 18px; /* Smaller font size for titles */
+        margin-left: -10px; /* Reduce left margin */
+    }
+
+    .wrapped-date {
+        font-size: 14px; /* Smaller font for dates */
+    }
+
+    .delete {
+        font-size: 20px; /* Adjust size for delete button */
+        margin-left: 5px; /* Reduce spacing */
+    }
+
+}
