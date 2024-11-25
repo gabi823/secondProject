@@ -614,3 +614,80 @@ def fetch_playlist_images(request):
 
     return JsonResponse({'images': images[:100]})  # Limit the number of images as needed
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_top_songs(request):
+    """
+    Fetch the user's top songs from Spotify
+    """
+    try:
+        # Debug prints
+        print(f"User requesting top songs: {request.user.username}")
+
+        user = request.user
+        spotify_user = getattr(user, 'spotify_profile', None)
+
+        print(f"Spotify user found: {spotify_user is not None}")
+
+        if not spotify_user:
+            return Response(
+                {"error": "No Spotify profile found. Please link your Spotify account."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if not spotify_user.access_token:
+            return Response(
+                {"error": "No Spotify access token found. Please reconnect your Spotify account."},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        # Check if token needs refresh
+        if spotify_user.token_expiry and spotify_user.token_expiry <= timezone.now():
+            try:
+                new_token = refresh_spotify_token(spotify_user.refresh_token)
+                spotify_user.access_token = new_token
+                spotify_user.token_expiry = timezone.now() + timedelta(hours=1)
+                spotify_user.save()
+                print("Token refreshed successfully")
+            except Exception as e:
+                print(f"Token refresh failed: {str(e)}")
+                return Response(
+                    {"error": "Failed to refresh Spotify token. Please reconnect your account."},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+
+        spotify_access_token = spotify_user.access_token
+
+        url = "https://api.spotify.com/v1/me/top/tracks"
+        headers = {"Authorization": f"Bearer {spotify_access_token}"}
+        params = {"limit": 12, "time_range": "medium_term"}
+
+        print(f"Making request to Spotify API: {url}")
+        response = requests.get(url, headers=headers, params=params)
+        print(f"Spotify API response status: {response.status_code}")
+
+        if response.status_code == 200:
+            data = response.json()
+            top_songs = [
+                {
+                    "song_title": item['name'],
+                    "artist_name": ", ".join([artist['name'] for artist in item['artists']]),
+                    "cover_image": item['album']['images'][0]['url'] if item['album']['images'] else None,
+                }
+                for item in data.get('items', [])
+            ]
+            return Response({"top_songs": top_songs}, status=200)
+        else:
+            print(f"Spotify API error response: {response.text}")
+            return Response(
+                {"error": f"Spotify API error: {response.text}"},
+                status=response.status_code
+            )
+
+    except Exception as e:
+        print(f"Unexpected error in get_user_top_songs: {str(e)}")
+        return Response(
+            {"error": "An unexpected error occurred"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
