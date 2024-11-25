@@ -1,24 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import axios from "axios";
 import './WrappedSongs.css'; // Import the CSS file
 
-const songs = [
-  { rank: 1, title: "APT.", artist: "ROSE, Bruno Mars", image: "path/to/apt.jpg" },
-  { rank: 2, title: "I Love You, I’m Sorry", artist: "Gracie Abrams", image: "path/to/iloveyou.jpg" },
-  { rank: 3, title: "A Bar Song (Tipsy)", artist: "Shaboozey", image: "path/to/barsong.jpg" },
-  { rank: 4, title: "Pink Pony Club", artist: "Chappell Roan", image: "path/to/pinkpony.jpg" },
-  { rank: 5, title: "Guess", artist: "Charli XCX, Billie Eilish", image: "path/to/guess.jpg" },
-  { rank: 6, title: "Diet Pepsi", artist: "Addison Rae", image: "path/to/dietpepsi.jpg" },
-  { rank: 7, title: "A Bar Song (Tipsy)", artist: "Shaboozey", image: "path/to/barsong.jpg" },
-  { rank: 8, title: "Pink Pony Club", artist: "Chappell Roan", image: "path/to/pinkpony.jpg" },
-  { rank: 9, title: "Guess", artist: "Charli XCX, Billie Eilish", image: "path/to/guess.jpg" },
-  { rank: 10, title: "Diet Pepsi", artist: "Addison Rae", image: "path/to/dietpepsi.jpg" },
-  { rank: 11, title: "A Bar Song (Tipsy)", artist: "Shaboozey", image: "path/to/barsong.jpg" },
-  { rank: 12, title: "Pink Pony Club", artist: "Chappell Roan", image: "path/to/pinkpony.jpg" }
-];
-
 const WrappedSongs = () => {
+  const [songs, setSongs] = useState([]); // State to store songs
+  const [loading, setLoading] = useState(true); // State to manage loading
+  const [error, setError] = useState(null); // State to handle errors
+
+  useEffect(() => {
+    const fetchTopSongs = async () => {
+       try {
+        const token = localStorage.getItem('token');
+
+        console.log("Token found:", token);
+
+        const response = await axios.get("http://127.0.0.1:8000/api/top-songs/", {
+          headers: {
+            'Authorization': `Token ${token}`,
+            'Content-Type': 'application/json',
+          }
+        });
+
+        setSongs(response.data.top_songs);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching top songs:", err);
+        setError(err.response?.data?.error || "Failed to load songs. Please make sure you're logged in.");
+        setLoading(false);
+      }
+    };
+
+    fetchTopSongs();
+  }, []);
+
+  if (loading) return <div>Loading your top songs...</div>; // Show loading state
+  if (error) return <div>{error}</div>; // Show error state
+
   return (
     <div className="container">
       <div className="header">
@@ -36,7 +55,7 @@ const WrappedSongs = () => {
       <div className="song-grid">
         {songs.map((song, index) => (
           <motion.div
-            key={song.rank}
+            key={index}
             className="song-item"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -45,14 +64,14 @@ const WrappedSongs = () => {
             whileTap={{ scale: 0.95 }}
           >
             <img
-              src="https://via.placeholder.com/161x161"
+              src={song.cover_image || "https://via.placeholder.com/161x161"}
               alt={`${song.title} cover`}
               className="song-cover"
             />
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <div className="rank">{song.rank}</div>
-              <div className="song-title">{song.title}</div>
-              <div className="artist">{song.artist}</div>
+              <div className="rank">{index + 1}</div>
+              <div className="song-title">{song.song_title}</div>
+              <div className="artist">{song.artist_name}</div>
             </div>
           </motion.div>
         ))}
