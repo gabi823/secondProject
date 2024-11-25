@@ -28,7 +28,12 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+    "jsx-a11y/img-redundant-alt": "off",
+    "no-unused-vars": "warn",
+    "jsx-a11y/heading-has-content": "warn"
+  }
   },
   "browserslist": {
     "production": [
