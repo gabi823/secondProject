@@ -39,9 +39,9 @@ SPOTIFY_REFRESH_TOKEN = secrets['SPOTIFY_REFRESH_TOKEN']
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://mango-pebble-023cf660f.5.azurestaticapps.net']
 
 
 # Application definition
@@ -80,7 +80,7 @@ REST_FRAMEWORK = {
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "https://mango-pebble-023cf660f.5.azurestaticapps.net",
 ]
 
 CORS_ALLOW_METHODS = [
