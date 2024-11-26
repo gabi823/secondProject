@@ -1,16 +1,15 @@
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useTrail, useSpring, animated } from "@react-spring/web";
 import { motion } from "framer-motion";
 import "./WrappedArtists.css";
+import "./WrappedArtists-mobile.css";
 
 const WrappedArtists = () => {
-    const radius = 280; // Increased radius for more space between central and surrounding artists
-    const centerPosition = {
-        x: 300, // X coordinate for the center
-        y: 300, // Y coordinate for the center
-    };
-    const artists = [
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 393);
+    const [visibleArtists, setVisibleArtists] = useState([]);
+
+    const artists = useMemo(() => [
         { name: "SZA", img: "https://via.placeholder.com/100x100" },
         { name: "Lana Del Rey", img: "https://via.placeholder.com/100x100" },
         { name: "Ed Sheeran", img: "https://via.placeholder.com/100x100" },
@@ -20,29 +19,171 @@ const WrappedArtists = () => {
         { name: "Billie Eilish", img: "https://via.placeholder.com/100x100" },
         { name: "Bruno Mars", img: "https://via.placeholder.com/100x100" },
         { name: "The Weeknd", img: "https://via.placeholder.com/100x100" },
-    ];
+    ], []);
 
-    // Animations for surrounding artists
+    const topArtists = useMemo(() => artists.slice(0, 10), [artists]); // Limit to top 10
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 393);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Mobile-specific sequential reveal effect
+    useEffect(() => {
+        if (isMobile) {
+            const revealArtists = () => {
+                artists.forEach((artist, index) => {
+                    setTimeout(() => {
+                        setVisibleArtists(prev => [...prev, artist]);
+                    }, 200 * (index + 1));
+                });
+            };
+
+            revealArtists();
+        }
+    }, [isMobile, artists]);
+
+    // Desktop animations
     const trail = useTrail(artists.length, {
         opacity: 1,
         transform: "scale(1)",
         from: { opacity: 0, transform: "scale(0)" },
         config: { tension: 200, friction: 20, duration: 500 },
-        delay: 150, // Start animation after a short delay
+        delay: 150,
         immediate: true,
     });
 
-    // Animation for the central artist
     const centralArtistAnimation = useSpring({
         opacity: 1,
         transform: "scale(1)",
         from: { opacity: 0, transform: "scale(0)" },
-        delay: 1000 + artists.length * 100, // Start after surrounding artists are revealed
+        delay: 1000 + artists.length * 100,
     });
+
+    // Mobile Render
+    if (isMobile) {
+        return (
+            <div className="artist-scroll-container">
+                <div className="header-container">
+                    <h1 className="header-title">Your Top Artists</h1>
+                    <Link
+                        to="/profile"
+                        className="exit-link"
+                        onClick={() => console.log("Exit clicked")}
+                    >
+                        &times;
+                    </Link>
+                </div>
+                <div className="artists-scroll-content">
+                    <div className="artist-wrapper">
+                        {/* Limit to top 10 artists */}
+                        {visibleArtists.slice(0, 10).map((artist, index) => (
+                            <motion.div
+                                key={artist.name}
+                                whileHover={{scale: 1.05}}
+                                className="surrounding-artist"
+                                initial={{opacity: 0, y: 50}}
+                                whileInView={{
+                                    opacity: 1,
+                                    y: 0,
+                                    transition: {
+                                        duration: 0.5,
+                                        delay: index * 0.2
+                                    }
+                                }}
+                                viewport={{once: true}}
+                            >
+                                <img src={artist.img} alt={artist.name} className="surrounding-artist-img"/>
+                                <div className="artist-rank">
+                                    {index + 2}. {artist.name}
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                </div>
+
+                <div className="artist-wrapper">
+                    {/* Main artist in the center */}
+                    <motion.div
+                        whileHover={{scale: 1.05, transition: {duration: 0.01}}}
+                        className="central-artist"
+                    >
+                        <img
+                            src="https://via.placeholder.com/200x200"
+                            alt="Taylor Swift"
+                            className="central-artist-img"
+                        />
+                        <div
+                            style={{
+                                fontSize: "20px",
+                                fontWeight: "700",
+                                marginTop: "10px",
+                                fontFamily: "Manrope",
+                            }}
+                        >
+                            1. Taylor Swift
+                        </div>
+                    </motion.div>
+
+                    {/* Surrounding artists in a grid */}
+                    {visibleArtists.map((artist, index) => (
+                        <motion.div
+                            key={artist.name}
+                            whileHover={{scale: 1.05, transition: {duration: 0.01}}}
+                            className="surrounding-artist"
+                            initial={{opacity: 0, scale: 0}}
+                            animate={{opacity: 1, scale: 1}}
+                            transition={{
+                                delay: 0.2 * (index + 1),
+                                type: "spring",
+                                stiffness: 300
+                            }}
+                        >
+                            <img
+                                src={artist.img}
+                                alt={artist.name}
+                                className="surrounding-artist-img"
+                            />
+                            <div
+                                style={{
+                                    fontSize: "20px",
+                                    fontWeight: "700",
+                                    marginTop: "3px",
+                                    fontFamily: "Manrope",
+                                }}
+                            >
+                                {10 - index}. {artist.name}
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+
+                {/* Fixed Next Page Link */}
+                <Link
+                    to="/top-albums"
+                    className="next-page-link"
+                    onClick={() => console.log("Next page clicked")}
+                >
+                    &#8594;
+                </Link>
+            </div>
+        );
+    }
+
+    // Desktop Render
+    const radius = 280;
+    const centerPosition = {
+        x: 300,
+        y: 300,
+    };
 
     return (
         <div className="artists-container">
-            {/* Title and Exit Button */}
             <div className="header-container">
                 <h1 className="header-title">Your Top Artists</h1>
                 <Link
@@ -54,20 +195,19 @@ const WrappedArtists = () => {
                 </Link>
             </div>
 
-            {/* Container for all artists */}
-            <div className="artist-wrapper">
+            <motion.div className="artist-wrapper">
                 {/* Surrounding artists in a circle */}
                 {trail.map((style, index) => {
-                    const angle = (index / artists.length) * 2 * Math.PI; // Calculate the angle for each artist
-                    const x = centerPosition.x + radius * Math.cos(angle) - 75; // X position
-                    const y = centerPosition.y + radius * Math.sin(angle) - 75; // Y position
+                    const angle = (index / artists.length) * 2 * Math.PI;
+                    const x = centerPosition.x + radius * Math.cos(angle) - 75;
+                    const y = centerPosition.y + radius * Math.sin(angle) - 75;
 
                     return (
                         <motion.div
+                            key={index}
                             whileHover={{scale: 1.05, transition: {duration: 0.01}}}
                         >
                             <animated.div
-                                key={index}
                                 className="surrounding-artist"
                                 style={{
                                     ...style,
@@ -107,7 +247,7 @@ const WrappedArtists = () => {
                             position: "absolute",
                             top: `${centerPosition.y}px`,
                             left: `${centerPosition.x}px`,
-                            transform: `translate(-50%, -50%)`, // Center the central artist
+                            transform: `translate(-50%, -50%)`,
                         }}
                     >
                         <img
@@ -127,7 +267,7 @@ const WrappedArtists = () => {
                         </div>
                     </animated.div>
                 </motion.div>
-            </div>
+            </motion.div>
 
             {/* Next Page Link */}
             <Link
