@@ -63,6 +63,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this line
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -130,6 +131,8 @@ STATICFILES_DIRS = [
 STATIC_URL = '/static/'
 
 STATIC_ROOT =  BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 WSGI_APPLICATION = 'secondProject.wsgi.application'
 
@@ -141,6 +144,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+} if not os.getenv('AZURE_POSTGRESQL_CONNECTIONSTRING') else {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "your-db-name",  # You'll set this in Azure
+        "USER": "your-db-user",  # You'll set this in Azure
+        "PASSWORD": "your-db-password",  # You'll set this in Azure
+        "HOST": "your-db-host",  # You'll set this in Azure
+        "PORT": "5432",
     }
 }
 
