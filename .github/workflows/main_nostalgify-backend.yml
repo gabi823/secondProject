@@ -78,5 +78,4 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'nostalgify-backend'
-          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9CF8471E4EA1465ABA7FBBC66C410009 }}
