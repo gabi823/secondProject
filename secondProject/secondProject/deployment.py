@@ -14,8 +14,8 @@ def get_secret(setting, secrets=secrets):
     return os.environ.get(setting) or secrets.get(setting)
 
 
-ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']]
-CSRF_TRUSTED_ORIGINS = ['https://'+os.environ['WEBSITE_HOSTNAME']]
+ALLOWED_HOSTS = ['https://mango-pebble-023cf660f.5.azurestaticapps.net']
+CSRF_TRUSTED_ORIGINS = ['https://mango-pebble-023cf660f.5.azurestaticapps.net']
 DEBUG = False
 SECRET_KEY = get_secret("SECRET_KEY")
 
@@ -57,7 +57,8 @@ DATABASES = {
     }
 }
 
-STATIC_ROOT = BASE_DIR/'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
 
 # Spotify configuration
 SPOTIFY_CLIENT_ID = get_secret("SPOTIFY_CLIENT_ID")
