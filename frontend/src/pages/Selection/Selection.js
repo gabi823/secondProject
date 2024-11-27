@@ -13,7 +13,7 @@ const Selection = () => {
     useEffect(() => {
         const fetchImages = async () => {
             try {
-                const response = await axios.get('https://nostalgify-backend.azurewebsites.net/api/fetch-playlist-images/');
+                const response = await axios.get('http://localhost:8000/api/fetch-playlist-images/');
                 const fetchedImages = response.data.images;
 
                 // Divide images into a single column and duplicate for smooth scrolling if needed
