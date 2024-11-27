@@ -18,7 +18,7 @@ const Settings = () => {
         setIsLoading(true);
         try {
             const token = localStorage.getItem('token');
-            await fetch('https://nostalgify-backend.azurewebsites.net/api/logout/', {
+            await fetch('http://localhost:8000/api/logout/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Token ${token}`
@@ -43,7 +43,7 @@ const Settings = () => {
                 throw new Error('No authentication token found');
             }
 
-            const response = await fetch('https://nostalgify-backend.azurewebsites.net/api/delete_account/', {
+            const response = await fetch('http://localhost:8000/api/delete_account/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Token ${token}`,

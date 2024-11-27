@@ -29,7 +29,7 @@ const Welcome = () => {
                 }
 
                 // Check login status with the token
-                const response = await axios.get('https://nostalgify-backend.azurewebsites.net/api/check-login/', {
+                const response = await axios.get('http://localhost:8000/api/check-login/', {
                     headers: {
                         'Authorization': `Token ${token}`
                     },
@@ -52,7 +52,7 @@ const Welcome = () => {
 
         const fetchImages = async () => {
             try {
-                const response = await axios.get('https://nostalgify-backend.azurewebsites.net/api/fetch-playlist-images/');
+                const response = await axios.get('http://localhost:8000/api/fetch-playlist-images/');
                 const fetchedImages = response.data.images;
 
                 const column1Images = fetchedImages.slice(0, 30);
