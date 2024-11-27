@@ -81,9 +81,11 @@
     }
 
     .exit-link {
-        position: fixed;
-        align-self: flex-end;
-        top:20px;
-        z-index:10;
+        position: absolute;
+        z-index:15;
+        padding-right: -25px;
+        margin-top: -20px;
+        left: -20px;
+
     }
 }
