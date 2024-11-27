@@ -3,7 +3,7 @@
 import os
 import sys
 
-
+#rando comment
 def main():
     """Run administrative tasks."""
     settings_module = 'secondProject.deployment' if 'WEBSITE_HOSTNAME' in os.environ else 'secondProject.settings'
