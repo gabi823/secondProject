@@ -32,7 +32,7 @@ else:
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    '.azurewebsites.net'  # Allow Azure domains
+    'nostalgify-backend.azurewebsites.net'  # Allow Azure domains
 ]
 
 # Application definition
