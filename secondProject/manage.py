@@ -2,12 +2,9 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
-#rando comment
 def main():
     """Run administrative tasks."""
-    settings_module = 'secondProject.deployment' if 'WEBSITE_HOSTNAME' in os.environ else 'secondProject.settings'
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'secondProject.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
