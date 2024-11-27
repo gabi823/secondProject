@@ -69,7 +69,7 @@ if DEBUG:
 else:
     CORS_ALLOWED_ORIGINS = [
         # Add your production frontend URL here
-        "https://your-frontend-app.azurewebsites.net",
+        "https://purple-coast-0ed51cc0f.5.azurestaticapps.net",
     ]
 
 CORS_ALLOW_CREDENTIALS = True

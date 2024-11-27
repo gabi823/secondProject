@@ -10,7 +10,6 @@ import SpotifyLinkModal from '../../components/SpotifyLinkModal/SpotifyLinkModal
 const Profile = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [taste, setTaste] = useState('');
     const [wrappedData, setWrappedData] = useState([]);
     const navigate = useNavigate();
     const [error, setError] = useState('');
@@ -71,7 +70,6 @@ const Profile = () => {
                 const { username, email, top_artist, wraps } = response.data;
                 setUsername(username);
                 setEmail(email);
-                setTaste(top_artist || 'No artist data');
                 setWrappedData(wraps || []);
             } catch (error) {
                 console.error('Error fetching profile:', error);
