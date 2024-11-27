@@ -14,7 +14,7 @@ def get_secret(setting, secrets=secrets):
     return os.environ.get(setting) or secrets.get(setting)
 
 
-ALLOWED_HOSTS = ['mango-pebble-023cf660f.5.azurestaticapps.net', 'nostalgify-backend-e4dtevhpf4ecdjbw.eastus2-01.azurewebsites.net']
+ALLOWED_HOSTS = ['mango-pebble-023cf660f.5.azurestaticapps.net', 'nostalgify-backend.azurewebsites.net']
 CSRF_TRUSTED_ORIGINS = ['https://mango-pebble-023cf660f.5.azurestaticapps.net']
 DEBUG = False
 SECRET_KEY = get_secret("SECRET_KEY")
