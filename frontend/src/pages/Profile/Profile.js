@@ -33,7 +33,7 @@ const Profile = () => {
             // Check Spotify link
             try {
                 console.log('Checking Spotify link...');
-                const response = await fetch('http://localhost:8000/api/check-spotify-link/', {
+                const response = await fetch('https://secondproject-8lyv.onrender.com/api/check-spotify-link/', {
                     headers: {
                         'Authorization': `Token ${token}`,
                         'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const Profile = () => {
             // Fetch profile data
             try {
                 console.log('Fetching profile data...');
-                const response = await axios.get('http://localhost:8000/api/profile/', {
+                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/profile/', {
                     headers: {
                         Authorization: `Token ${token}`,
                         'Content-Type': 'application/json'
@@ -88,7 +88,7 @@ const checkSpotifyLink = async () => {
         const token = localStorage.getItem('token');
         console.log('Using token:', token); // Debug log
 
-        const response = await fetch('http://localhost:8000/api/spotify/login/', {
+        const response = await fetch('https://secondproject-8lyv.onrender.com/api/spotify/login/', {
             method: 'GET',
             headers: {
                 'Authorization': `Token ${token}`,
