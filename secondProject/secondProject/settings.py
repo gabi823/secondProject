@@ -32,7 +32,7 @@ else:
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    'nostalgify-backend.azurewebsites.net'  # Allow Azure domains
+    'secondproject-8lyv.onrender.com'  # Allow Azure domains
 ]
 
 # Application definition
@@ -69,7 +69,7 @@ if DEBUG:
 else:
     CORS_ALLOWED_ORIGINS = [
         # Add your production frontend URL here
-        "https://purple-coast-0ed51cc0f.5.azurestaticapps.net",
+        "https://second-project-alpha-rust.vercel.app",
     ]
 
 CORS_ALLOW_CREDENTIALS = True
