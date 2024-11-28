@@ -4,6 +4,7 @@ Django settings for secondProject project.
 from pathlib import Path
 import os
 import json
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -116,23 +117,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'secondProject.wsgi.application'
 
 # Database
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DBNAME'),
-            'HOST': os.getenv('DBHOST'),
-            'USER': os.getenv('DBUSER'),
-            'PASSWORD': os.getenv('DBPASS'),
-        }
-    }
+DATABASES = {
+    'default': dj_database_url.config(default='sqlite:///db.sqlite3'),
+}
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
