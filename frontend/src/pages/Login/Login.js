@@ -18,7 +18,7 @@ const Login = () => {
     useEffect(() => {
         const fetchImages = async () => {
             try {
-                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/fetch-playlist-images/');
+                const response = await axios.get('http://localhost:8000/api/fetch-playlist-images/');
                 const images = response.data.images;
 
                 const topImages = images.slice(0, 10);
@@ -40,7 +40,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://secondproject-8lyv.onrender.com/api/login/', { username, password });
+            const response = await axios.post('http://localhost:8000/api/login/', { username, password });
             const token = response.data.token;
 
             localStorage.setItem('token', token);

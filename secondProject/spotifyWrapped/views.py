@@ -603,6 +603,7 @@ def get_profile(request):
         }
         return Response(data, status=status.HTTP_200_OK)
     except Exception as e:
+        print("Exception:" + str(e))
         return Response(
             {"error": "Failed to fetch profile data"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
