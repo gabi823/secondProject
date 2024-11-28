@@ -10,7 +10,6 @@ import SpotifyLinkModal from '../../components/SpotifyLinkModal/SpotifyLinkModal
 const Profile = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [taste, setTaste] = useState('');
     const [wrappedData, setWrappedData] = useState([]);
     const [profileImage, setProfileImage] = useState('');
     const navigate = useNavigate();

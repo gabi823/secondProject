@@ -80,84 +80,60 @@ const WrappedArtists = () => {
                 </div>
                 <div className="artists-scroll-content">
                     <div className="artist-wrapper">
-                        {/* Limit to top 10 artists */}
-                        {visibleArtists.slice(0, 10).map((artist, index) => (
-                            <motion.div
-                                key={artist.name}
-                                whileHover={{scale: 1.05}}
-                                className="surrounding-artist"
-                                initial={{opacity: 0, y: 50}}
-                                whileInView={{
-                                    opacity: 1,
-                                    y: 0,
-                                    transition: {
-                                        duration: 0.5,
-                                        delay: index * 0.2
-                                    }
-                                }}
-                                viewport={{once: true}}
-                            >
-                                <img src={artist.img} alt={artist.name} className="surrounding-artist-img"/>
-                                <div className="artist-rank">
-                                    {index + 2}. {artist.name}
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-
-                </div>
-
-                <div className="artist-wrapper">
-                    {/* Main artist in the center */}
-                    <motion.div
-                        whileHover={{scale: 1.05, transition: {duration: 0.01}}}
-                        className="central-artist"
-                    >
-                        <img
-                            src="https://via.placeholder.com/200x200"
-                            alt="Taylor Swift"
-                            className="central-artist-img"
-                        />
-                        <div
-                            style={{
-                                fontSize: "20px",
-                                fontWeight: "700",
-                                marginTop: "10px",
-                                fontFamily: "Manrope",
-                            }}
-                        >
-                            1. Taylor Swift
-                        </div>
-                    </motion.div>
-
-                    {/* Surrounding artists in a grid */}
-                    {visibleArtists.map((artist, index) => (
+                        {/* Main artist in the center - appears first */}
                         <motion.div
-                            key={artist.name}
+                            key="central-artist"
                             whileHover={{scale: 1.05, transition: {duration: 0.01}}}
-                            className="surrounding-artist"
+                            className="central-artist"
                             initial={{opacity: 0, scale: 0}}
                             animate={{opacity: 1, scale: 1}}
                             transition={{
-                                delay: 0.2 * (index + 1),
+                                delay: 0,
                                 type: "spring",
                                 stiffness: 300
                             }}
                         >
                             <img
-                                src={artist.img}
-                                alt={artist.name}
-                                className="surrounding-artist-img"
+                                src="https://via.placeholder.com/200x200"
+                                alt="Taylor Swift"
+                            className="central-artist-img"
                             />
                             <div
                                 style={{
                                     fontSize: "20px",
                                     fontWeight: "700",
-                                    marginTop: "3px",
+                                    marginTop: "10px",
                                     fontFamily: "Manrope",
                                 }}
                             >
-                                {10 - index}. {artist.name}
+                                1. Taylor Swift
+                            </div>
+                        </motion.div>
+                    </div>
+
+                </div>
+
+                <div className="artist-wrapper">
+                    {/* Surrounding artists in a grid */}
+                    {visibleArtists.slice(0, 9).map((artist, index) => (
+                        <motion.div
+                            key={artist.name}
+                            whileHover={{scale: 1.05}}
+                            className="surrounding-artist"
+                            initial={{opacity: 0, y: 50}}
+                            whileInView={{
+                                opacity: 1,
+                                y: 0,
+                                transition: {
+                                    duration: 0.5,
+                                    delay: (index + 1) * 0.2
+                                }
+                            }}
+                            viewport={{once: true}}
+                        >
+                            <img src={artist.img} alt={artist.name} className="surrounding-artist-img"/>
+                            <div className="artist-rank">
+                                {index + 2}. {artist.name}
                             </div>
                         </motion.div>
                     ))}
