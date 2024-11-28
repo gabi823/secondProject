@@ -42,36 +42,36 @@
     margin-left: 10px;
 }
 
-/* Genre specific positioning */
-.pop { top: 30vh; left: 10vw; }
-.indie-pop { top: 40vh; left: 27vw; }
-.rap { top: 50vh; left: 46vw; }
-.k-pop { top: 60vh; left: 64vw; }
-.rock { top: 70vh; left: 83vw; }
+/* Position based layout - first 5 going down */
+.position-1 { top: 30vh; left: 10vw; }
+.position-2 { top: 40vh; left: 27vw; }
+.position-3 { top: 50vh; left: 46vw; }
+.position-4 { top: 60vh; left: 64vw; }
+.position-5 { top: 70vh; left: 83vw; }
 
-.rnb { top: 55vh; left: 83vw; }
-.jazz { top: 45vh; left: 64vw; }
-.hip-hop { top: 35vh; left: 46vw; }
+/* Position based layout - last 3 going up */
+.position-6 { top: 55vh; left: 83vw; }
+.position-7 { top: 45vh; left: 64vw; }
+.position-8 { top: 35vh; left: 46vw; }
 
-/* Vertical Lines under the first five genres */
-.line-pop, .line-indie-pop, .line-rap, .line-k-pop, .line-rock,
-.line-rnb, .line-jazz, .line-hip-hop {
+/* Vertical Lines */
+.line {
     position: absolute;
     width: 0;
     border: 1px solid black;
 }
 
-/* Lines under the first five genres */
-.line-pop { top: 30vh; bottom: 0; left: 10vw; }
-.line-indie-pop { top: 40vh; bottom: 0; left: 27vw; }
-.line-rap { top: 50vh; bottom: 0; left: 46vw; }
-.line-k-pop { top: 60vh; bottom: 0; left: 64vw; }
-.line-rock { top: 70vh; bottom: 0; left: 83vw; }
+/* Lines under the first five positions */
+.line.position-1 { top: 30vh; bottom: 0; left: 10vw; }
+.line.position-2 { top: 40vh; bottom: 0; left: 27vw; }
+.line.position-3 { top: 50vh; bottom: 0; left: 46vw; }
+.line.position-4 { top: 60vh; bottom: 0; left: 64vw; }
+.line.position-5 { top: 70vh; bottom: 0; left: 83vw; }
 
-/* Lines above the last three genres */
-.line-rnb { top: 0; bottom: 40vh; left: 83vw; }
-.line-jazz { top: 0; bottom: 50vh; left: 64vw; }
-.line-hip-hop { top: 0; bottom: 60vh; left: 46vw; }
+/* Lines above the last three positions */
+.line.position-6 { top: 0; bottom: 40vh; left: 83vw; }
+.line.position-7 { top: 0; bottom: 50vh; left: 64vw; }
+.line.position-8 { top: 0; bottom: 60vh; left: 46vw; }
 
 /* Arrow Styling */
 .next-page-arrow {
@@ -86,52 +86,54 @@
 
 @media (max-width: 393px) {
     .title {
-        background-color: white;
-        padding: 1px 0px;
-        text-align: center;
-        z-index: 10;
-        position: relative;
+        font-size: 28px;
+        padding: 20px 0;
+        text-align: left;
+        margin-left: 20px;
     }
 
     .genre {
-        font-size: 5vw;
-        transform: rotate(90deg);
+        font-size: 16px;
+        transform: none;
+        background-color: transparent;
+        white-space: nowrap;
     }
 
-    .pop, .indie-pop, .rap, .k-pop, .rock, .rnb, .jazz, .hip-hop {
-        background-color: white; /* White background */
-        padding: 2px 4px; /* Background spacing */
+/*    .position-1, .position-2, .position-3, .position-4, .position-5, .position-6, .position-7, .position-8 {
+        background-color: white; *//* White background *//*
+        padding: 2px 4px; *//* Background spacing *//*
         z-index: 10;
-    }
+    }*/
 
-    .pop { top: 32vh; left: 2vw;}
-    .indie-pop { top: 45vh; left: 12vw; }
-    .rap { top: 52vh; left: 36vw; }
-    .k-pop { top: 63vh; left: 51vw; }
-    .rock { top: 72vh; left: 70vw; }
+    /* Mobile position adjustments - matching desktop layout */
+    .position-1 { top: 25vh; left: 10vw; }
+    .position-2 { top: 35vh; left: 25vw; }
+    .position-3 { top: 45vh; left: 40vw; }
+    .position-4 { top: 55vh; left: 55vw; }
+    .position-5 { top: 65vh; left: 70vw; }
 
-    .rnb { top: 55vh; left: 72vw; }
-    .jazz { top: 45vh; left: 53vw; }
-    .hip-hop { top: 34vh; left: 30vw; }
+    .position-6 { top: 50vh; left: 70vw; }
+    .position-7 { top: 40vh; left: 55vw; }
+    .position-8 { top: 30vh; left: 40vw; }
 
+    /* Mobile line positions - matching desktop layout */
+    .line.position-1 { top: 25vh; bottom: 0; left: 10vw; }
+    .line.position-2 { top: 35vh; bottom: 0; left: 25vw; }
+    .line.position-3 { top: 45vh; bottom: 0; left: 40vw; }
+    .line.position-4 { top: 55vh; bottom: 0; left: 55vw; }
+    .line.position-5 { top: 65vh; bottom: 0; left: 70vw; }
 
-    .line-pop { top: 30vh; bottom: 0; left: 10vw; }
-    .line-indie-pop { top: 40vh; bottom: 0; left: 27vw; }
-    .line-rap { top: 50vh; bottom: 0; left: 46vw; }
-    .line-k-pop { top: 60vh; bottom: 0; left: 64vw; }
-    .line-rock { top: 70vh; bottom: 0; left: 83vw; }
-
-    .line-rnb { top: 0; bottom: 40vh; left: 83vw; }
-    .line-jazz { top: 0; bottom: 50vh; left: 64vw; }
-    .line-hip-hop { top: 0; bottom: 60vh; left: 46vw; }
+    .line.position-6 { top: 0; bottom: 45vh; left: 70vw; }
+    .line.position-7 { top: 0; bottom: 55vh; left: 55vw; }
+    .line.position-8 { top: 0; bottom: 65vh; left: 40vw; }
 
     .next-page-arrow {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    font-size: 36px;
-    text-decoration: none;
-    color: black;
-    cursor: pointer;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        font-size: 36px;
+        text-decoration: none;
+        color: black;
+        cursor: pointer;
     }
 }

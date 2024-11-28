@@ -852,3 +852,206 @@ def get_user_top_songs(request):
             {"error": "An unexpected error occurred"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_top_genres(request):
+    """
+    Fetch the user's top genres from Spotify by analyzing their top artists
+    """
+    try:
+        print(f"User requesting top genres: {request.user.username}")
+        user = request.user
+        spotify_user = getattr(user, 'spotify_profile', None)
+
+        if not spotify_user:
+            return Response(
+                {"error": "No Spotify profile found. Please link your Spotify account."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Refresh token if needed
+        if spotify_user.token_expiry and spotify_user.token_expiry <= timezone.now():
+            try:
+                new_token = refresh_spotify_token(spotify_user.refresh_token)
+                spotify_user.access_token = new_token
+                spotify_user.token_expiry = timezone.now() + timedelta(hours=1)
+                spotify_user.save()
+            except Exception as e:
+                return Response(
+                    {"error": "Failed to refresh Spotify token. Please reconnect your account."},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+
+        # Get user's top artists and their genres
+        url = "https://api.spotify.com/v1/me/top/artists"
+        headers = {"Authorization": f"Bearer {spotify_user.access_token}"}
+        params = {"limit": 50, "time_range": "medium_term"}  # Get more artists for better genre analysis
+
+        response = requests.get(url, headers=headers, params=params)
+
+        if response.status_code == 200:
+            data = response.json()
+
+            # Create a dictionary to count genre occurrences
+            genre_count = {}
+            for artist in data.get('items', []):
+                for genre in artist.get('genres', []):
+                    genre_count[genre] = genre_count.get(genre, 0) + 1
+
+            # Sort genres by count and get top 8
+            top_genres = sorted(genre_count.items(), key=lambda x: x[1], reverse=True)[:8]
+
+            # Format the response
+            genres = [
+                {
+                    "rank": idx + 1,
+                    "name": genre[0].title(),  # Capitalize genre names
+                    "count": genre[1]
+                }
+                for idx, genre in enumerate(top_genres)
+            ]
+
+            return Response({"top_genres": genres}, status=200)
+        else:
+            print(f"Spotify API error response: {response.text}")
+            return Response(
+                {"error": f"Spotify API error: {response.text}"},
+                status=response.status_code
+            )
+
+    except Exception as e:
+        print(f"Unexpected error in get_user_top_genres: {str(e)}")
+        return Response(
+            {"error": "An unexpected error occurred"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_top_artists(request):
+    """
+    Fetch the user's top artists from Spotify
+    """
+    try:
+        user = request.user
+        spotify_user = getattr(user, 'spotify_profile', None)
+
+        if not spotify_user:
+            return Response(
+                {"error": "No Spotify profile found. Please link your Spotify account."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Refresh token if needed
+        if spotify_user.token_expiry and spotify_user.token_expiry <= timezone.now():
+            try:
+                new_token = refresh_spotify_token(spotify_user.refresh_token)
+                spotify_user.access_token = new_token
+                spotify_user.token_expiry = timezone.now() + timedelta(hours=1)
+                spotify_user.save()
+            except Exception as e:
+                return Response(
+                    {"error": "Failed to refresh Spotify token. Please reconnect your account."},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+
+        # Get user's top artists
+        url = "https://api.spotify.com/v1/me/top/artists"
+        headers = {"Authorization": f"Bearer {spotify_user.access_token}"}
+        params = {"limit": 10, "time_range": "medium_term"}
+
+        response = requests.get(url, headers=headers, params=params)
+
+        if response.status_code == 200:
+            data = response.json()
+            top_artists = [
+                {
+                    "rank": idx + 1,
+                    "name": item['name'],
+                    "image_url": item['images'][0]['url'] if item['images'] else None,
+                }
+                for idx, item in enumerate(data.get('items', []))
+            ]
+            return Response({"top_artists": top_artists}, status=200)
+        else:
+            return Response(
+                {"error": f"Spotify API error: {response.text}"},
+                status=response.status_code
+            )
+
+    except Exception as e:
+        print(f"Unexpected error in get_user_top_artists: {str(e)}")
+        return Response(
+            {"error": "An unexpected error occurred"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_top_albums(request):
+    """
+    Fetch the user's top albums from Spotify
+    """
+    try:
+        user = request.user
+        spotify_user = getattr(user, 'spotify_profile', None)
+
+        if not spotify_user:
+            return Response(
+                {"error": "No Spotify profile found. Please link your Spotify account."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Refresh token if needed
+        if spotify_user.token_expiry and spotify_user.token_expiry <= timezone.now():
+            try:
+                new_token = refresh_spotify_token(spotify_user.refresh_token)
+                spotify_user.access_token = new_token
+                spotify_user.token_expiry = timezone.now() + timedelta(hours=1)
+                spotify_user.save()
+            except Exception as e:
+                return Response(
+                    {"error": "Failed to refresh Spotify token. Please reconnect your account."},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+
+        # Get user's top tracks to extract album information
+        url = "https://api.spotify.com/v1/me/top/tracks"
+        headers = {"Authorization": f"Bearer {spotify_user.access_token}"}
+        params = {"limit": 50, "time_range": "medium_term"}  # Get more tracks to find unique albums
+
+        response = requests.get(url, headers=headers, params=params)
+
+        if response.status_code == 200:
+            data = response.json()
+
+            # Extract unique albums from top tracks
+            seen_albums = set()
+            top_albums = []
+
+            for item in data.get('items', []):
+                album_id = item['album']['id']
+                if album_id not in seen_albums and len(top_albums) < 10:
+                    seen_albums.add(album_id)
+                    top_albums.append({
+                        "rank": len(top_albums) + 1,
+                        "name": item['album']['name'],
+                        "artist": item['album']['artists'][0]['name'],
+                        "image_url": item['album']['images'][0]['url'] if item['album']['images'] else None,
+                    })
+
+            return Response({"top_albums": top_albums}, status=200)
+        else:
+            return Response(
+                {"error": f"Spotify API error: {response.text}"},
+                status=response.status_code
+            )
+
+    except Exception as e:
+        print(f"Unexpected error in get_user_top_albums: {str(e)}")
+        return Response(
+            {"error": "An unexpected error occurred"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )

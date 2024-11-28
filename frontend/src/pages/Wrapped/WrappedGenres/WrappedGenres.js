@@ -1,20 +1,46 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import axios from "axios";
 import './WrappedGenres.css';
 
-const genres = [
-    { rank: 1, name: "Pop" },
-    { rank: 2, name: "Indie Pop" },
-    { rank: 3, name: "Rap" },
-    { rank: 4, name: "K-Pop" },
-    { rank: 5, name: "Rock" },
-    { rank: 6, name: "RNB" },
-    { rank: 7, name: "Jazz" },
-    { rank: 8, name: "Hip Hop" },
-];
-
 const WrappedGenres = () => {
+    const [genres, setGenres] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchTopGenres = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    navigate('/login');
+                    return;
+                }
+
+                const response = await axios.get("http://127.0.0.1:8000/api/top-genres/", {
+                    headers: {
+                        'Authorization': `Token ${token}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                setGenres(response.data.top_genres);
+                setLoading(false);
+            } catch (err) {
+                console.error("Error fetching top genres:", err);
+                setError(err.response?.data?.error || "Failed to load genres");
+                setLoading(false);
+            }
+        };
+
+        fetchTopGenres();
+    }, [navigate]);
+
+    if (loading) return <div className="loading">Loading your top genres...</div>;
+    if (error) return <div className="error">{error}</div>;
+
     return (
         <div className="wrapped-genres-container">
             {/* Static Header */}
@@ -33,7 +59,7 @@ const WrappedGenres = () => {
             {genres.map((genre, index) => (
                 <motion.div
                     key={genre.rank}
-                    className={`genre ${genre.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    className={`genre position-${index + 1}`}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.2 }}
@@ -47,7 +73,7 @@ const WrappedGenres = () => {
                 {[...Array(5)].map((_, index) => (
                     <motion.div
                         key={index}
-                        className={`line line-${genres[index].name.toLowerCase().replace(/\s+/g, '-')}`}
+                        className={`line position-${index + 1}`}
                         initial={{ opacity: 0, y: 50 }} // Lines coming from the bottom
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.2 + 0.1 }}
@@ -60,7 +86,7 @@ const WrappedGenres = () => {
                 {[...Array(3)].map((_, index) => (
                     <motion.div
                         key={index + 5}
-                        className={`line line-${genres[index + 5].name.toLowerCase().replace(/\s+/g, '-')}`}
+                        className={`line position-${index + 6}`}
                         initial={{ opacity: 0, y: -50 }} // Lines coming from the top
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: (index + 5) * 0.2 + 0.1 }}
