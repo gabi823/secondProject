@@ -31,7 +31,8 @@ const Profile = () => {
 
             // Check Spotify link
             try {
-                const response = await fetch('http://localhost:8000/api/check-spotify-link/', {
+                console.log('Checking Spotify link...');
+                const response = await fetch('https://secondproject-8lyv.onrender.com/api/check-spotify-link/', {
                     headers: {
                         'Authorization': `Token ${token}`,
                         'Content-Type': 'application/json',
@@ -46,8 +47,10 @@ const Profile = () => {
                     setShowLinkModal(true);
                 }
 
-                // Fetch profile data
-                const profileResponse = await axios.get('http://localhost:8000/api/profile/', {
+            // Fetch profile data
+            try {
+                console.log('Fetching profile data...');
+                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/profile/', {n
                     headers: {
                         Authorization: `Token ${token}`,
                         'Content-Type': 'application/json',
@@ -87,11 +90,40 @@ const Profile = () => {
         initializeProfile();
     }, [navigate, hasSpotifyLinked]);
 
+
+const checkSpotifyLink = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        console.log('Using token:', token); // Debug log
+
+        const response = await fetch('https://secondproject-8lyv.onrender.com/api/spotify/login/', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Token ${token}`,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        });
+
+        console.log('Response status:', response.status); // Debug log
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Spotify login response:', data); // Debug log
+
+        if (data.auth_url) {
+            window.location.href = data.auth_url;
+        } else {
+            throw new Error('No auth_url in response');
+            
     const createNewWrapped = async (timeRange) => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                'http://localhost:8000/api/create-wrapped/',
+                'https://secondproject-8lyv.onrender.com/api/create-wrapped/',
                 {time_range: timeRange},
                 {
                     headers: {
