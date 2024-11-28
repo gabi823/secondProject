@@ -30,7 +30,6 @@ const Profile = () => {
             }
 
             // Check Spotify link
-            try {
                 console.log('Checking Spotify link...');
                 const response = await fetch('https://secondproject-8lyv.onrender.com/api/check-spotify-link/', {
                     headers: {
