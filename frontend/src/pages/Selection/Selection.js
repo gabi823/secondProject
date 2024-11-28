@@ -3,12 +3,16 @@ import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 import { motion } from 'framer-motion';
 import './Selection.css';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const Selection = () => {
     const [images, setImages] = useState({
         column1: [],
     });
     const [imagesLoaded, setImagesLoaded] = useState(false);
+    const [wrappedName, setWrappedName] = useState('');
+    const [timeRange, setTimeRange] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -32,6 +36,36 @@ const Selection = () => {
 
         fetchImages();
     }, []);
+
+    const handleCreateWrapped = async () => {
+        if (!wrappedName || !timeRange) {
+            alert("Please enter a name and select a time range.");
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post(
+                'http://localhost:8000/api/create-wrapped/',
+                {
+                    time_range: timeRange,
+                    wrapped_name: wrappedName
+                },
+                {
+                    headers: {
+                        Authorization: `Token ${token}`,
+                        'Content-Type': 'application/json',
+                    }
+                }
+            );
+
+            const createdWrapped = response.data;
+            navigate(`/wrapped-intro?wrappedId=${createdWrapped.id}`);
+        } catch (error) {
+            console.error("Error creating wrapped:", error);
+            alert("Failed to create wrapped. Please try again.");
+        }
+    };
 
     // Variants for individual text lines
     const textVariants = {
@@ -70,6 +104,8 @@ const Selection = () => {
                                     type="text"
                                     placeholder="Enter a name"
                                     className="wrapped-input"
+                                    value={wrappedName}
+                                    onChange={(e) => setWrappedName(e.target.value)}
                                 />
                             </motion.div>
 
@@ -81,8 +117,12 @@ const Selection = () => {
                                 variants={textVariants} // Individual text animation
                             >
                                 <div className="dropdown-container">
-                                    <select className="dropdown-select">
-                                        <option value="" disabled selected>Select time period</option>
+                                    <select
+                                        className="dropdown-select"
+                                        value={timeRange}
+                                        onChange={(e) => setTimeRange(e.target.value)}
+                                    >
+                                        <option value="" disabled>Select time period</option>
                                         <option value="short">Short Term</option>
                                         <option value="medium">Medium Term</option>
                                         <option value="long">Long Term</option>
@@ -90,7 +130,7 @@ const Selection = () => {
                                     <span className="dropdown-arrow">▼</span>
                                 </div>
 
-                                <div className="go-button">
+                                <div className="go-button" onClick={handleCreateWrapped}>
                                     <span>Go</span>
                                 </div>
                             </motion.div>
@@ -113,7 +153,7 @@ const Selection = () => {
                     <div className="loading-container">
                         <div className="loading-spinner">
                             {/* Add spinner or loading animation here if needed */}
-
+                            Loading images...
                         </div>
                     </div>
                 )}

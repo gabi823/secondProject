@@ -41,6 +41,10 @@ urlpatterns = [
     path('api/logout/', views.logout_view, name='logout_view'),
     path('delete_account/', views.delete_account, name='delete_account'),
 
+    path('api/create-wrapped/', views.create_wrapped, name='create_wrapped'),
+    path('api/get-wrapped-data/', views.get_wrapped_data, name='get_wrapped_data'),
+
+
     # User Authentication API
     path('api/register/', views.register, name='register'),
     path('api/login/', views.user_login, name='login'),
