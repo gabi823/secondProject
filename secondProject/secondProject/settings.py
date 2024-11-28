@@ -116,7 +116,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'secondProject.wsgi.application'
 
-# Database
+# Database stuff
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
@@ -124,6 +124,7 @@ DATABASES = {
         conn_max_age=600
     )
 }
+
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
