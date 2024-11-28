@@ -43,7 +43,7 @@ else:
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    'secondproject-8lyv.onrender.com'  # Allow Azure domains
+    'secondproject-8lyv.onrender.com'
 ]
 
 # Application definition
@@ -79,7 +79,6 @@ if DEBUG:
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
-        # Add your production frontend URL here
         "https://second-project-alpha-rust.vercel.app",
     ]
 
