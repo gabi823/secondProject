@@ -14,17 +14,23 @@ DEBUG = 'WEBSITE_HOSTNAME' not in os.environ  # Set WEBSITE_HOSTNAME in producti
 if DEBUG:
     # Local development settings
     try:
-        # Load secrets.json only in local development
+        # Attempt to load secrets.json
         with open(os.path.join(BASE_DIR, 'secrets.json')) as f:
             secrets = json.load(f)
 
-        SECRET_KEY = secrets["SECRET_KEY"]
-        SPOTIFY_CLIENT_ID = secrets['SPOTIFY_CLIENT_ID']
-        SPOTIFY_CLIENT_SECRET = secrets['SPOTIFY_CLIENT_SECRET']
-        SPOTIFY_REDIRECT_URI = secrets.get('SPOTIFY_REDIRECT_URI', 'http://localhost:8000/spotify-callback/')
-        SPOTIFY_REFRESH_TOKEN = secrets['SPOTIFY_REFRESH_TOKEN']
+        SECRET_KEY = secrets.get("SECRET_KEY", "default-local-secret-key")
+        SPOTIFY_CLIENT_ID = secrets.get("SPOTIFY_CLIENT_ID", "default-local-client-id")
+        SPOTIFY_CLIENT_SECRET = secrets.get("SPOTIFY_CLIENT_SECRET", "default-local-client-secret")
+        SPOTIFY_REDIRECT_URI = secrets.get("SPOTIFY_REDIRECT_URI", "http://localhost:8000/spotify-callback/")
+        SPOTIFY_REFRESH_TOKEN = secrets.get("SPOTIFY_REFRESH_TOKEN", "default-local-refresh-token")
     except FileNotFoundError:
-        raise Exception("Missing 'secrets.json' file in local development.")
+        # Fallback to default values if secrets.json is missing
+        print("Warning: secrets.json not found. Using fallback values for local development.")
+        SECRET_KEY = "default-local-secret-key"
+        SPOTIFY_CLIENT_ID = "default-local-client-id"
+        SPOTIFY_CLIENT_SECRET = "default-local-client-secret"
+        SPOTIFY_REDIRECT_URI = "http://localhost:8000/spotify-callback/"
+        SPOTIFY_REFRESH_TOKEN = "default-local-refresh-token"
 else:
     # Production settings
     SECRET_KEY = os.environ['SECRET_KEY']
@@ -32,6 +38,7 @@ else:
     SPOTIFY_CLIENT_SECRET = os.environ['SPOTIFY_CLIENT_SECRET']
     SPOTIFY_REDIRECT_URI = os.environ['SPOTIFY_REDIRECT_URI']
     SPOTIFY_REFRESH_TOKEN = os.environ['SPOTIFY_REFRESH_TOKEN']
+
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
