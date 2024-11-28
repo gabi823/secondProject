@@ -504,14 +504,16 @@ def refresh_spotify_token(refresh_token):
     print(f"DEBUG: Attempting to refresh token")
 
     token_url = 'https://accounts.spotify.com/api/token'
+    client_id = os.getenv("SPOTIFY_CLIENT_ID")
+    client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
     try:
         response = requests.post(
             token_url,
             data={
-                'grant_type': 'refresh_token',
-                'refresh_token': refresh_token,
-                'client_id': SPOTIFY_CLIENT_ID,
-                'client_secret': SPOTIFY_CLIENT_SECRET,
+                "grant_type": "refresh_token",
+                "refresh_token": refresh_token,
+                "client_id": client_id,
+                "client_secret": client_secret,
             }
         )
 
