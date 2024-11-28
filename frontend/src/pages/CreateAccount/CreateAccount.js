@@ -24,7 +24,8 @@ const CreateAccount = () => {
         const fetchSpotifyCredentials = async () => {
             try {
                 console.log('Fetching Spotify credentials...');
-                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/spotify-credentials/');
+                const response = await axios.get('http://localhost:8000/api/spotify-credentials/');
+                console.log("response.code", response.code)
                 console.log('Received credentials:', response.data);  // Add this
                 setSpotifyClientId(response.data.client_id);
                 setSpotifyRedirectUri(response.data.redirect_uri);
@@ -44,7 +45,7 @@ const CreateAccount = () => {
 
         try {
             // Send POST request to Django API
-            const response = await axios.post('https://secondproject-8lyv.onrender.com/api/register/', {
+            const response = await axios.post('http://localhost:8000/api/register/', {
                 username,
                 password,
                 email,
@@ -68,7 +69,7 @@ const CreateAccount = () => {
      useEffect(() => {
         const fetchImages = async () => {
             try {
-                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/fetch-playlist-images/');
+                const response = await axios.get('http://localhost:8000/api/fetch-playlist-images/');
                 const images = response.data.images;
 
                 // Divide images into two rows and duplicate for smooth infinite scrolling

@@ -118,7 +118,10 @@ WSGI_APPLICATION = 'secondProject.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': dj_database_url.config(default='sqlite:///db.sqlite3'),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # BASE_DIR is typically already defined in your settings.py
+    }
 }
 
 # Static files (CSS, JavaScript, Images)
