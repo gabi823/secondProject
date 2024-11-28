@@ -21,8 +21,11 @@
 
 /* Circular Image Container */
 .profile-image-container {
-    width: 180px;
-    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 300px;
     background: white;
     border-radius: 50%;
     overflow: hidden;
@@ -92,7 +95,7 @@
 .profile-wrapped-container {
     display: flex;
     flex-direction: column;
-    align-items: left;
+    align-items: center;
     width: 700px;
     padding: 15px;
     border-radius: 10px;

@@ -1,10 +1,41 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import './WrappedIntro.css'; // Import the CSS file
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
 
 const WrappedIntro = () => {
+    const [wrappedData, setWrappedData] = useState(null);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    // Parse query params
+    const params = new URLSearchParams(location.search);
+    const wrappedId = params.get('wrappedId');
+
+    useEffect(() => {
+        // Fetch the wrapped data when wrappedId is available
+        if (wrappedId) {
+            fetchWrappedData(wrappedId);
+        }
+    }, [wrappedId]);
+
+    const fetchWrappedData = async (id) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`http://localhost:8000/api/get-wrapped-data/?id=${id}`, {
+                headers: {
+                    Authorization: `Token ${token}`,
+                },
+            });
+            console.log('Wrapped Data:', response.data);
+            setWrappedData(response.data);
+        } catch (error) {
+            console.error('Error fetching wrapped data:', error);
+        }
+    };
+
     // Framer Motion animation settings
     const fadeUpVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -19,7 +50,7 @@ const WrappedIntro = () => {
     return (
         <>
             <div className="header">
-                <h1 className="header-title"></h1>
+                <h1 className="header-title">{wrappedData ? wrappedData.wrapped_name : 'Loading...'}</h1>
                 <Link to="/profile" className="exit-button" onClick={() => console.log("Exit clicked")}>&times;</Link>
             </div>
 

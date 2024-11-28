@@ -99,9 +99,34 @@ class React(models.Model):
     def __str__(self):
         return self.name
 
+
 class Artist(models.Model):
     name = models.CharField(max_length=100)
     genre = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
+
+
+class SpotifyWrapped(models.Model):
+    user = models.ForeignKey(
+        SpotifyUser,
+        on_delete=models.CASCADE,
+        related_name='spotify_wraps'
+    )
+    time_range = models.CharField(
+        max_length=20,
+        choices=[
+            ('short_term', 'Past 3 Months'),
+            ('medium_term', 'Past 6 Months'),
+            ('long_term', 'Past 12 Months')
+        ]
+    )
+    top_track_name = models.CharField(max_length=200, null=True, blank=True)
+    album_cover_url = models.URLField(null=True, blank=True)
+    name = models.CharField(max_length=255, default="Untitled Wrapped")
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.user.username} - {self.time_range} Wrap"
+
