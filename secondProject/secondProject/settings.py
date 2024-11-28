@@ -8,42 +8,35 @@ import json
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Determine if the app is running in production or locally
-DEBUG = 'WEBSITE_HOSTNAME' not in os.environ  # Set WEBSITE_HOSTNAME in production
+# Environment flag for DEBUG mode
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
+# Load secrets for local development
 if DEBUG:
-    # Local development settings
-    try:
-        # Attempt to load secrets.json
-        with open(os.path.join(BASE_DIR, 'secrets.json')) as f:
-            secrets = json.load(f)
-
-        SECRET_KEY = secrets.get("SECRET_KEY", "default-local-secret-key")
-        SPOTIFY_CLIENT_ID = secrets.get("SPOTIFY_CLIENT_ID", "default-local-client-id")
-        SPOTIFY_CLIENT_SECRET = secrets.get("SPOTIFY_CLIENT_SECRET", "default-local-client-secret")
-        SPOTIFY_REDIRECT_URI = secrets.get("SPOTIFY_REDIRECT_URI", "http://localhost:8000/spotify-callback/")
-        SPOTIFY_REFRESH_TOKEN = secrets.get("SPOTIFY_REFRESH_TOKEN", "default-local-refresh-token")
-    except FileNotFoundError:
-        # Fallback to default values if secrets.json is missing
-        print("Warning: secrets.json not found. Using fallback values for local development.")
-        SECRET_KEY = "default-local-secret-key"
-        SPOTIFY_CLIENT_ID = "default-local-client-id"
-        SPOTIFY_CLIENT_SECRET = "default-local-client-secret"
-        SPOTIFY_REDIRECT_URI = "http://localhost:8000/spotify-callback/"
-        SPOTIFY_REFRESH_TOKEN = "default-local-refresh-token"
+    secrets_file_path = os.path.join(BASE_DIR, 'secrets.json')
+    with open(secrets_file_path) as f:
+        secrets = json.load(f)
+    SECRET_KEY = secrets["SECRET_KEY"]
+    SPOTIFY_CLIENT_ID = secrets['SPOTIFY_CLIENT_ID']
+    SPOTIFY_CLIENT_SECRET = secrets['SPOTIFY_CLIENT_SECRET']
+    SPOTIFY_REDIRECT_URI = secrets['SPOTIFY_REDIRECT_URI']
+    SPOTIFY_REFRESH_TOKEN = secrets['SPOTIFY_REFRESH_TOKEN']
 else:
-    # Production settings
-    SECRET_KEY = os.environ['SECRET_KEY']
-    SPOTIFY_CLIENT_ID = os.environ['SPOTIFY_CLIENT_ID']
-    SPOTIFY_CLIENT_SECRET = os.environ['SPOTIFY_CLIENT_SECRET']
-    SPOTIFY_REDIRECT_URI = os.environ['SPOTIFY_REDIRECT_URI']
-    SPOTIFY_REFRESH_TOKEN = os.environ['SPOTIFY_REFRESH_TOKEN']
+    # Use environment variables in production
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+    SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+    SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
+    SPOTIFY_REFRESH_TOKEN = os.getenv("SPOTIFY_REFRESH_TOKEN")
 
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
+# SECURITY WARNING: don't run with debug turned on in production!
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    'secondproject-8lyv.onrender.com'
+    'secondproject-8lyv.onrender.com',  # Replace with your Render URL
 ]
 
 # Application definition
@@ -73,14 +66,11 @@ MIDDLEWARE = [
 ]
 
 # CORS settings
-if DEBUG:
-    CORS_ALLOWED_ORIGINS = [
-        "http://localhost:3000",
-    ]
-else:
-    CORS_ALLOWED_ORIGINS = [
-        "https://second-project-alpha-rust.vercel.app",
-    ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+if not DEBUG:
+    CORS_ALLOWED_ORIGINS.append("https://second-project-alpha-rust.vercel.app")  # Add your frontend URL
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
@@ -104,10 +94,7 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-
 REACT_APP_DIR = os.path.join(BASE_DIR, 'frontend', 'build')
-
-
 
 ROOT_URLCONF = 'secondProject.urls'
 
@@ -138,14 +125,13 @@ if DEBUG:
         }
     }
 else:
-    # Configure your production database here
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ['DBNAME'],
-            'HOST': os.environ['DBHOST'],
-            'USER': os.environ['DBUSER'],
-            'PASSWORD': os.environ['DBPASS'],
+            'NAME': os.getenv('DBNAME'),
+            'HOST': os.getenv('DBHOST'),
+            'USER': os.getenv('DBUSER'),
+            'PASSWORD': os.getenv('DBPASS'),
         }
     }
 

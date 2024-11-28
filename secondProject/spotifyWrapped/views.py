@@ -496,6 +496,10 @@ def delete_account(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
+import requests
+import os
+import base64
+
 def refresh_spotify_token(refresh_token):
     """Function to refresh the Spotify access token when it expires."""
     if not refresh_token:
@@ -503,18 +507,35 @@ def refresh_spotify_token(refresh_token):
 
     print(f"DEBUG: Attempting to refresh token")
 
+    # Spotify API Token URL
     token_url = 'https://accounts.spotify.com/api/token'
-    client_id = os.getenv("SPOTIFY_CLIENT_ID")
-    client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
+
+    # Retrieve client credentials
+    client_id = settings.SPOTIFY_CLIENT_ID
+    client_secret = settings.SPOTIFY_CLIENT_SECRET
+
+    print(f"DEBUG: SPOTIFY_CLIENT_ID = {client_id}")
+    print(f"DEBUG: SPOTIFY_CLIENT_SECRET = {client_secret}")
+
+    if not client_id or not client_secret:
+        raise ValueError("Client ID or Client Secret not provided")
+
+    # Encode client credentials for Authorization header
+    client_creds = f"{client_id}:{client_secret}"
+    encoded_creds = base64.b64encode(client_creds.encode()).decode()
+
     try:
+        # Make the POST request to refresh the token
         response = requests.post(
             token_url,
+            headers={
+                "Authorization": f"Basic {encoded_creds}",
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
             data={
                 "grant_type": "refresh_token",
                 "refresh_token": refresh_token,
-                "client_id": client_id,
-                "client_secret": client_secret,
-            }
+            },
         )
 
         print(f"DEBUG: Token refresh response status: {response.status_code}")
@@ -523,6 +544,7 @@ def refresh_spotify_token(refresh_token):
             print(f"DEBUG: Token refresh failed: {response.text}")
             raise ValueError(f"Failed to refresh token: {response.text}")
 
+        # Parse response JSON
         response_data = response.json()
         return response_data.get('access_token')
     except Exception as e:
