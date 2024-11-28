@@ -30,7 +30,7 @@ const Profile = () => {
             try {
                 // Check Spotify link
                 console.log('Checking Spotify link...');
-                const spotifyResponse = await fetch('http://localhost:8000/api/check-spotify-link/', {
+                const spotifyResponse = await fetch('https://secondproject-8lyv.onrender.com/api/check-spotify-link/', {
                     headers: {
                         'Authorization': `Token ${token}`,
                         'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ const Profile = () => {
                 // Fetch profile data
                 console.log('Fetching profile data...');
 
-                const profileResponse = await axios.get('http://localhost:8000/api/profile/', {
+                const profileResponse = await axios.get('https://secondproject-8lyv.onrender.com/api/profile/', {
                     headers: {
                         Authorization: `Token ${token}`,
                         'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ const Profile = () => {
                 setProfileImage(profile_image_url || 'https://via.placeholder.com/300');
 
                 // Fetch Wrapped data
-                const wrappedResponse = await axios.get('http://localhost:8000/api/get-wrapped-data/', {
+                const wrappedResponse = await axios.get('https://secondproject-8lyv.onrender.com/api/get-wrapped-data/', {
                     headers: {
                         Authorization: `Token ${token}`,
                     },
@@ -85,7 +85,7 @@ const Profile = () => {
     const checkSpotifyLink = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8000/api/spotify/login/', {
+            const response = await fetch('https://secondproject-8lyv.onrender.com/api/spotify/login/', {
                 method: 'GET',
                 headers: {
                     Authorization: `Token ${token}`,
@@ -114,7 +114,7 @@ const Profile = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                'http://localhost:8000/api/create-wrapped/',
+                'https://secondproject-8lyv.onrender.com/api/create-wrapped/',
                 { time_range: timeRange },
                 {
                     headers: {
@@ -134,7 +134,7 @@ const Profile = () => {
     const deleteWrap = async (wrapId) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:8000/api/spotify/delete_wrap/${wrapId}/`, {
+            await axios.delete('https://secondproject-8lyv.onrender.com/api/spotify/delete_wrap/${wrapId}/', {
                 headers: { Authorization: `Token ${token}` },
             });
             setWrappedData(wrappedData.filter(wrap => wrap.id !== wrapId));
