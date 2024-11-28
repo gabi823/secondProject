@@ -68,9 +68,8 @@ MIDDLEWARE = [
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://second-project-alpha-rust.vercel.app"
 ]
-if not DEBUG:
-    CORS_ALLOWED_ORIGINS.append("https://second-project-alpha-rust.vercel.app")  # Add your frontend URL
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
