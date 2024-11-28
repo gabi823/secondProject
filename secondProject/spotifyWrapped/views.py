@@ -336,6 +336,133 @@ def check_login(request):
 
 # --- Artist and React Data Views ---
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_wrapped(request):
+    try:
+        print("DEBUG: Request data:", request.data)
+        print("DEBUG: View Permissions:", request.user.is_authenticated)
+        print("DEBUG: Spotify Profile Exists:", hasattr(request.user, 'spotify_profile'))
+
+        spotify_user = request.user.spotify_profile
+
+        print("DEBUG: Frontend time_range:", request.data.get('time_range'))
+
+        # Map frontend time_range values to Spotify's accepted values
+        time_range_mapping = {
+            'short': 'short_term',
+            'medium': 'medium_term',
+            'long': 'long_term',
+            'short_term': 'short_term',
+            'medium_term': 'medium_term',
+            'long_term': 'long_term'
+        }
+
+        time_range = time_range_mapping.get(request.data.get('time_range'))
+        print("DEBUG: Mapped time_range:", time_range)
+
+        if not time_range:
+            return Response({"error": "time_range is required"}, status=400)
+
+        wrapped_name = request.data.get('wrapped_name', 'My Wrapped')
+
+        headers = {'Authorization': f'Bearer {spotify_user.access_token}'}
+        url = f'https://api.spotify.com/v1/me/top/tracks?time_range={time_range}&limit=1'
+
+        response = requests.get(url, headers=headers)
+        print("DEBUG: Spotify API Response Code:", response.status_code)
+        print("DEBUG: Spotify API Response Body:", response.text)
+
+        if response.status_code == 200:
+            data = response.json()
+            top_track = data['items'][0]
+            top_track_name = top_track.get('name', 'Unknown Track')
+            album_cover_url = top_track['album']['images'][0]['url'] if top_track['album']['images'] else ''
+
+            # Debugging parsed fields
+            print("DEBUG: Top Track Name:", top_track['name'])
+            print("DEBUG: Album Cover URL:", top_track['album']['images'][0]['url'])
+
+            print("DEBUG: SpotifyWrapped data about to be created:")
+            print({
+                "user": spotify_user,
+                "time_range": time_range,
+                "top_track_name": top_track["name"],
+                "album_cover_url": top_track["album"]["images"][0]["url"] if top_track["album"]["images"] else None,
+                "name": wrapped_name,
+            })
+
+            wrapped = SpotifyWrapped.objects.create(
+                user=spotify_user,
+                name=wrapped_name,
+                time_range=time_range,
+                top_track_name=top_track_name,
+                album_cover_url=album_cover_url,
+            )
+
+            # Serialize and return the created wrapped
+            serializer = SpotifyWrappedSerializer(wrapped)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+            # return Response({
+            #     'id': wrapped.id,
+            #     'time_range': wrapped.time_range,
+            #     'top_track_name': wrapped.top_track_name,
+            #     'album_cover_url': wrapped.album_cover_url,
+            #     'date_created': wrapped.date_created,
+            #     'wrapped_name': wrapped.name
+            # }, status=status.HTTP_201_CREATED)
+        else:
+            return Response({
+                'error': 'Failed to fetch top track from Spotify.',
+                'spotify_error': response.text
+            }, status=response.status_code)
+    except Exception as e:
+        # Debugging any errors
+        print("DEBUG: Error creating wrapped:", str(e))
+        return Response({'error': f'An error occurred: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_wrapped_data(request):
+    try:
+        spotify_user = request.user.spotify_profile
+        wrapped_id = request.query_params.get('id')  # Fetch 'id' from query parameters
+
+        if wrapped_id:
+            # Fetch a specific wrapped by ID
+            try:
+                wrap = SpotifyWrapped.objects.get(user=spotify_user, id=wrapped_id)
+                return Response({
+                    'id': wrap.id,
+                    'time_range': wrap.time_range,
+                    'top_track_name': wrap.top_track_name,
+                    'album_cover_url': wrap.album_cover_url,
+                    'date_created': wrap.date_created
+                }, status=status.HTTP_200_OK)
+            except SpotifyWrapped.DoesNotExist:
+                return Response({'error': 'Wrapped not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Fetch all wraps if no specific ID is provided
+        wraps = SpotifyWrapped.objects.filter(user=spotify_user)
+        wraps_data = [
+            {
+                'id': wrap.id,
+                'time_range': wrap.time_range,
+                'top_track_name': wrap.top_track_name,
+                'album_cover_url': wrap.album_cover_url,
+                'date_created': wrap.date_created,
+                'wrapped_name': wrap.name
+            }
+            for wrap in wraps
+        ]
+        return Response(wraps_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({
+            'error': f'An error occurred: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class ArtistViewSet(viewsets.ModelViewSet):
     """ViewSet for managing Artist model."""
@@ -373,6 +500,9 @@ def fetch_all_spotify_data(spotify_user):
             spotify_user.access_token = new_token
             spotify_user.token_expiry = timezone.now() + timedelta(hours=1)  # Adjust expiry
             spotify_user.save()
+        else:
+            print("Failed to refresh Spotify token.")
+            return
 
     headers = {'Authorization': f'Bearer {spotify_user.access_token}'}
     endpoints = {
@@ -388,6 +518,7 @@ def fetch_all_spotify_data(spotify_user):
         if response.status_code == 200:
             setattr(spotify_user, field, response.json().get('items', []))
         else:
+            print(f"Failed to fetch {field} data: {response.status_code}")
             setattr(spotify_user, field, [])  # Set as empty list if data fetching fails
 
     spotify_user.save()
@@ -461,21 +592,17 @@ def get_profile(request):
     """Retrieve current user profile details."""
     try:
         user = request.user
-        spotify_user = None
-        try:
-            spotify_user = SpotifyUser.objects.get(user=user)
-        except SpotifyUser.DoesNotExist:
-            pass
+        spotify_user = SpotifyUser.objects.get(user=user)
 
         data = {
             "username": user.username,
             "email": user.email,
             "top_artist": spotify_user.display_name if spotify_user else None,
+            "profile_image_url": spotify_user.profile_image_url if spotify_user else None,
             "wraps": []  # Add your wraps data here if you have any
         }
         return Response(data, status=status.HTTP_200_OK)
     except Exception as e:
-        print(f"Error in get_profile: {str(e)}")  # Debug print
         return Response(
             {"error": "Failed to fetch profile data"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -620,6 +747,7 @@ def fetch_playlist_images(request):
 def get_user_top_songs(request):
     """
     Fetch the user's top songs from Spotify
+    Automatically refresh the token if expired.
     """
     try:
         # Debug prints
@@ -645,9 +773,17 @@ def get_user_top_songs(request):
         # Check if token needs refresh
         if spotify_user.token_expiry and spotify_user.token_expiry <= timezone.now():
             try:
+                print("Token is expired, refreshing...")
                 new_token = refresh_spotify_token(spotify_user.refresh_token)
+
+                if not new_token:
+                    return Response(
+                        {"error": "Failed to refresh Spotify token. Please reconnect your account."},
+                        status=status.HTTP_401_UNAUTHORIZED
+                    )
+
                 spotify_user.access_token = new_token
-                spotify_user.token_expiry = timezone.now() + timedelta(hours=1)
+                spotify_user.token_expiry = timezone.now() + timedelta(hours=1)  # Update expiry time
                 spotify_user.save()
                 print("Token refreshed successfully")
             except Exception as e:
