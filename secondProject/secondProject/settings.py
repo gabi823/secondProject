@@ -104,6 +104,11 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
+
+REACT_APP_DIR = os.path.join(BASE_DIR, 'frontend', 'build')
+
+
+
 ROOT_URLCONF = 'secondProject.urls'
 
 TEMPLATES = [
