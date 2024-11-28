@@ -50,7 +50,7 @@ const Profile = () => {
             // Fetch profile data
             try {
                 console.log('Fetching profile data...');
-                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/profile/', {n
+                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/profile/', {
                     headers: {
                         Authorization: `Token ${token}`,
                         'Content-Type': 'application/json',
