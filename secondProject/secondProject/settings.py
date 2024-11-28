@@ -8,19 +8,23 @@ import json
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'WEBSITE_HOSTNAME' not in os.environ
+# Determine if the app is running in production or locally
+DEBUG = 'WEBSITE_HOSTNAME' not in os.environ  # Set WEBSITE_HOSTNAME in production
 
-# SECURITY WARNING: keep the secret key used in production secret!
 if DEBUG:
     # Local development settings
-    with open(os.path.join(BASE_DIR, 'secrets.json')) as f:
-        secrets = json.load(f)
-    SECRET_KEY = secrets["SECRET_KEY"]
-    SPOTIFY_CLIENT_ID = secrets['SPOTIFY_CLIENT_ID']
-    SPOTIFY_CLIENT_SECRET = secrets['SPOTIFY_CLIENT_SECRET']
-    SPOTIFY_REDIRECT_URI = secrets.get('SPOTIFY_REDIRECT_URI')
-    SPOTIFY_REFRESH_TOKEN = secrets['SPOTIFY_REFRESH_TOKEN']
+    try:
+        # Load secrets.json only in local development
+        with open(os.path.join(BASE_DIR, 'secrets.json')) as f:
+            secrets = json.load(f)
+
+        SECRET_KEY = secrets["SECRET_KEY"]
+        SPOTIFY_CLIENT_ID = secrets['SPOTIFY_CLIENT_ID']
+        SPOTIFY_CLIENT_SECRET = secrets['SPOTIFY_CLIENT_SECRET']
+        SPOTIFY_REDIRECT_URI = secrets.get('SPOTIFY_REDIRECT_URI', 'http://localhost:8000/spotify-callback/')
+        SPOTIFY_REFRESH_TOKEN = secrets['SPOTIFY_REFRESH_TOKEN']
+    except FileNotFoundError:
+        raise Exception("Missing 'secrets.json' file in local development.")
 else:
     # Production settings
     SECRET_KEY = os.environ['SECRET_KEY']
