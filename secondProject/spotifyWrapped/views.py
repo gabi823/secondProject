@@ -1,5 +1,7 @@
 from datetime import timedelta
 from django.utils import timezone
+from collections import Counter
+import json 
 
 import requests
 from django.shortcuts import render, redirect
@@ -480,6 +482,130 @@ def get_profile(request):
             {"error": "Failed to fetch profile data"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_listening_personality(request):
+    """Retrieve current user listening personality"""
+    try:
+        user = request.user
+        spotify_user = None
+        try:
+            spotify_user = SpotifyUser.objects.get(user=user)
+        except SpotifyUser.DoesNotExist:
+            data = {
+                'listening_personality': -2
+            }
+            # return Response(data, status=status.HTTP_200_OK)
+            print("SPOTIFY USER DOESNT EXIST")
+
+
+        # classify personality
+        # recent_tracks = spotify_user.recent_tracks
+        file_path = os.path.join(os.path.dirname(__file__), 'pranavRecentlyPlayedTracks.json')
+        with open(file_path, 'r') as json_file:
+            recent_tracks = json.load(json_file)
+
+        artist_counter = Counter()
+        genre_counter = Counter()
+        total_popularity = 0
+        release_years = []
+
+        # use the global refresh token to get an access token
+        access_token = refresh_spotify_token(SPOTIFY_REFRESH_TOKEN)
+
+        # IMPORTANT: each response is taking a while because this for loop goes thru all tracks in recently_played which is taking a while 
+        # get relevant info from each track
+        counter = 0
+        for track in recent_tracks['items']:
+            print(counter)
+            track = track['track']
+            # get artist name and genre for each artist on the track
+            for artist in track['artists']:
+                # add artist name to Counter
+                artist_counter[artist['name']] += 1
+
+                # artist genre
+                artist_id = artist['id']
+
+                if not access_token:
+                    print("ACCESS TOKEN NOT FOUND")
+
+                headers = {
+                    'Authorization': f'Bearer {access_token}',
+                }
+                url = f'https://api.spotify.com/v1/artists/{artist_id}'
+
+                response = requests.get(url, headers=headers)
+                if response.status_code != 200:
+                    print("COULDN'T GET ARTIST GENRE")
+
+                genres = response.json().get('genres', [])
+                for genre in genres:
+                    genre_counter.update(genre)
+
+            # get popularity
+            total_popularity += int(track['popularity'])
+
+            # get release year
+            release_year = int(track['album']['release_date'].split('-')[0])
+            release_years.append(release_year)
+            counter += 1
+
+        unique_artists = len(artist_counter)
+        unique_tracks = len(recent_tracks['items'])
+        avg_popularity = total_popularity / unique_tracks
+        avg_release_year = sum(release_years) / len(release_years)
+
+        # Decision-making for personality
+        personality = ''
+        
+        # Familiarity vs Exploration
+        if unique_artists / unique_tracks > 0.5:
+            personality += 'E'  # Exploration
+        else:
+            personality += 'F'  # Familiarity
+        
+        # Timelessness vs Newness
+        if avg_release_year < 2015:
+            personality += 'T'  # Timelessness
+        else:
+            personality += 'N'  # Newness
+
+        # Loyalty vs Variety
+        if unique_artists < 15:
+            personality += 'L'  # Loyalty
+        else:
+            personality += 'V'  # Variety
+
+        # Commonality vs Uniqueness
+        if avg_popularity > 50:
+            personality += 'C'  # Commonality
+        else:
+            personality += 'U'  # Uniqueness
+        print(personality)
+        
+        personality_types = [
+            "ENVU", "ENVC", "FTVU", "FNLU",
+            "FNLV", "FTLC", "ETLU", "FNLC",
+            "ETVC", "ENLU", "FTVU", "ETVU",
+            "ETLU", "ENVC", "FNLV", "FNVU"
+        ]
+        listening_personality = personality_types.index(personality)
+
+        # return personality
+        data = {
+            'listening_personality': listening_personality
+        }
+        return Response(data, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(f"Error in get_listening_personality: {str(e)}")  # Debug print
+        return Response(
+            {"error": "Failed to fetch listening personality"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
 
 @csrf_exempt
 @api_view(['POST'])
