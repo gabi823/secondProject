@@ -135,7 +135,7 @@ def spotify_callback(request):
     state = request.GET.get('state')
 
     if not code:
-        return redirect('http://localhost:3000/profile?error=spotify_auth_failed')
+        return redirect('https://second-project-alpha-rust.vercel.app/profile?error=spotify_auth_failed')
 
     try:
         user = User.objects.get(id=state)
@@ -153,7 +153,7 @@ def spotify_callback(request):
         )
 
         if token_response.status_code != 200:
-            return redirect('http://localhost:3000/profile?error=token_exchange_failed')
+            return redirect('https://second-project-alpha-rust.vercel.app/profile?error=token_exchange_failed')
 
         token_data = token_response.json()
 
@@ -162,7 +162,7 @@ def spotify_callback(request):
         user_response = requests.get('https://api.spotify.com/v1/me', headers=headers)
 
         if user_response.status_code != 200:
-            return redirect('http://localhost:3000/profile?error=spotify_profile_failed')
+            return redirect('https://second-project-alpha-rust.vercel.app/profile?error=spotify_profile_failed')
 
         spotify_data = user_response.json()
 
@@ -208,13 +208,13 @@ def spotify_callback(request):
         # Fetch additional Spotify data
         fetch_all_spotify_data(spotify_user)
 
-        return redirect('http://localhost:3000/profile?linked=success')
+        return redirect('https://second-project-alpha-rust.vercel.app/profile?linked=success')
 
     except User.DoesNotExist:
-        return redirect('http://localhost:3000/profile?error=user_not_found')
+        return redirect('https://second-project-alpha-rust.vercel.app/profile?error=user_not_found')
     except Exception as e:
         print(f"Error in spotify_callback: {str(e)}")
-        return redirect(f'http://localhost:3000/profile?error={str(e)}')
+        return redirect(f'https://second-project-alpha-rust.vercel.app/profile?error={str(e)}')
 
 @api_view(['GET'])
 def get_spotify_credentials(request):
