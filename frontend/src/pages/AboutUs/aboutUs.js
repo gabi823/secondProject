@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 import NavBar from "../../components/NavBar/NavBar";
 import emailjs from '@emailjs/browser';
 import "./aboutUs.css";
+import axios from "axios";
 
 const AboutUs = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+
 
   useEffect(() => {
     const checkAuthStatus = async () => {
