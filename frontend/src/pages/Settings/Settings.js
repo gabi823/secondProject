@@ -173,38 +173,10 @@ const Settings = () => {
                     <motion.div className="settings-section" variants={fadeUpVariants}>
                         <h2>Spotify Account</h2>
                         <p>The Spotify account you’re signed in with.</p>
-                        {spotifyUsername ? (
-        <>
-            <p>{spotifyUsername}</p>
-            <button
-                className="unlink-button"
-                onClick={async () => {
-                    try {
-                        const token = localStorage.getItem('token');
-                        const response = await fetch('https://secondproject-8lyv.onrender.com/api/unlink_spotify/', {
-                            method: 'POST',
-                            headers: {
-                                'Authorization': `Token ${token}`,
-                            },
-                        });
-
-                        if (response.ok) {
-                            alert('Spotify account unlinked successfully!');
-                            setSpotifyUsername(null);
-                        } else {
-                            alert('Failed to unlink Spotify account.');
-                        }
-                    } catch (error) {
-                        console.error('Error unlinking Spotify:', error);
-                    }
-                }}
-            >
-                UNLINK
-            </button>
-        </>
-    ) : (
-        <p>No Spotify account linked. <Link to="/spotify-login">Link Spotify</Link></p>
-    )}
+                        <div className="settings-info-container">
+                            <span className="settings-username">{spotifyUsername}</span>
+                            <button className="change-button">CHANGE</button>
+                        </div>
                     </motion.div>
 
 
