@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@react-spring/web": "^9.7.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
+    "emailjs-com": "^3.2.0",
+    "emailjs-smtp-client": "^2.0.1",
     "framer-motion": "^11.11.17",
     "react": "^18.3.1",
+    "react-bootstrap": "^2.10.6",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
     "react-scripts": "^5.0.1",
@@ -30,10 +34,10 @@
       "react-app/jest"
     ],
     "rules": {
-    "jsx-a11y/img-redundant-alt": "off",
-    "no-unused-vars": "warn",
-    "jsx-a11y/heading-has-content": "warn"
-  }
+      "jsx-a11y/img-redundant-alt": "off",
+      "no-unused-vars": "warn",
+      "jsx-a11y/heading-has-content": "warn"
+    }
   },
   "browserslist": {
     "production": [
