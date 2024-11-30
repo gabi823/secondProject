@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 import { Link } from "react-router-dom";
 import { motion } from 'framer-motion';
@@ -7,31 +7,6 @@ import "./Settings.css";
 const Settings = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
-    const [spotifyUsername, setSpotifyUsername] = useState(null);
-
-    useEffect(() => {
-    const fetchSpotifyInfo = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch('https://secondproject-8lyv.onrender.com/api/get_spotify_info/', {
-                headers: {
-                    'Authorization': `Token ${token}`,
-                },
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setSpotifyUsername(data.spotify_username);
-            } else {
-                setSpotifyUsername(null);
-            }
-        } catch (error) {
-            console.error('Error fetching Spotify info:', error);
-        }
-    };
-
-    fetchSpotifyInfo();
-}, []);
 
     // Animation Variants
     const fadeUpVariants = {

@@ -1,0 +1,117 @@
+.feedback-container {
+    max-width: 400px;
+    margin: 40px auto;
+    border:  1px solid black;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px 65px;
+}
+.link {
+    color:black;
+    font-weight: bold;
+}
+
+.link-message {
+    margin-top: -22px; /* Add space above */
+    margin-bottom: 5px; /* Add space below */
+    text-align: center;
+}
+
+
+.form-message {
+    margin-top: -7px;
+    padding-left:80px;
+}
+
+.form-label1 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    margin-top: 16px;
+    align-items: center;
+}
+
+.form-input1 {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 9px;
+    border: 1px solid #000;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 12px;
+}
+.message {
+    font-size: 30px;
+    text-align: center;
+    display: block; /* Ensures it behaves as a block element */
+    width: 100%; /* Full width */
+    margin: 40px 0; /* Adds vertical spacing */
+    padding: 0;
+    font-family: Manrope;
+
+}
+
+textarea.form-input {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.feedback-button {
+    width: 60%;
+    height: 40px;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #000;
+    font-size: 16px;
+    font-family: 'Manrope';
+    font-weight: 600;
+    color: black;
+    cursor: pointer;
+    transition: background 0.3s;
+    justify-content: center;
+    margin-left: 75px;
+    margin-top: 10px;
+}
+
+.feedback-button:hover {
+    background-color: #f0f0f0;
+}
+
+@media (max-width: 393px) {
+    .feedback-container {
+        max-width: 80%;
+        padding: 20px;  /* Reduced padding for small screens */
+        margin-top: 0;  /* Adjust margin-top for better alignment */
+    }
+
+    .form-label1 {
+        font-size: 14px;  /* Adjust font size for smaller screens */
+    }
+
+    .form-input1 {
+        font-size: 14px;  /* Adjust font size for input fields */
+    }
+
+    .feedback-button {
+        width: 60%;  /* Make the button full width */ /* Remove left margin */
+        font-size: 14px;  /* Adjust font size for button */
+        margin-left: 65px;
+    }
+
+    .link-message {
+        margin-top: 70px;
+        margin-bottom: 30px;  /* Reduce space below link message */
+        text-align: center;
+    }
+
+    .form-message {
+        padding-left: 30px;  /* Adjust padding for smaller screens */
+    }
+    .message {
+        font-size: 22px;  /* Adjust font size for smaller screens */
+        text-align: center;
+        width: 100%;
+        margin-top: 60px;
+        margin-bottom: -40px;
+    }
+}
