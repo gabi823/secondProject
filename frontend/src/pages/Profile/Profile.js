@@ -145,18 +145,13 @@ const Profile = () => {
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
-    };
-
     const fadeUpVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
     };
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div>    </div>;
     }
 
     return (
@@ -182,9 +177,6 @@ const Profile = () => {
                     <Link to="/settings" className="settings-link">
                         Settings
                     </Link>
-                    <button onClick={handleLogout} className="logout-button">
-                        Logout
-                    </button>
                 </motion.div>
                 <motion.div className="profile-wrapped-container" variants={fadeUpVariants}>
                     {wrappedData.map((wrap) => (
