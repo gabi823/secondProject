@@ -14,7 +14,7 @@ const WrappedAlbums = () => {
         const fetchTopAlbums = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get("http://127.0.0.1:8000/api/top-albums/", {
+                const response = await axios.get("https://secondproject-8lyv.onrender.com/api/top-albums/", {
                     headers: {
                         'Authorization': `Token ${token}`,
                         'Content-Type': 'application/json',

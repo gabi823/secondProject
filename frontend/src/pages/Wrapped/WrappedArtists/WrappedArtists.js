@@ -26,7 +26,7 @@ const WrappedArtists = () => {
         const fetchTopArtists = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get("http://127.0.0.1:8000/api/top-artists/", {
+                const response = await axios.get("https://secondproject-8lyv.onrender.com/api/top-artists/", {
                     headers: {
                         'Authorization': `Token ${token}`,
                         'Content-Type': 'application/json',

@@ -1,42 +1,98 @@
 export const listeningPersonalities = [
     {
-        name: "The Adventurer",
-        color: "#F02222",
-        description: "You’re always looking for more—venturing your way through undiscovered artists, genres, and tracks. While everyone else floats in the mainstream, you’re out exploring anything and everything."
+        "name": "The Adventurer",
+        "color": "red",
+        "description": "You're a musical explorer, always seeking fresh and unique sounds. Your playlists are filled with emerging artists and experimental tracks that push boundaries.",
+        "shorthand": "ENVU"
     },
     {
-        name: "The Replayer",
-        color: "yellow",
-        description: "Your favorite songs are on repeat constantly. You find comfort in the familiar, and once you find a track you love, it’s hard to let it go."
+        "name": "The Trendsetter",
+        "color": "blue",
+        "description": "You stay ahead of the curve, discovering new music before it hits the mainstream. Your playlists are a perfect blend of fresh hits and upcoming tracks.",
+        "shorthand": "ENVC"
     },
     {
-        name: "The Deep Diver",
-        color: "darkblue",
-        description: "You listen to full albums a lot and enjoy delving deep into an artist’s discography. You find beauty in the complete story an album tells."
+        "name": "The Heritage Hunter",
+        "color": "purple",
+        "description": "You value musical history and love discovering hidden gems from the past. Your playlists are a diverse collection of timeless tracks from various artists.",
+        "shorthand": "FTVU"
     },
     {
-        name: "The Trendcaster",
-        color: "orange",
-        description: "You’re always tuned into the newest releases, staying on top of the trends. Your playlists are filled with the latest and freshest tracks."
+        "name": "The Loyalist",
+        "color": "green",
+        "description": "You form deep connections with your favorite current artists, diving into their complete discographies. Your dedication shows in carefully curated playlists.",
+        "shorthand": "FNLU"
     },
     {
-        name: "The Underground Aficionado",
-        color: "purple",
-        description: "You’re always exploring new, underground artists that most people haven’t heard of. You’re the friend who introduces everyone to the next big thing."
+        "name": "The Modern Explorer",
+        "color": "yellow",
+        "description": "You're drawn to contemporary music while keeping an open mind to different artists. Your playlists showcase a dynamic range of current sounds.",
+        "shorthand": "FNLV"
     },
     {
-        name: "The Storyteller",
-        color: "green",
-        description: "You enjoy music that tells a story and appreciate songs with lyrical depth. For you, each track is a narrative waiting to be uncovered."
+        "name": "The Classic Curator",
+        "color": "gold",
+        "description": "You appreciate timeless music that has stood the test of time. Your playlists are a carefully selected collection of beloved classics.",
+        "shorthand": "FTLC"
     },
     {
-        name: "The Fanclub President",
-        color: "pink",
-        description: "You have one artist you listen to religiously. Every album, every song, every hidden track—you know it all and can’t get enough of it."
+        "name": "The Indie Soul",
+        "color": "orange",
+        "description": "You have an ear for underground classics and hidden treasures. Your playlists are full of unique discoveries from the past.",
+        "shorthand": "ETLU"
     },
     {
-        name: "The Time Traveler",
-        color: "lightblue",
-        description: "You love going back to the past’s top hits and rediscovering artists who have stood the test of time. Nostalgia is a big part of your listening experience."
+        "name": "The Dedicated Fan",
+        "color": "pink",
+        "description": "You're deeply committed to your favorite mainstream artists. Your playlists reflect your loyalty to popular contemporary musicians.",
+        "shorthand": "FNLC"
+    },
+    {
+        "name": "The Time Capsule",
+        "color": "teal",
+        "description": "You explore well-known artists from different eras. Your playlists are like a musical time machine of diverse classic hits.",
+        "shorthand": "ETVC"
+    },
+    {
+        "name": "The Vintage Virtuoso",
+        "color": "brown",
+        "description": "You're passionate about exploring diverse artists from past eras. Your playlists tell rich stories through varied classic tracks.",
+        "shorthand": "ETVU"
+    },
+    {
+        "name": "The Mainstream Mix",
+        "color": "violet",
+        "description": "You enjoy exploring popular contemporary artists. Your playlists blend different chart-topping sounds and styles.",
+        "shorthand": "FNVC"
+    },
+    {
+        "name": "The Classic Wanderer",
+        "color": "coral",
+        "description": "You love discovering different artists from previous eras. Your playlists journey through time with varied classic sounds.",
+        "shorthand": "FTLV"
+    },
+    {
+        "name": "The Retro Enthusiast",
+        "color": "indigo",
+        "description": "You appreciate mainstream classics from the past. Your playlists celebrate the most beloved tracks of previous generations.",
+        "shorthand": "ETLC"
+    },
+    {
+        "name": "The New Wave Popular",
+        "color": "lime",
+        "description": "You stay current with popular new music while exploring fresh artists. Your playlists capture the zeitgeist of today's mainstream.",
+        "shorthand": "ENLC"
+    },
+    {
+        "name": "The Legacy Loyalist",
+        "color": "magenta",
+        "description": "You're dedicated to classic artists while enjoying their diverse catalogs. Your playlists show deep appreciation for musical heritage.",
+        "shorthand": "FTVL"
+    },
+    {
+        "name": "The Niche Navigator",
+        "color": "darkgreen",
+        "description": "You have a keen ear for unique current artists. Your playlists reveal your appreciation for distinctive contemporary sounds.",
+        "shorthand": "FNVU"
     }
 ];
