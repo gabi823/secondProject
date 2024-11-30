@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
 import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 import emailjs from '@emailjs/browser';
 import "./aboutUs.css";
@@ -48,8 +47,7 @@ const AboutUs = () => {
   return (
       <>
         <NavBarLoggedIn />
-        <Container>
-          <h className="message">We hope you enjoyed Nostalgify! 🎵</h>
+          <h1 className="message">We hope you enjoyed Nostalgify! 🎵</h1>
           <p className="link-message">
             Click <a href="https://group22project.weebly.com" target="_blank" rel="noopener noreferrer" className="link">here</a> to
             learn more about our team + our process behind this web app!
@@ -79,7 +77,6 @@ const AboutUs = () => {
             ></textarea>
             <button type="submit" className="feedback-button">Send Feedback</button>
           </form>
-        </Container>
       </>
 
   );

@@ -1,12 +1,11 @@
 .feedback-container {
     max-width: 400px;
-    margin: 20px auto;
+    margin: 40px auto;
     border:  1px solid black;
     border-radius: 20px;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 30px 65px;
-    margin-top: -23px;
 }
 .link {
     color:black;
@@ -14,7 +13,9 @@
 }
 
 .link-message {
-    margin-bottom: 40px;
+    margin-top: -22px; /* Add space above */
+    margin-bottom: 5px; /* Add space below */
+    text-align: center;
 }
 
 
@@ -41,7 +42,13 @@
 }
 .message {
     font-size: 30px;
-    margin-top: -170px;
+    text-align: center;
+    display: block; /* Ensures it behaves as a block element */
+    width: 100%; /* Full width */
+    margin: 40px 0; /* Adds vertical spacing */
+    padding: 0;
+    font-family: Manrope;
+
 }
 
 textarea.form-input {
@@ -72,7 +79,7 @@ textarea.form-input {
 
 @media (max-width: 393px) {
     .feedback-container {
-        max-width: 100%;
+        max-width: 80%;
         padding: 20px;  /* Reduced padding for small screens */
         margin-top: 0;  /* Adjust margin-top for better alignment */
     }
@@ -86,22 +93,25 @@ textarea.form-input {
     }
 
     .feedback-button {
-        width: 100%;  /* Make the button full width */
-        margin-left: 0;  /* Remove left margin */
+        width: 60%;  /* Make the button full width */ /* Remove left margin */
         font-size: 14px;  /* Adjust font size for button */
+        margin-left: 65px;
     }
 
     .link-message {
-        margin-bottom: 20px;  /* Reduce space below link message */
+        margin-top: 70px;
+        margin-bottom: 30px;  /* Reduce space below link message */
         text-align: center;
     }
 
     .form-message {
         padding-left: 30px;  /* Adjust padding for smaller screens */
     }
-
     .message {
-        font-size: 24px;  /* Adjust font size for smaller screens */
-        margin-top: -210px;  /* Adjust margin for message */
+        font-size: 22px;  /* Adjust font size for smaller screens */
+        text-align: center;
+        width: 100%;
+        margin-top: 60px;
+        margin-bottom: -40px;
     }
 }
