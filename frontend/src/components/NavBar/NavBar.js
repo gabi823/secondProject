@@ -41,7 +41,7 @@ const NavBar = () => {
             <div className={`navbar-links ${menuOpen ? "open" : ""}`}>
                 <Link to="/login" className="navbar-link">login</Link>
                 <Link to="/createaccount" className="navbar-link">create account</Link>
-                <Link to="/about" className="navbar-link">about us</Link>
+                <Link to="/about" className="navbar-link">contact</Link>
             </div>
 
             {/* Hamburger Icon */}

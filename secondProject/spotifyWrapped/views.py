@@ -1,4 +1,6 @@
 from datetime import timedelta
+
+from django.contrib.auth.hashers import check_password
 from django.utils import timezone
 from collections import Counter
 import json
@@ -7,7 +9,7 @@ import requests
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import JsonResponse
-from django.contrib.auth import authenticate, login as auth_login, logout
+from django.contrib.auth import authenticate, login as auth_login, logout, update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -283,6 +285,7 @@ def unlink_spotify(request):
     if spotify_profile:
         spotify_profile.access_token = None
         spotify_profile.refresh_token = None
+        spotify_profile.spotify_username = None
         spotify_profile.save()
         return Response({"message": "Spotify account unlinked successfully"}, status=status.HTTP_200_OK)
     return Response({"error": "Spotify profile not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -334,6 +337,14 @@ def check_login(request):
             "token": token.key
         }, status=200)
     return JsonResponse({"isLoggedIn": False}, status=200)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_spotify_info(request):
+    spotify_profile = getattr(request.user, 'spotify_profile', None)
+    if spotify_profile and spotify_profile.spotify_username:
+        return Response({"spotify_username": spotify_profile.spotify_username}, status=status.HTTP_200_OK)
+    return Response({"message": "No Spotify account linked"}, status=status.HTTP_404_NOT_FOUND)
 
 
 # --- Artist and React Data Views ---
@@ -558,35 +569,7 @@ def profile_page(request):
 
     return render(request, 'profile.html', context)
 
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
-def update_username(request):
-    """Update the username of the authenticated user."""
-    user = request.user
-    new_username = request.data.get("username")
 
-    if not new_username:
-        return Response({"error": "Username is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-    user.username = new_username
-    user.save()
-    return Response({"message": "Username updated successfully"}, status=status.HTTP_200_OK)
-
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
-def update_email(request):
-    """Update the email of the authenticated user."""
-    user = request.user
-    new_email = request.data.get("email")
-
-    if not new_email:
-        return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-    user.email = new_email
-    user.save()
-    return Response({"message": "Email updated successfully"}, status=status.HTTP_200_OK)
-
-    return render(request, 'profile.html', context)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -616,15 +599,56 @@ def get_profile(request):
 @permission_classes([IsAuthenticated])
 def delete_account(request):
     try:
+        # Debug: Log the request details
+        print("Incoming Request:")
+        print(f"Headers: {request.headers}")
+        print(f"User: {request.user}")
+        print(f"Authenticated: {request.user.is_authenticated}")
+
+        if not request.user.is_authenticated:
+            print("Error: User is not authenticated")  # Debug: Log auth issue
+            return Response({"error": "User is not authenticated"}, status=403)
+
+        # Delete the user
         user = request.user
+        print(f"Deleting user: {user}")  # Debug: Log user deletion
         user.delete()
-        return Response({"message": "Account deleted successfully"}, status=status.HTTP_200_OK)
+
+        print("Account deleted successfully")  # Debug: Confirm success
+        return Response({"message": "Account deleted successfully"}, status=200)
     except Exception as e:
-        print(f"Error deleting account: {str(e)}")  # Debug print
+        # Debug: Log any errors
+        print(f"Error deleting account: {str(e)}")
         return Response(
-            {"error": "Failed to delete account"},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            {"error": f"Failed to delete account: {str(e)}"},
+            status=500
         )
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    user = request.user
+    data = request.data
+
+    old_password = data.get('old_password')
+    new_password = data.get('new_password')
+
+    if not old_password or not new_password:
+        return Response({"error": "Old and new passwords are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    if not check_password(old_password, user.password):
+        return Response({"error": "Incorrect old password."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Change the password
+    user.set_password(new_password)
+    user.save()
+
+    # Update the session to prevent logout
+    update_session_auth_hash(request, user)
+
+    return Response({"message": "Password updated successfully."}, status=status.HTTP_200_OK)
+
 
 import requests
 import os
@@ -1057,8 +1081,7 @@ def get_user_top_albums(request):
             {"error": "An unexpected error occurred"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
-
-
+      
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_listening_personality(request):

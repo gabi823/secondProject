@@ -37,10 +37,8 @@ urlpatterns = [
     path('spotify/profile/', views.profile_page, name='profile_page'),
     path('spotify/logout/', views.logout_view, name='spotify_logout'),
     path('api/profile/', views.get_profile, name='get_profile'),
-    path('api/update-username/', views.update_username, name='update_username'),
-    path('api/update-email/', views.update_email, name='update_email'),
     path('api/logout/', views.logout_view, name='logout_view'),
-    path('delete_account/', views.delete_account, name='delete_account'),
+    path('api/delete_account/', views.delete_account, name='delete_account'),
 
     path('api/create-wrapped/', views.create_wrapped, name='create_wrapped'),
     path('api/get-wrapped-data/', views.get_wrapped_data, name='get_wrapped_data'),
@@ -54,9 +52,12 @@ urlpatterns = [
     path('api/check-spotify-link/', views.check_spotify_link, name='check_spotify_link'),
 
     # Spotify Data and Wraps
-    path('unlink_spotify/', views.unlink_spotify, name='unlink_spotify'),
+    path('api/unlink_spotify/', views.unlink_spotify, name='unlink_spotify'),
     path('spotify/data', views.spotify_data, name='spotify_data'),
-    path('spotify/delete_wrap/<int:wrap_id>/', views.delete_wrap, name='delete_wrap'),
+    path('api/spotify/delete_wrap/<int:wrap_id>/', views.delete_wrap, name='delete_wrap'),
+    path('api/get_spotify_info/', views.get_spotify_info, name='get_spotify_info'),
+
+
     # Endpoint to fetch and update all Spotify data at once
     path('api/update_spotify_data/', views.update_all_spotify_data, name='update_spotify_data'),
     path('api/fetch-playlist-images/', fetch_playlist_images, name='fetch_playlist_images'),
@@ -71,6 +72,9 @@ urlpatterns = [
     path('about/', ReactAppView.as_view(), name='about'),
 
     path('api/check-login/', views.check_login, name='check_login'),
+
+    path('api/change_password/', change_password, name='change_password'),
+
 
     re_path(r'^.*$', ReactAppView.as_view(), name='react_catch_all'),
 

@@ -153,7 +153,7 @@ const Selection = () => {
                     <div className="loading-container">
                         <div className="loading-spinner">
                             {/* Add spinner or loading animation here if needed */}
-                            Loading images...
+
                         </div>
                     </div>
                 )}

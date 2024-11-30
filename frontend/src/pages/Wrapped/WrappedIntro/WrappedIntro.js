@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import './WrappedIntro.css'; // Import the CSS file
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import DarkModeToggle from '../../../components/DarkModeToggle/DarkModeToggle';
 
 
 const WrappedIntro = () => {
@@ -99,6 +100,8 @@ const WrappedIntro = () => {
                     </div>
                     <Link to="/top-songs" className="begin-button">Begin</Link>
                 </motion.div>
+            <DarkModeToggle />
+
         </>
     );
 };
