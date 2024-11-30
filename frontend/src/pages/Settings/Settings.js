@@ -80,6 +80,48 @@ const Settings = () => {
     }
 };
 
+    const handleChangePassword = async () => {
+    const oldPassword = prompt("Enter your current password:");
+    const newPassword = prompt("Enter your new password:");
+    const confirmPassword = prompt("Confirm your new password:");
+
+    if (newPassword !== confirmPassword) {
+        alert("Passwords do not match. Please try again.");
+        return;
+    }
+
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('No token found. Please log in again.');
+            return;
+        }
+
+        const response = await fetch('https://secondproject-8lyv.onrender.com/api/change_password/', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Token ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                old_password: oldPassword,
+                new_password: newPassword,
+            }),
+        });
+
+        if (response.ok) {
+            alert("Password changed successfully!");
+        } else {
+            const data = await response.json();
+            alert(`Password change failed: ${data.error || response.statusText}`);
+        }
+    } catch (error) {
+        console.error("Error changing password:", error);
+        alert("Failed to change password. Please try again.");
+    }
+};
+
+
 
 
     return (
@@ -117,7 +159,7 @@ const Settings = () => {
                         <div className="settings-section">
                             <h2>Password</h2>
                             <p>Change your nostalgify account password.</p>
-                            <button className="password-button">CHANGE</button>
+                            <button className="password-button" onClick={handleChangePassword}>CHANGE</button>
                         </div>
                     </motion.div>
 
