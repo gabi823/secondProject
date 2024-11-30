@@ -39,6 +39,59 @@ const Settings = () => {
         visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
     };
 
+    const handleUnlinkSpotify = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('https://secondproject-8lyv.onrender.com/api/unlink_spotify/', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Token ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            alert('Spotify account unlinked successfully!');
+            setSpotifyUsername(null); // Reset the displayed Spotify username
+        } else {
+            const data = await response.json();
+            alert(`Failed to unlink Spotify: ${data.error || response.statusText}`);
+        }
+    } catch (error) {
+        console.error('Error unlinking Spotify account:', error);
+        alert('Failed to unlink Spotify account. Please try again.');
+    }
+};
+
+const handleLinkSpotify = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('https://secondproject-8lyv.onrender.com/api/spotify/login/', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Token ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            if (data.auth_url) {
+                window.location.href = data.auth_url; // Redirect to Spotify login
+            } else {
+                alert('Failed to retrieve Spotify login URL.');
+            }
+        } else {
+            const errorData = await response.json();
+            alert(`Error initiating Spotify login: ${errorData.error || response.statusText}`);
+        }
+    } catch (error) {
+        console.error('Error initiating Spotify login:', error);
+        alert('Failed to initiate Spotify login. Please try again.');
+    }
+};
+
+
     const handleLogout = async () => {
         setIsLoading(true);
         try {
@@ -174,8 +227,18 @@ const Settings = () => {
                         <h2>Spotify Account</h2>
                         <p>The Spotify account you’re signed in with.</p>
                         <div className="settings-info-container">
-                            <span className="settings-username">{spotifyUsername}</span>
-                            <button className="change-button">CHANGE</button>
+                                {spotifyUsername ? (
+                                    <>
+                                        <span className="settings-username">{spotifyUsername}</span>
+                                        <button className="change-button" onClick={handleUnlinkSpotify}>
+                                            UNLINK
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button className="change-button" onClick={handleLinkSpotify}>
+                                        LINK SPOTIFY
+                                    </button>
+                                )}
                         </div>
                     </motion.div>
 
