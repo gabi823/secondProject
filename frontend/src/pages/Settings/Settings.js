@@ -149,7 +149,7 @@ const Settings = () => {
                         <h2>Spotify Account</h2>
                         <p>The Spotify account you’re signed in with.</p>
                         <div className="settings-info-container">
-                            <span className="settings-username">your_username</span>
+                            <span className="settings-username">{spotifyUsername}</span>
                             <button className="change-button">CHANGE</button>
                         </div>
                     </motion.div>
