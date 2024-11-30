@@ -16,6 +16,7 @@ import WrappedAlbums from "./pages/Wrapped/WrappedAlbums/WrappedAlbums";
 import WrappedPersonality from "./pages/Wrapped/WrappedPersonality/WrappedPersonality";
 import WrappedPlaylist from "./pages/Wrapped/WrappedPlaylist/WrappedPlaylist";
 import WrappedSummary from "./pages/Wrapped/WrappedSummary/WrappedSummary";
+import AboutUs from './pages/AboutUs/aboutUs.js';
 
 
 
@@ -29,6 +30,7 @@ const App = () => {
                 <Route path="/selectionscreen" element={<Selection />}></Route>
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/createaccount" element={<CreateAccount />}></Route>
+                <Route path="/about" element={<AboutUs />}></Route>
 
                 <Route path="/wrapped-intro" element={<WrappedIntro />}></Route>
                 <Route path="/top-songs" element={<WrappedSongs />}></Route>
