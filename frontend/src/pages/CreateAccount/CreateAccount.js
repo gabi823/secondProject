@@ -25,8 +25,8 @@ const CreateAccount = () => {
             try {
                 console.log('Fetching Spotify credentials...');
                 const response = await axios.get('https://secondproject-8lyv.onrender.com/api/spotify-credentials/');
-                console.log("response.code", response.code)
-                console.log('Received credentials:', response.data);  // Add this
+                console.log("Response code:", response.status);
+                console.log('Received credentials:', response.data); // Log received data
                 setSpotifyClientId(response.data.client_id);
                 setSpotifyRedirectUri(response.data.redirect_uri);
 
@@ -37,7 +37,24 @@ const CreateAccount = () => {
             }
         };
 
+        const fetchImages = async () => {
+            try {
+                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/fetch-playlist-images/');
+                const images = response.data.images;
+
+                // Divide images into two rows and duplicate for smooth infinite scrolling
+                const topImages = images.slice(0, 10);
+                const bottomImages = images.slice(10, 20);
+
+                setTopRowImages([...topImages, ...topImages]); // Duplicate for continuous scrolling
+                setBottomRowImages([...bottomImages, ...bottomImages]);
+            } catch (error) {
+                console.error('Error fetching images:', error);
+            }
+        };
+
         fetchSpotifyCredentials();
+        fetchImages();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -56,7 +73,6 @@ const CreateAccount = () => {
             localStorage.setItem('token', response.data.token);
 
             navigate('/profile');
-
         } catch (error) {
             if (error.response && error.response.data) {
                 setMessage(Object.values(error.response.data).join(', '));
@@ -64,27 +80,7 @@ const CreateAccount = () => {
                 setMessage('Account creation failed. Please try again.');
             }
         }
-    }
-
-     useEffect(() => {
-        const fetchImages = async () => {
-            try {
-                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/fetch-playlist-images/');
-                const images = response.data.images;
-
-                // Divide images into two rows and duplicate for smooth infinite scrolling
-                const topImages = images.slice(0, 10);
-                const bottomImages = images.slice(10, 20);
-
-                setTopRowImages([...topImages, ...topImages]);  // Duplicate for continuous scrolling
-                setBottomRowImages([...bottomImages, ...bottomImages]);
-            } catch (error) {
-                console.error('Error fetching images:', error);
-            }
-        };
-
-        fetchImages();
-    }, []);
+    };
 
     // Framer Motion animation settings
     const fadeUpVariants = {
