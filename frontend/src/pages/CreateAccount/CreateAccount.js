@@ -10,13 +10,9 @@ const CreateAccount = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [topRowImages, setTopRowImages] = useState([]);
-    const [bottomRowImages, setBottomRowImages] = useState([]);
     const [spotifyClientId, setSpotifyClientId] = useState('');
     const [spotifyRedirectUri, setSpotifyRedirectUri] = useState('');
     const [message, setMessage] = useState('');
-    const [imagesLoaded, setImagesLoaded] = useState(false);
-    const [fetchError, setFetchError] = useState('');
     const navigate = useNavigate();
 
     // Fetch Spotify credentials from backend
@@ -37,24 +33,7 @@ const CreateAccount = () => {
             }
         };
 
-        const fetchImages = async () => {
-            try {
-                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/fetch-playlist-images/');
-                const images = response.data.images;
-
-                // Divide images into two rows and duplicate for smooth infinite scrolling
-                const topImages = images.slice(0, 10);
-                const bottomImages = images.slice(10, 20);
-
-                setTopRowImages([...topImages, ...topImages]); // Duplicate for continuous scrolling
-                setBottomRowImages([...bottomImages, ...bottomImages]);
-            } catch (error) {
-                console.error('Error fetching images:', error);
-            }
-        };
-
         fetchSpotifyCredentials();
-        fetchImages();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -91,52 +70,6 @@ const CreateAccount = () => {
     return (
         <>
             <NavBar/>
-            <motion.div
-                className="images-container"
-                initial="hidden" // Fixed typo
-                animate="visible" // Corrected spelling
-                variants={fadeUpVariants}
-            >
-                {fetchError && <p className="fetch-error">{fetchError}</p>}
-                {imagesLoaded ? (
-                    <>
-                        <div className="images-row images-row-top">
-                            {topRowImages.map((src, index) => (
-                                <motion.img
-                                    key={index}
-                                    className="carousel-image"
-                                    src={src}
-                                    alt={`Top image ${index + 1}`}
-                                    initial="hidden"
-                                    animate="visible"
-                                    variants={fadeUpVariants}
-                                />
-                            ))}
-                        </div>
-                        <div className="images-row images-row-bottom">
-                            {bottomRowImages
-                                .slice()
-                                .reverse()
-                                .map((src, index) => (
-                                    <motion.img
-                                        key={index}
-                                        className="carousel-image"
-                                        src={src}
-                                        alt={`Bottom image ${index + 1}`}
-                                        initial="hidden"
-                                        animate="visible"
-                                        variants={fadeUpVariants}
-                                    />
-                                ))}
-                        </div>
-                    </>
-                ) : (
-                    <div className="loading-container">
-                        <div className="loading-spinner"></div>
-                    </div>
-                )}
-            </motion.div>
-
             <motion.div
                 className="create-account-container"
                 initial="hidden"
