@@ -40,26 +40,35 @@ const Settings = () => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('No authentication token found');
+                console.error('No authentication token found');
+                alert('No token found. Please log in again.');
+                return;
             }
+            console.log('Token:', token); // Debug: Log the token
 
-            const response = await fetch('https://secondproject-8lyv.onrender.com/api/delete_account/', {
+            const url = 'https://secondproject-8lyv.onrender.com/api/delete_account/';
+            console.log('Request URL:', url); // Debug: Log the request URL
+
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Token ${token}`, // Correctly include the token here
-                    'Content-Type': 'application/json', // Specify JSON content
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json',
                 },
-                credentials: 'include', // Include credentials for cross-origin requests
-                mode: 'cors', // Explicitly enable CORS mode
+                credentials: 'include', // Ensure cookies/credentials are included
+                mode: 'cors',
             });
 
+            console.log('Response status:', response.status); // Debug: Log response status
+            const responseData = await response.json();
+            console.log('Response data:', responseData); // Debug: Log response body
+
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error('Delete failed:', errorText);
+                console.error('Delete failed:', responseData);
                 throw new Error(`Delete failed: ${response.status}`);
             }
 
-            // Clear local storage and redirect to the homepage after success
+            // Success: Clear local storage and redirect
             localStorage.removeItem('token');
             window.location.href = '/';
         } catch (error) {
@@ -70,6 +79,7 @@ const Settings = () => {
         }
     }
 };
+
 
 
     return (

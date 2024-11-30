@@ -614,15 +614,31 @@ def get_profile(request):
 @permission_classes([IsAuthenticated])
 def delete_account(request):
     try:
+        # Debug: Log the request details
+        print("Incoming Request:")
+        print(f"Headers: {request.headers}")
+        print(f"User: {request.user}")
+        print(f"Authenticated: {request.user.is_authenticated}")
+
+        if not request.user.is_authenticated:
+            print("Error: User is not authenticated")  # Debug: Log auth issue
+            return Response({"error": "User is not authenticated"}, status=403)
+
+        # Delete the user
         user = request.user
+        print(f"Deleting user: {user}")  # Debug: Log user deletion
         user.delete()
-        return Response({"message": "Account deleted successfully"}, status=status.HTTP_200_OK)
+
+        print("Account deleted successfully")  # Debug: Confirm success
+        return Response({"message": "Account deleted successfully"}, status=200)
     except Exception as e:
-        print(f"Error deleting account: {str(e)}")  # Debug print
+        # Debug: Log any errors
+        print(f"Error deleting account: {str(e)}")
         return Response(
-            {"error": "Failed to delete account"},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            {"error": f"Failed to delete account: {str(e)}"},
+            status=500
         )
+
 
 import requests
 import os
