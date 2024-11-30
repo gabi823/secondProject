@@ -88,6 +88,7 @@ const AboutUs = () => {
   return (
       <>
         {isLoggedIn ? <NavBarLoggedIn /> : <NavBar />}
+          <div className='wrapper'>
           <h1 className="message">We hope you enjoyed Nostalgify! 🎵</h1>
           <p className="link-message">
             Click <a href="https://group22project.weebly.com" target="_blank" rel="noopener noreferrer" className="link">here</a> to
@@ -118,6 +119,7 @@ const AboutUs = () => {
             ></textarea>
             <button type="submit" className="feedback-button">Send Feedback</button>
           </form>
+          </div>
       </>
 
   );
