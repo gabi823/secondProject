@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 import { Link } from "react-router-dom";
 import { motion } from 'framer-motion';
@@ -7,6 +7,31 @@ import "./Settings.css";
 const Settings = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [spotifyUsername, setSpotifyUsername] = useState(null);
+
+    useEffect(() => {
+    const fetchSpotifyInfo = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch('https://secondproject-8lyv.onrender.com/api/get_spotify_info/', {
+                headers: {
+                    'Authorization': `Token ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setSpotifyUsername(data.spotify_username);
+            } else {
+                setSpotifyUsername(null);
+            }
+        } catch (error) {
+            console.error('Error fetching Spotify info:', error);
+        }
+    };
+
+    fetchSpotifyInfo();
+}, []);
 
     // Animation Variants
     const fadeUpVariants = {
@@ -148,10 +173,38 @@ const Settings = () => {
                     <motion.div className="settings-section" variants={fadeUpVariants}>
                         <h2>Spotify Account</h2>
                         <p>The Spotify account you’re signed in with.</p>
-                        <div className="settings-info-container">
-                            <span className="settings-username">your_username</span>
-                            <button className="change-button">CHANGE</button>
-                        </div>
+                        {spotifyUsername ? (
+        <>
+            <p>{spotifyUsername}</p>
+            <button
+                className="unlink-button"
+                onClick={async () => {
+                    try {
+                        const token = localStorage.getItem('token');
+                        const response = await fetch('https://secondproject-8lyv.onrender.com/api/unlink_spotify/', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Token ${token}`,
+                            },
+                        });
+
+                        if (response.ok) {
+                            alert('Spotify account unlinked successfully!');
+                            setSpotifyUsername(null);
+                        } else {
+                            alert('Failed to unlink Spotify account.');
+                        }
+                    } catch (error) {
+                        console.error('Error unlinking Spotify:', error);
+                    }
+                }}
+            >
+                UNLINK
+            </button>
+        </>
+    ) : (
+        <p>No Spotify account linked. <Link to="/spotify-login">Link Spotify</Link></p>
+    )}
                     </motion.div>
 
 
