@@ -48,7 +48,7 @@ const NavBarLoggedIn = () => {
             {/* Links */}
             <div className="navbar-links">
                 <Link to="/profile" className="navbar-link">profile</Link>
-                <Link to="/about" className="navbar-link">about us</Link>
+                <Link to="/about" className="navbar-link">contact</Link>
             </div>
 
             {/* Mobile Menu */}
