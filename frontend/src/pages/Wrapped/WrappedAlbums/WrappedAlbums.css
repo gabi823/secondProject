@@ -50,8 +50,6 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    border-style: solid;
-    border-width: 2px;
     cursor: pointer;
     transition: opacity 0.3s ease, transform 0.3s ease;
     z-index: 10;
@@ -74,6 +72,8 @@
     font-size: 17px;
     font-family: 'Manrope';
     font-weight: 400;
+    margin-top: 20px;
+
 }
 
 .album-title {
@@ -85,7 +85,7 @@
     transform: translateX(-50%);
     text-align: center;
     color: black;
-    font-size: 40px;
+    font-size: 35px;
     font-family: 'Manrope';
     font-weight: 1000;
 }
@@ -101,7 +101,7 @@
     padding-top: 3px;
     padding-bottom: 3px;
     border-radius: 10px;
-    margin-top: 5px;
+    margin-top: 20px;
 }
 
 .reset-button:hover {
