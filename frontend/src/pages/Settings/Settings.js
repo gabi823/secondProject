@@ -46,11 +46,11 @@ const Settings = () => {
             const response = await fetch('https://secondproject-8lyv.onrender.com/api/delete_account/', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Token ${token}`,
-                    'Content-Type': 'application/json'
+                    'Authorization': `Token ${token}`, // Correctly include the token here
+                    'Content-Type': 'application/json', // Specify JSON content
                 },
-                credentials: 'include',
-                mode: 'cors'  // Add this line explicitly
+                credentials: 'include', // Include credentials for cross-origin requests
+                mode: 'cors', // Explicitly enable CORS mode
             });
 
             if (!response.ok) {
@@ -59,6 +59,7 @@ const Settings = () => {
                 throw new Error(`Delete failed: ${response.status}`);
             }
 
+            // Clear local storage and redirect to the homepage after success
             localStorage.removeItem('token');
             window.location.href = '/';
         } catch (error) {
@@ -69,6 +70,7 @@ const Settings = () => {
         }
     }
 };
+
 
     return (
         <>
