@@ -3,7 +3,6 @@ import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 import NavBar from "../../components/NavBar/NavBar";
 import emailjs from '@emailjs/browser';
 import "./aboutUs.css";
-import NavBar from "../../components/NavBar/NavBar";
 
 const AboutUs = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
