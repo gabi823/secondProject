@@ -283,9 +283,18 @@ def unlink_spotify(request):
     if spotify_profile:
         spotify_profile.access_token = None
         spotify_profile.refresh_token = None
+        spotify_profile.spotify_username = None
         spotify_profile.save()
         return Response({"message": "Spotify account unlinked successfully"}, status=status.HTTP_200_OK)
     return Response({"error": "Spotify profile not found"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_spotify_info(request):
+    spotify_profile = getattr(request.user, 'spotify_profile', None)
+    if spotify_profile and spotify_profile.spotify_username:
+        return Response({"spotify_username": spotify_profile.spotify_username}, status=status.HTTP_200_OK)
+    return Response({"message": "No Spotify account linked"}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET'])
