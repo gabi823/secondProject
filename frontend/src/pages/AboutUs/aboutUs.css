@@ -24,14 +24,14 @@
     padding-left:80px;
 }
 
-.form-label {
+.form-label1 {
     font-size: 16px;
     margin-bottom: 8px;
     margin-top: 16px;
     align-items: center;
 }
 
-.form-input {
+.form-input1 {
     width: 100%;
     padding: 10px;
     margin-bottom: 9px;
@@ -84,11 +84,11 @@ textarea.form-input {
         margin-top: 0;  /* Adjust margin-top for better alignment */
     }
 
-    .form-label {
+    .form-label1 {
         font-size: 14px;  /* Adjust font size for smaller screens */
     }
 
-    .form-input {
+    .form-input1 {
         font-size: 14px;  /* Adjust font size for input fields */
     }
 

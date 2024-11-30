@@ -55,24 +55,24 @@ const AboutUs = () => {
 
           <form className="feedback-container" onSubmit={handleSubmit}>
             <p className="form-message">Got any Feedback? Let us know!</p>
-            <div className="form-label">Your Name:</div>
+            <div className="form-label1">Your Name:</div>
             <input
                 type="text"
                 name="name"
-                className="form-input"
+                className="form-input1"
                 required
             />
-            <div className="form-label">Your Email:</div>
+            <div className="form-label1">Your Email:</div>
             <input
                 type="email"
                 name="email"
-                className="form-input"
+                className="form-input1"
                 required
             />
-            <div className="form-label">Your Feedback:</div>
+            <div className="form-label1">Your Feedback:</div>
             <textarea
                 name="message"
-                className="form-input"
+                className="form-input1"
                 required
             ></textarea>
             <button type="submit" className="feedback-button">Send Feedback</button>
