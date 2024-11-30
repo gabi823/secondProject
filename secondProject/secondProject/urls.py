@@ -51,9 +51,9 @@ urlpatterns = [
     path('api/check-spotify-link/', views.check_spotify_link, name='check_spotify_link'),
 
     # Spotify Data and Wraps
-    path('unlink_spotify/', views.unlink_spotify, name='unlink_spotify'),
+    path('api/unlink_spotify/', views.unlink_spotify, name='unlink_spotify'),
     path('spotify/data', views.spotify_data, name='spotify_data'),
-    path('spotify/delete_wrap/<int:wrap_id>/', views.delete_wrap, name='delete_wrap'),
+    path('api/spotify/delete_wrap/<int:wrap_id>/', views.delete_wrap, name='delete_wrap'),
     path('api/get_spotify_info/', views.get_spotify_info, name='get_spotify_info'),
 
 
