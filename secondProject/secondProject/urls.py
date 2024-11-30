@@ -37,7 +37,7 @@ urlpatterns = [
     path('spotify/logout/', views.logout_view, name='spotify_logout'),
     path('api/profile/', views.get_profile, name='get_profile'),
     path('api/logout/', views.logout_view, name='logout_view'),
-    path('delete_account/', views.delete_account, name='delete_account'),
+    path('api/delete_account/', views.delete_account, name='delete_account'),
 
     path('api/create-wrapped/', views.create_wrapped, name='create_wrapped'),
     path('api/get-wrapped-data/', views.get_wrapped_data, name='get_wrapped_data'),
