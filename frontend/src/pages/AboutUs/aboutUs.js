@@ -4,6 +4,8 @@ import NavBar from "../../components/NavBar/NavBar";
 import emailjs from '@emailjs/browser';
 import "./aboutUs.css";
 import axios from "axios";
+import { motion } from 'framer-motion';
+
 
 const AboutUs = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -85,10 +87,17 @@ const AboutUs = () => {
 });
   };
 
+
+  // Framer Motion animation settings
+    const fadeUpVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    };
+
   return (
       <>
         {isLoggedIn ? <NavBarLoggedIn /> : <NavBar />}
-          <div className='wrapper'>
+          <motion.div className='wrapper' initial="hidden" animate="visible" variants={fadeUpVariants}>
           <h1 className="message">We hope you enjoyed Nostalgify! 🎵</h1>
           <p className="link-message">
             Click <a href="https://group22project.weebly.com" target="_blank" rel="noopener noreferrer" className="link">here</a> to
@@ -119,7 +128,7 @@ const AboutUs = () => {
             ></textarea>
             <button type="submit" className="feedback-button">Send Feedback</button>
           </form>
-          </div>
+          </motion.div>
       </>
 
   );
