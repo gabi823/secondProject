@@ -1,26 +1,56 @@
 import './ProfileWrapped.css';
+import React, { useState } from "react";
 
-const ProfileWrapped = () => {
+const ProfileWrapped = ({ albumCoverUrl, wrappedName, dateCreated, onDelete }) => {
+    const [showConfirmation, setShowConfirmation] = useState(false);
+
+    const handleDeleteClick = () => {
+        setShowConfirmation(true);
+    };
+
+    const confirmDelete = () => {
+        onDelete();
+        setShowConfirmation(false); // Close the confirmation modal after deletion
+    };
+
+    const cancelDelete = () => {
+        setShowConfirmation(false);
+    };
+
     return (
         <>
         <div className="wrapped-section">
             <img
-                src="https://via.placeholder.com/160x160"
-                alt="Wrapped Image"
+                src={albumCoverUrl || "https://via.placeholder.com/160x160"}
+                alt={`Wrapped #${wrappedName}`}
                 className="wrapped-image"
             />
             <div className="wrapped-title">
-                Your Wrapped #1<br/>
-                <span className="wrapped-date">Date Created: 2024-10-9</span>
+                {wrappedName}
+                <br/>
+                <span className="wrapped-date">Date Created: {dateCreated}</span>
             </div>
 
-            <span className="delete">&times;</span>
+            <span className="delete" onClick={handleDeleteClick}>&times;</span>
 
         </div>
-        <hr className="divider"/>
+        <hr className="divider" />
+
+        {showConfirmation && (
+                <div className="confirmation-modal">
+                    <div className="modal-content">
+                        <p>Are you sure you want to delete this Wrap?</p>
+                        <button className="confirm-button" onClick={confirmDelete}>
+                            Yes
+                        </button>
+                        <button className="cancel-button" onClick={cancelDelete}>
+                            No
+                        </button>
+                    </div>
+                </div>
+            )}
         </>
     );
 };
 
 export default ProfileWrapped;
-

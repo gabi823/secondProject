@@ -113,6 +113,76 @@
     justify-content: center;
 }
 
+.wrapped-section {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    background: white;
+    transition: background-color 0.2s;  /* Smooth hover effect */
+}
+
+
+.wrapped-section:hover {
+    background-color: #f5f5f5;  /* Light gray background on hover */
+}
+
+.wrapped-img {
+    width: 160px;
+    height: 160px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.wrapped-details {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    margin-left: 20px;
+    flex-grow: 1;
+    position: relative;
+}
+
+.wrapped-details h4 {
+    font-family: Manrope;
+    font-size: 18px;
+    margin: 0 0 10px 0;
+}
+
+.wrapped-details p {
+    font-family: Manrope;
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.wrapped-details button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+}
+
+.delete-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0 10px;
+    margin-left: auto;  /* Push button to the right */
+}
+
+.delete-button:hover {
+    color: #ff0000;  /* Red color on hover */
+}
+
 .create-new-link {
     color: var(--text-color);
     font-size: 30px;
@@ -205,11 +275,16 @@
         flex-direction: column; /* Stack button and text vertically */
         align-items: center; /* Center button and icon */
         gap: 10px; /* Add some spacing */
+        justify-content: center;
+        margin-top: 20px;
     }
 
     .create-new-link, .create-new-icon {
-        font-size: 22px; /* Adjust font size */
-        margin: 0; /* Remove margins */
+        text-decoration: none;
+        color: black;
+        font-family: Manrope;
+        font-size: 24px;
+        font-weight: 500;
     }
 
     .settings-link {

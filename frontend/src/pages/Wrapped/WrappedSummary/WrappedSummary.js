@@ -1,294 +1,154 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './WrappedSummary.css';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import DarkModeToggle from "../../../components/DarkModeToggle/DarkModeToggle";
+import axios from 'axios';
 
-const WrappedSummary = ({ userData = {} }) => {
-  const {
-    title = 'You’ve reached the end...',
-    subtitle = 'Here’s an overview of everything:',
-    topArtist = {
-      rank: 1,
-      name: 'Taylor Swift',
-      image: 'https://via.placeholder.com/231x232',
-    },
-    topSongs = [
-      { title: 'APT.', artist: 'Rose, Bruno Mars' },
-      { title: 'I Love You, I’m Sorry', artist: 'Gracie Abrams' },
-      { title: 'A Bar Song (Tipsy)', artist: 'Shaboozey' },
-      { title: 'Pink Pony Club', artist: 'Chappell Roan' },
-      {
-        title: 'Guess featuring Billie Eilish',
-        artist: 'Charli XCX, Billie Eilish',
-      },
-    ],
-    topGenres = ['Pop', 'Indie Pop', 'Rap', 'K-Pop', 'Rock'],
-    topAlbums = [
-      { title: 'HIT ME HARD AND SOFT', artist: 'Billie Eilish' },
-      { title: 'Short n’ Sweet', artist: 'Sabrina Carpenter' },
-      { title: 'BRAT', artist: 'Charli XCX' },
-      {
-        title: 'The Rise and Fall of a Midwest Princess',
-        artist: 'Chappell Roan',
-      },
-      { title: 'Eternal Sunshine', artist: 'Ariana Grande' },
-    ],
-  } = userData;
+const WrappedSummary = () => {
+  const [topSongs, setTopSongs] = useState([]);
+  const [topGenres, setTopGenres] = useState([]);
+  const [topAlbums, setTopAlbums] = useState([]);
+  const [topArtist, setTopArtist] = useState({ name: '', image_url: '' });
+  const [backgroundImages, setBackgroundImages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { staggerChilden: 0.3, duration: 0.8 },
-    },
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('token');
+      const headers = {
+        Authorization: `Token ${token}`
+      };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
-  };
+      try {
+        // Fetch all required data in parallel
+        const [songsRes, genresRes, albumsRes, artistsRes, playlistImagesRes] = await Promise.all([
+          axios.get('https://secondproject-8lyv.onrender.com/api/top-songs/', { headers }),
+          axios.get('https://secondproject-8lyv.onrender.com/api/top-genres/', { headers }),
+          axios.get('https://secondproject-8lyv.onrender.com/api/top-albums/', { headers }),
+          axios.get('https://secondproject-8lyv.onrender.com/api/top-artists/', { headers }),
+          axios.get('https://secondproject-8lyv.onrender.com/api/fetch-playlist-images/')
+        ]);
 
-  const fadeUpVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
-  };
+        setTopSongs(songsRes.data.top_songs.slice(0, 5));
+        setTopGenres(genresRes.data.top_genres.slice(0, 5));
+        setTopAlbums(albumsRes.data.top_albums.slice(0, 5));
+        setTopArtist({
+          name: artistsRes.data.top_artists[0].name,
+          image_url: artistsRes.data.top_artists[0].image_url
+        });
+        setBackgroundImages(playlistImagesRes.data.images);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Background image rows
+  const renderImageRow = (images, className, duplicates = 2) => (
+    <div className={className}>
+      {[...Array(duplicates)].map((_, i) => (
+        <React.Fragment key={i}>
+          {images.map((image, index) => (
+            <img
+              key={`${i}-${index}`}
+              src={image}
+              alt={`Background ${index + 1}`}
+              className="carousel-image"
+            />
+          ))}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <div className="header">
         <h1 className="header-title"></h1>
-        <Link
-          to="/profile"
-          className="exit-button"
-          onClick={() => console.log('Exit clicked')}
-        >
-          &times;
-        </Link>
+        <Link to="/profile" className="exit-button">&times;</Link>
       </div>
 
       <motion.div
         className="background"
         initial="hidden"
         animate="visible"
-        variants={fadeUpVariants}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { opacity: 1 }
+        }}
       >
-        <div className="image-row-top">
-          {[...Array(2)].map((_, i) => (
-            <React.Fragment key={i}>
-              {Array.from({length: 9}).map((_, index) => (
-                <img
-                  key={index + i * 9}
-                  src="https://via.placeholder.com/161x161"
-                  alt={`Placeholder image ${index + 1 + i * 9}`}
-                  className="carousel-image"
-                />
-              ))}
-            </React.Fragment>
-          ))}
-        </div>
-        <div className="image-row-middle">
-          {[...Array(2)].map((_, i) => (
-            <React.Fragment key={i}>
-              {Array.from({length: 9})
-                .reverse()
-                .map((_, index) => (
-                  <img
-                    key={index + i * 9}
-                    src="https://via.placeholder.com/161x161"
-                    alt={`Placeholder image ${index + 1 + i * 9}`}
-                    className="carousel-image"
-                  />
-                ))}
-            </React.Fragment>
-          ))}
-        </div>
-        <div className="image-row-bottom">
-          {[...Array(2)].map((_, i) => (
-            <React.Fragment key={i}>
-              {Array.from({length: 9}).map((_, index) => (
-                <img
-                  key={index + i * 9}
-                  src="https://via.placeholder.com/161x161"
-                  alt={`Placeholder image ${index + 1 + i * 9}`}
-                  className="carousel-image"
-                />
-              ))}
-            </React.Fragment>
-          ))}
-        </div>
+        {/* Top row - top songs album covers */}
+        {renderImageRow(topSongs.map(song => song.cover_image), 'image-row-top')}
+
+        {/* Middle row - top albums covers */}
+        {renderImageRow(topAlbums.map(album => album.image_url), 'image-row-middle')}
+
+        {/* Bottom row - playlist images */}
+        {renderImageRow(backgroundImages, 'image-row-bottom')}
       </motion.div>
 
-      <motion.div
-        className="container"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.div
-          className="card"
-          variants={itemVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* Title and subtitle */}
-          <motion.div
-            className="title-section"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.h1
-              className="title"
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {title}
-            </motion.h1>
-            <motion.h2
-              className="subtitle"
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {subtitle}
-            </motion.h2>
+      <motion.div className="container">
+        <motion.div className="card">
+          <motion.div className="title-section">
+            <h1 className="title">You've reached the end...</h1>
+            <h2 className="subtitle">Here's an overview of everything:</h2>
           </motion.div>
 
           {/* Top Artist Section */}
-          <motion.div
-            className="top-artist-image-container"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.div
-              className="top-artist-circle"
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <img
-                src={topArtist.image}
-                alt={topArtist.name}
-              />
-            </motion.div>
-          </motion.div>
-          <motion.div
-            className="top-artist-rank"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.h3
-              className="top-artist-rank-number"
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              #{topArtist.rank}
-            </motion.h3>
-            <motion.span
-              className="top-artist-name"
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {' '}
-              {topArtist.name}
-            </motion.span>
-          </motion.div>
+          <div className="top-artist-image-container">
+            <div className="top-artist-circle">
+              <img src={topArtist.image_url} alt={topArtist.name} />
+            </div>
+          </div>
+          <div className="top-artist-rank">
+            <h3 className="top-artist-rank-number">#1</h3>
+            <span className="top-artist-name">{topArtist.name}</span>
+          </div>
 
-          {/* Top Songs Section Title */}
-          <motion.div
-            className="top-songs-section-title"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            Top Songs
-          </motion.div>
+          {/* Section Titles */}
+          <div className="top-songs-section-title">Top Songs</div>
+          <div className="top-genres-section-title">Top Genres</div>
+          <div className="top-albums-section-title">Top Albums</div>
 
-          {/* Top Genres Section Title */}
-          <motion.div
-            className="top-genres-section-title"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            Top Genres
-          </motion.div>
-
-          {/* Top Albums Section Title */}
-          <motion.div
-            className="top-albums-section-title"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            Top Albums
-          </motion.div>
-
-          {/* Dynamic lists for each category */}
-          <motion.div
-            className="top-songs-section"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          {/* Top Songs List */}
+          <div className="top-songs-section">
             {topSongs.map((song, index) => (
               <div key={index} className="top-songs-item">
-                <span className="top-songs-title">
-                  {index + 1}. {song.title}
-                </span>
-                <span className="top-songs-artist">
-                  {song.artist}
-                </span>
+                <span className="top-songs-title">{index + 1}. {song.song_title}</span>
+                <span className="top-songs-artist">{song.artist_name}</span>
               </div>
             ))}
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="top-genres-section"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          {/* Top Genres List */}
+          <div className="top-genres-section">
             {topGenres.map((genre, index) => (
-              <div
-                key={index}
-                className="top-genres-item"
-              >
-                {index + 1}. {genre}
+              <div key={index} className="top-genres-item">
+                {index + 1}. {genre.name}
               </div>
             ))}
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="top-albums-section"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          {/* Top Albums List */}
+          <div className="top-albums-section">
             {topAlbums.map((album, index) => (
               <div key={index} className="top-albums-item">
-                <span className="top-albums-title">
-                  {index + 1}. {album.title}
-                </span>
-                <span className="top-albums-artist">
-                  {album.artist}
-                </span>
+                <span className="top-albums-title">{index + 1}. {album.name}</span>
+                <span className="top-albums-artist">{album.artist}</span>
               </div>
             ))}
-
-            <button
-              className="save-button"
-            >
-              Save to Profile
-            </button>
-          </motion.div>
+            <button className="save-button">Save to Profile</button>
+          </div>
         </motion.div>
       </motion.div>
       <DarkModeToggle />

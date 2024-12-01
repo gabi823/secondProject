@@ -32,6 +32,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from .serializer import UserSerializer
 
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import SpotifyUser
 import urllib.parse
 
@@ -232,6 +235,9 @@ def get_spotify_credentials(request):
 
 class ReactAppView(View):
     def get(self, request, *args, **kwargs):
+        if request.path.startswith('/api/'):
+            return HttpResponse("API endpoint not found.", status=404)
+
         try:
             # Serve the React index.html
             with open(os.path.join(settings.REACT_APP_DIR, 'index.html')) as f:
@@ -353,87 +359,55 @@ def get_spotify_info(request):
 @permission_classes([IsAuthenticated])
 def create_wrapped(request):
     try:
-        print("DEBUG: Request data:", request.data)
-        print("DEBUG: View Permissions:", request.user.is_authenticated)
-        print("DEBUG: Spotify Profile Exists:", hasattr(request.user, 'spotify_profile'))
-
         spotify_user = request.user.spotify_profile
+        name = request.data.get('wrapped_name', 'My Wrapped')
+        time_range = request.data.get('time_range')
 
-        print("DEBUG: Frontend time_range:", request.data.get('time_range'))
+        # Create initial wrapped instance
+        wrapped = SpotifyWrapped.objects.create(
+            user=spotify_user,
+            name=name,
+            time_range=time_range,
+            date_created=timezone.now()
+        )
 
-        # Map frontend time_range values to Spotify's accepted values
-        time_range_mapping = {
-            'short': 'short_term',
-            'medium': 'medium_term',
-            'long': 'long_term',
-            'short_term': 'short_term',
-            'medium_term': 'medium_term',
-            'long_term': 'long_term'
+        # Fetch the user's top track for this time period
+        headers = {'Authorization': f'Bearer {spotify_user.access_token}'}
+        url = f'https://api.spotify.com/v1/me/top/tracks'
+        params = {
+            'time_range': time_range,
+            'limit': 1
         }
 
-        time_range = time_range_mapping.get(request.data.get('time_range'))
-        print("DEBUG: Mapped time_range:", time_range)
-
-        if not time_range:
-            return Response({"error": "time_range is required"}, status=400)
-
-        wrapped_name = request.data.get('wrapped_name', 'My Wrapped')
-
-        headers = {'Authorization': f'Bearer {spotify_user.access_token}'}
-        url = f'https://api.spotify.com/v1/me/top/tracks?time_range={time_range}&limit=1'
-
-        response = requests.get(url, headers=headers)
-        print("DEBUG: Spotify API Response Code:", response.status_code)
-        print("DEBUG: Spotify API Response Body:", response.text)
+        response = requests.get(url, headers=headers, params=params)
 
         if response.status_code == 200:
             data = response.json()
-            top_track = data['items'][0]
-            top_track_name = top_track.get('name', 'Unknown Track')
-            album_cover_url = top_track['album']['images'][0]['url'] if top_track['album']['images'] else ''
+            if data['items']:
+                top_track = data['items'][0]
+                wrapped.top_track_name = top_track.get('name', 'Unknown Track')
+                wrapped.album_cover_url = (
+                    top_track['album']['images'][0]['url']
+                    if top_track['album']['images']
+                    else None
+                )
+                wrapped.save()
 
-            # Debugging parsed fields
-            print("DEBUG: Top Track Name:", top_track['name'])
-            print("DEBUG: Album Cover URL:", top_track['album']['images'][0]['url'])
+        return Response({
+            'id': wrapped.id,
+            'name': wrapped.name,
+            'time_range': wrapped.time_range,
+            'date_created': wrapped.date_created,
+            'top_track_name': wrapped.top_track_name,
+            'album_cover_url': wrapped.album_cover_url
+        }, status=status.HTTP_201_CREATED)
 
-            print("DEBUG: SpotifyWrapped data about to be created:")
-            print({
-                "user": spotify_user,
-                "time_range": time_range,
-                "top_track_name": top_track["name"],
-                "album_cover_url": top_track["album"]["images"][0]["url"] if top_track["album"]["images"] else None,
-                "name": wrapped_name,
-            })
-
-            wrapped = SpotifyWrapped.objects.create(
-                user=spotify_user,
-                name=wrapped_name,
-                time_range=time_range,
-                top_track_name=top_track_name,
-                album_cover_url=album_cover_url,
-            )
-
-            # Serialize and return the created wrapped
-            serializer = SpotifyWrappedSerializer(wrapped)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-            # return Response({
-            #     'id': wrapped.id,
-            #     'time_range': wrapped.time_range,
-            #     'top_track_name': wrapped.top_track_name,
-            #     'album_cover_url': wrapped.album_cover_url,
-            #     'date_created': wrapped.date_created,
-            #     'wrapped_name': wrapped.name
-            # }, status=status.HTTP_201_CREATED)
-        else:
-            return Response({
-                'error': 'Failed to fetch top track from Spotify.',
-                'spotify_error': response.text
-            }, status=response.status_code)
     except Exception as e:
-        # Debugging any errors
-        print("DEBUG: Error creating wrapped:", str(e))
-        return Response({'error': f'An error occurred: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        print(f"Error creating wrapped: {str(e)}")
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 
 @api_view(['GET'])
@@ -755,11 +729,31 @@ def logout_view(request):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_wrap(request, wrap_id):
-    """Deletes a specific Spotify wrap by ID."""
-    user = request.user.spotifyuser
-    user.spotify_wraps = [wrap for wrap in user.spotify_wraps if wrap['id'] != wrap_id]
-    user.save()
-    return Response({"message": "Wrap deleted successfully"}, status=status.HTTP_200_OK)
+    print("DELETE request received")
+    print("Token used:", request.auth)
+    print("Method:", request.method)
+
+    try:
+        # Get the SpotifyUser instance for the current user
+        spotify_user = request.user.spotify_profile
+
+        # Retrieve the SpotifyWrapped instance
+        wrapped = SpotifyWrapped.objects.get(id=wrap_id, user=spotify_user)
+        print("Wrap found:", wrapped)
+
+        # Delete the wrap
+        wrapped.delete()
+        print("Wrap deleted successfully")
+        return Response({"message": "Wrap deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    except SpotifyWrapped.DoesNotExist:
+        print("Wrap not found")
+        return Response({"error": "Wrap not found"}, status=status.HTTP_404_NOT_FOUND)
+    except AttributeError as e:
+        print("SpotifyUser instance not found for this user:", e)
+        return Response({"error": "SpotifyUser instance not found for this user"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print("Unexpected error:", e)
+        return Response({"error": "An unexpected error occurred"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def home_view(request):
     return render(request, 'home.html')
@@ -1217,3 +1211,7 @@ def get_listening_personality(request):
         return Response({
             "error": f"Failed to analyze listening personality: {str(e)}"
         }, status=status.HTTP_400_BAD_REQUEST)
+
+@ensure_csrf_cookie
+def csrf(request):
+    return JsonResponse({"csrfToken": request.META.get("CSRF_COOKIE")})

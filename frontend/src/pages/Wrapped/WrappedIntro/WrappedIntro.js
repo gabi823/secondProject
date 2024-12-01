@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import './WrappedIntro.css'; // Import the CSS file
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import ScrollingSongs from './ScrollingSongs';
 import DarkModeToggle from '../../../components/DarkModeToggle/DarkModeToggle';
 
 
@@ -55,42 +56,7 @@ const WrappedIntro = () => {
                 <Link to="/profile" className="exit-button" onClick={() => console.log("Exit clicked")}>&times;</Link>
             </div>
 
-            <motion.div
-                className="background"
-                initial="hidden"
-                animate="visible"
-                variants={fadeUpVariants}
-            >
-                <div className="image-row-top">
-                    {[...Array(2)].map((_, i) => (
-                        <React.Fragment key={i}>
-                            {Array.from({length: 9}).map((_, index) => (
-                                <img
-                                    key={index + i * 9}
-                                    src="https://via.placeholder.com/161x161"
-                                    alt={`Placeholder image ${index + 1 + i * 9}`}
-                                    className="carousel-image"
-                                />
-                            ))}
-                        </React.Fragment>
-                    ))}
-                </div>
-                <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-                <div className="image-row-bottom">
-                    {[...Array(2)].map((_, i) => (
-                        <React.Fragment key={i}>
-                            {Array.from({length: 9}).map((_, index) => (
-                                <img
-                                    key={index + i * 9}
-                                    src="https://via.placeholder.com/161x161"
-                                    alt={`Placeholder image ${index + 1 + i * 9}`}
-                                    className="carousel-image"
-                                />
-                            ))}
-                        </React.Fragment>
-                    ))}
-                </div>
-            </motion.div>
+            <ScrollingSongs />
 
             {/* Centered Text and Button in Horizontal Row */}
                 <motion.div className="center-text" initial="hidden" animate="visible" variants={fadeUpVariants}>
