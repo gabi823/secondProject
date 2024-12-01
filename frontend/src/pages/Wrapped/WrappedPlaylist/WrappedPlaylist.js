@@ -2,6 +2,7 @@ import React from 'react';
 import './WrappedPlaylist.css';
 import { Link } from 'react-router-dom';
 import { motion } from "framer-motion";
+import DarkModeToggle from '../../../components/DarkModeToggle/DarkModeToggle';
 
 
 const WrappedPlaylist = () => {
@@ -59,6 +60,7 @@ const WrappedPlaylist = () => {
       >
         &#8594;
       </Link>
+			<DarkModeToggle />
 		</div>
 	);
 };

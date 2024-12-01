@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import './WrappedPersonality.css';
 import { listeningPersonalities } from './listeningPersonalities';
+import DarkModeToggle from '../../../components/DarkModeToggle/DarkModeToggle';
 
 const WrappedPersonality = ({ personalityIndex = 0 }) => {
     const { name, color, description } = listeningPersonalities[personalityIndex];
@@ -86,6 +87,7 @@ const WrappedPersonality = ({ personalityIndex = 0 }) => {
             >
                 &#8594;
             </Link>
+            <DarkModeToggle />
         </>
     );
 };

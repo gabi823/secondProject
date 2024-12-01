@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
 import './WrappedGenres.css';
+import DarkModeToggle from '../../../components/DarkModeToggle/DarkModeToggle';
 
 const WrappedGenres = () => {
     const [genres, setGenres] = useState([]);
@@ -102,6 +103,7 @@ const WrappedGenres = () => {
             >
                 &#8594;
             </Link>
+            <DarkModeToggle />
         </div>
     );
 };

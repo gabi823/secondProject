@@ -14,6 +14,7 @@
   font-weight: 700;
   font-family: 'Manrope';
   margin: 0;
+  color: var(--text-color);
 }
 
 .exit-button {
@@ -24,7 +25,7 @@
   border: none;
   cursor: pointer;
   text-decoration: none;
-  color: black;
+  color: var(--text-color)!important;
 }
 
 .background {
@@ -101,9 +102,9 @@
   width: 600px;
   height: 670px;
   position: absolute;
-  background: white;
+  background: var(--background-color);
   border-radius: 20px;
-  border: 1px solid black;
+  border: 1px solid var(--text-color);
   margin-bottom: 0px;
 }
 
@@ -116,7 +117,7 @@
 }
 
 .title {
-  color: black;
+  color: var(--text-color);
   font-size: 35px;
   font-family: 'Manrope';
   font-weight: 700;
@@ -126,7 +127,7 @@
 }
 
 .subtitle {
-  color: black;
+  color: var(--text-color);
   font-size: 15px;
   font-family: 'Manrope';
   font-weight: 500;
@@ -166,7 +167,7 @@
 }
 
 .top-artist-rank-number {
-  color: black;
+  color: var(--text-color);
   font-size: 17px;
   font-family: 'Manrope';
   font-weight: 800;
@@ -175,14 +176,14 @@
 }
 
 .top-artist-name {
-  color: black;
+  color: var(--text-color);
   font-size: 17px;
   font-family: 'Manrope';
   font-weight: 500;
 }
 
 .section-title {
-  color: black;
+  color: var(--text-color);
   font-size: 20px;
   font-family: 'Manrope';
   font-weight: 700;
@@ -203,14 +204,14 @@
 }
 
 .top-songs-title {
-  color: black;
+  color: var(--text-color);
   font-size: 15px;
   font-family: 'Manrope';
   font-weight: 700;
 }
 
 .top-songs-artist {
-  color: black;
+  color: var(--text-color);
   font-size: 12px;
   font-family: 'Manrope';
   font-weight: 500;
@@ -226,7 +227,7 @@
 }
 
 .top-genres-item {
-  color: black;
+  color: var(--text-color);
   font-size: 15px;
   font-family: 'Manrope';
   font-weight: 700;
@@ -246,14 +247,14 @@
 }
 
 .top-albums-title {
-  color: black;
+  color: var(--text-color);
   font-size: 15px;
   font-family: 'Manrope';
   font-weight: 700;
 }
 
 .top-albums-artist {
-  color: black;
+  color: var(--text-color);
   font-size: 12px;
   font-family: 'Manrope';
   font-weight: 500;
@@ -280,12 +281,12 @@
   left: 26px;
   top: 120px;
   position: absolute;
-  color: black;
   font-size: 20px;
   font-family: 'Manrope';
   font-weight: 700;
   text-decoration: underline;
   margin-bottom: 3px;
+  color: var(--text-color);
 }
 
 .top-genres-section-title {
@@ -294,7 +295,7 @@
   left: 27px;
   top: 360px;
   position: absolute;
-  color: black;
+  color: var(--text-color);
   font-size: 20px;
   font-family: 'Manrope';
   font-weight: 700;
@@ -307,7 +308,7 @@
   left: 200px;
   top: 360px;
   position: absolute;
-  color: black;
+  color: var(--text-color);
   font-size: 20px;
   font-family: 'Manrope';
   font-weight: 700;
