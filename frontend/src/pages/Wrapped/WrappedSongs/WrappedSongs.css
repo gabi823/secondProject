@@ -113,14 +113,14 @@
         display: flex;
         flex-direction: column; /* Stack items vertically */
         gap: 20px;
-        margin-top: 10px; /* Adjust top margin */
         overflow-y: auto; /* Enable scrolling if content overflows */
         max-height: 80vh; /* Limit height to make scrolling smoother */
-        margin-top: 60px; /* Increased top margin to shift content down */
+        margin-top: -140px; /* Increased top margin to shift content down */
         margin-bottom: 20px;
         position: absolute;
         width: 100%;
         box-sizing: border-box;
+        margin-right: 20px;
 
     }
     .wrapper {
@@ -149,7 +149,7 @@
     }
 
     .song-title {
-        font-size: 18px; /* Adjust song title size */
+        font-size: 17px; /* Adjust song title size */
     }
 
     .artist {

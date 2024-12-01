@@ -52,7 +52,7 @@ const NavBarLoggedIn = () => {
             {menuOpen && (
                 <ul className={`mobile-menu ${menuOpen ? 'show' : ''}`}>
                     <li><Link to="/profile" onClick={toggleMobileMenu}>profile</Link></li>
-                    <li><Link to="/about" onClick={toggleMobileMenu}>about us</Link></li>
+                    <li><Link to="/about" onClick={toggleMobileMenu}>contact</Link></li>
                 </ul>
             )}
 

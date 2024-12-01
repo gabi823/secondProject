@@ -126,9 +126,26 @@
 
 @media (max-width: 393px) {
     .albums-container {
-         margin-top: -170px;
+        margin-top: -170px;
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+        padding-bottom: 50px;
 
     }
+    .header-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 20;
+        background-color: var(--background-color);
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     .album-image {
         width: 205px;
         height: 205px;
@@ -160,6 +177,8 @@
         font-size: 24px;
         font-family: 'Manrope';
         font-weight: 1000;
+        padding-left: 20px;
+        padding-right: 20px;
     }
     .next-page-link {
         bottom: 20px; /* Adjusted for smaller screen */

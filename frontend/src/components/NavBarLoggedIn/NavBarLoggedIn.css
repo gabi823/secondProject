@@ -103,9 +103,10 @@
 }
 
 /* Responsive styles */
-@media (max-width: 600px) {
+@media (max-width: 393px) {
     .navbar {
         height: 193px;
+        z-index:1000;
     }
     .navbar-links {
         display: none; /* Hide desktop links */
