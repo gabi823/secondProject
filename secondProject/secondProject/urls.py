@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
+
 from spotifyWrapped import views
 from spotifyWrapped.views import *
 from spotifyWrapped.views import fetch_playlist_images
@@ -30,6 +31,7 @@ urlpatterns = [
     path('api/', include('spotifyWrapped.urls')),
     path('api/spotify-credentials/', get_spotify_credentials, name='spotify-credentials'),
     path('', home_view, name='home'),
+    path('csrf/', views.csrf, name='csrf'),
 
     # Spotify Authentication and Profile Management
     path('spotify-callback/', views.spotify_callback, name='spotify_callback'),
@@ -54,7 +56,7 @@ urlpatterns = [
     # Spotify Data and Wraps
     path('api/unlink_spotify/', views.unlink_spotify, name='unlink_spotify'),
     path('spotify/data', views.spotify_data, name='spotify_data'),
-    path('api/spotify/delete_wrap/<int:wrap_id>/', views.delete_wrap, name='delete_wrap'),
+    path('api/delete-wrapped/<int:wrap_id>/', views.delete_wrap, name='delete_wrap'),
     path('api/get_spotify_info/', views.get_spotify_info, name='get_spotify_info'),
 
 
@@ -75,7 +77,7 @@ urlpatterns = [
 
     path('api/change_password/', change_password, name='change_password'),
 
-
+    path('', views.ReactAppView.as_view(), name='react_frontend'),
     re_path(r'^.*$', ReactAppView.as_view(), name='react_catch_all'),
 
 ]

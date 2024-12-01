@@ -21,7 +21,9 @@ const Profile = () => {
 
     useEffect(() => {
         const initializeProfile = async () => {
+            // Check authentication
             const token = localStorage.getItem('token');
+
             if (!token) {
                 navigate('/login');
                 return;
@@ -58,7 +60,11 @@ const Profile = () => {
                 const { username, email, top_artist, profile_image_url } = profileResponse.data;
                 setUsername(username);
                 setEmail(email);
+                //setTaste(top_artist || 'No artist data');
                 setProfileImage(profile_image_url || 'https://via.placeholder.com/300');
+
+                console.log('Profile Image URL:', profileImage);
+                console.log('Profile Response:', profileResponse.data);
 
                 // Fetch Wrapped data
                 const wrappedResponse = await axios.get('https://secondproject-8lyv.onrender.com/api/get-wrapped-data/', {
@@ -67,6 +73,8 @@ const Profile = () => {
                     },
                 });
 
+                console.log('Wrapped Data Response:', wrappedResponse.data);
+
                 setWrappedData(wrappedResponse.data.map(wrap => ({
                     ...wrap,
                     album_cover_url: wrap.album_cover_url || "https://via.placeholder.com/160",
@@ -74,13 +82,33 @@ const Profile = () => {
             } catch (error) {
                 console.error('Error initializing profile:', error);
                 setError('Failed to load profile and Wrapped data.');
-            } finally {
-                setIsLoading(false);
             }
+            setIsLoading(false);
         };
 
+        const fetchWraps = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/get-wrapped-data/', {
+                    headers: {
+                        Authorization: `Token ${token}`,
+                    }
+                });
+                setWrappedData(response.data);
+            } catch (error) {
+                console.error('Error fetching wraps:', error);
+            }
+        };
+        fetchWraps();
+        getCsrfToken();
         initializeProfile();
-    }, [navigate]);
+    }, [navigate, hasSpotifyLinked]);
+
+	const getCsrfToken = async () => {
+        const response = await fetch('https://secondproject-8lyv.onrender.com/csrf/');
+        const data = await response.json();
+        document.cookie = `csrftoken=${data.csrfToken}; path=/`;
+    }
 
     const checkSpotifyLink = async () => {
         try {
@@ -131,17 +159,39 @@ const Profile = () => {
         }
     };
 
-    const deleteWrap = async (wrapId) => {
+	const deleteWrap = async (id) => {
         try {
+            const csrfToken = document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("csrftoken="))
+                ?.split("=")[1]; // Extract CSRF token from cookies
+
+            console.log("CSRF Token:", csrfToken);
+
+            if (!csrfToken) {
+                console.error("CSRF token is missing. Ensure the /csrf/ endpoint is working and the cookie is set.");
+                alert("Unable to proceed. Please refresh the page and try again.");
+                return;
+            }
+
             const token = localStorage.getItem('token');
-            await axios.delete('https://secondproject-8lyv.onrender.com/api/spotify/delete_wrap/${wrapId}/', {
-                headers: { Authorization: `Token ${token}` },
+            console.log("Using token:", token);
+
+            console.log("Deleting wrap with ID:", id);
+            const response = await axios.delete(`https://secondproject-8lyv.onrender.com/api/delete-wrapped/${id}/`, {
+                headers: {
+                    Authorization: `Token ${token}`,
+                    "X-CSRFToken": csrfToken, // Include CSRF token
+                },
+                withCredentials: true,
             });
-            setWrappedData(wrappedData.filter(wrap => wrap.id !== wrapId));
+            console.log("Delete response:", response.data);
+
+            setWrappedData((prevData) => prevData.filter((wrap) => wrap.id !== id));
             setMessage('Wrap deleted successfully!');
         } catch (error) {
-            console.error('Error deleting Wrapped:', error);
-            setError('Failed to delete Wrapped.');
+            console.error("Error deleting wrap:", error.response?.data || error.message);
+            alert("Failed to delete wrap. Please try again.");
         }
     };
 
@@ -180,17 +230,37 @@ const Profile = () => {
                 </motion.div>
                 <motion.div className="profile-wrapped-container" variants={fadeUpVariants}>
                     {wrappedData.map((wrap) => (
-                        <motion.div key={wrap.id} className="wrapped-section" variants={fadeUpVariants}>
-                            <img
-                                src={wrap.album_cover_url}
-                                alt="Wrapped Image"
-                                className="wrapped-img"
-                            />
-                            <div className="wrapped-details">
-                                <h4>Your Wrapped #{wrap.id}</h4>
-                                <p>Date Created: {new Date(wrap.date_created).toLocaleDateString()}</p>
-                                <button onClick={() => deleteWrap(wrap.id)}>×</button>
+                        <motion.div
+                            key={wrap.id}
+                            className="wrapped-section"
+                            variants={fadeUpVariants}
+                            style={{ cursor: 'pointer' }}  // Add cursor pointer to indicate clickable
+                        >
+                            {/* Make the whole section (except delete button) clickable */}
+                            <div
+                                onClick={() => navigate(`/wrapped-intro?wrappedId=${wrap.id}`)}
+                                style={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}
+                            >
+                                <img
+                                    src={wrap.album_cover_url}
+                                    alt="Wrapped Image"
+                                    className="wrapped-img"
+                                />
+                                <div className="wrapped-details">
+                                    <h4>{wrap.name || `Your Wrapped #${wrap.id}`}</h4>
+                                    <p>Date Created: {new Date(wrap.date_created).toLocaleDateString()}</p>
+                                </div>
                             </div>
+                            {/* Keep delete button separate from clickable area */}
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();  // Prevent navigation when clicking delete
+                                    deleteWrap(wrap.id);
+                                }}
+                                className="delete-button"
+                            >
+                                ×
+                            </button>
                         </motion.div>
                     ))}
                     <div className="create-new-wrapped">

@@ -155,3 +155,11 @@ LOGIN_REDIRECT_URL = '/spotify/data/'
 LOGOUT_REDIRECT_URL = '/spotify/login/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",  # React frontend
+    "https://second-project-alpha-rust.vercel.app",
+    "http://127.0.0.1:3000",
+]
+CSRF_COOKIE_HTTPONLY = False  # Allow access to CSRF cookie in JavaScript
+CSRF_COOKIE_SECURE = not DEBUG  # Use HTTPS in production
