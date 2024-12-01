@@ -118,6 +118,7 @@
     margin-bottom: 20px;
     font-family: 'Manrope';
     background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 /* Button styles */

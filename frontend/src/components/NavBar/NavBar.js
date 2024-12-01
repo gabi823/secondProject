@@ -55,7 +55,7 @@ const NavBar = () => {
                 <ul className={`mobile-menu ${menuOpen ? 'show' : ''}`}>
                     <li><Link to="/login" onClick={toggleMobileMenu}>login</Link></li>
                     <li><Link to="/createaccount" onClick={toggleMobileMenu}>create account</Link></li>
-                    <li><Link to="/about" onClick={toggleMobileMenu}>about us</Link></li>
+                    <li><Link to="/about" onClick={toggleMobileMenu}>contact</Link></li>
                 </ul>
             )}
         </header>

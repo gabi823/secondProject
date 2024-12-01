@@ -78,7 +78,7 @@
     top: 70px;
     left: 0;
     width: 100%;
-    background-color: white;
+    background-color: var(--background-color);
     padding: 10px 0;
     text-align: center;
     transform: translateY(-100%); /* Start hidden */

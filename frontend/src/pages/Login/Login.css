@@ -116,6 +116,7 @@
     margin-bottom: 20px;
     font-family: 'Manrope', sans-serif;
     background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 .login-button-container {
