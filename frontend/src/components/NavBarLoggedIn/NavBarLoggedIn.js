@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from "react-router-dom";
 import './NavBarLoggedIn.css'; // Import the CSS file
-import logo from '../../images/logo.png';
+import DarkModeToggle from '../../components/DarkModeToggle/DarkModeToggle';
+
 
 
 const NavBarLoggedIn = () => {
@@ -29,12 +30,8 @@ const NavBarLoggedIn = () => {
                 <Link to="/" className="navbar-title">
                     nostalgify
                 </Link>
-                <Link to="/">
-                    <img
-                        className="navbar-logo"
-                        src={logo}
-                        alt="Logo"
-                    />
+                <Link to="/" className="rewind">
+                    ⏮
                 </Link>
             </div>
 
@@ -58,6 +55,8 @@ const NavBarLoggedIn = () => {
                     <li><Link to="/about" onClick={toggleMobileMenu}>about us</Link></li>
                 </ul>
             )}
+
+            <DarkModeToggle />
         </nav>
     );
 };

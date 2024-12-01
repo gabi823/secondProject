@@ -10,14 +10,14 @@
 .feedback-container {
     max-width: 400px;
     margin: 40px auto;
-    border:  1px solid black;
+    border:  1px solid var(--text-color);
     border-radius: 20px;
-    background-color: white;
+    background-color: var(--background-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 30px 65px;
 }
 .link {
-    color:black;
+    color:var(--text-color);
     font-weight: bold;
 }
 
@@ -44,7 +44,7 @@
     width: 100%;
     padding: 10px;
     margin-bottom: 9px;
-    border: 1px solid #000;
+    border: 1px solid var(--text-color);
     border-radius: 4px;
     box-sizing: border-box;
     font-size: 12px;
@@ -68,13 +68,13 @@ textarea.form-input {
 .feedback-button {
     width: 60%;
     height: 40px;
-    background: white;
+    background: var(--background-color);
     border-radius: 5px;
-    border: 1px solid #000;
+    border: 1px solid var(--text-color);
     font-size: 16px;
     font-family: 'Manrope';
     font-weight: 600;
-    color: black;
+    color: var(--text-color);
     cursor: pointer;
     transition: background 0.3s;
     justify-content: center;
