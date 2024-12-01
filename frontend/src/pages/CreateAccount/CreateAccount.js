@@ -4,6 +4,8 @@ import './CreateAccount.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import DarkModeToggle from '../../components/DarkModeToggle/DarkModeToggle';
+
 
 
 const CreateAccount = () => {

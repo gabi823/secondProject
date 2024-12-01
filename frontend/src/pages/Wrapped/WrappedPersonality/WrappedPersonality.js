@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import './WrappedPersonality.css';
 import { listeningPersonalities } from './listeningPersonalities';
+import DarkModeToggle from '../../../components/DarkModeToggle/DarkModeToggle';
 console.log("Imported listening personalities:", listeningPersonalities);
 import axios from 'axios';
 import SpotifyLinkModal from '../../../components/SpotifyLinkModal/SpotifyLinkModal';
+
 
 const WrappedPersonality = () => {
     const navigate = useNavigate();
@@ -243,6 +245,7 @@ const WrappedPersonality = () => {
             >
                 &#8594;
             </Link>
+            <DarkModeToggle />
         </>
     );
 };

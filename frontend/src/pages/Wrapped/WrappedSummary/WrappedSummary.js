@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './WrappedSummary.css';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import DarkModeToggle from "../../../components/DarkModeToggle/DarkModeToggle";
 import axios from 'axios';
 
 const WrappedSummary = () => {
@@ -64,6 +65,7 @@ const WrappedSummary = () => {
       ))}
     </div>
   );
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -149,6 +151,7 @@ const WrappedSummary = () => {
           </div>
         </motion.div>
       </motion.div>
+      <DarkModeToggle />
     </>
   );
 };

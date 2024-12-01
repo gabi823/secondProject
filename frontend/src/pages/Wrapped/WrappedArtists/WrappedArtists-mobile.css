@@ -6,25 +6,28 @@
     }
 
     .artist-scroll-container {
-        height: 850px;
+        height: 100vh;
         display: flex;
         flex-direction: column;
-        position: static;
-        overflow-y: scroll;
+        position: relative;
+        overflow: hidden;
     }
 
     .header-container {
-        position: fixed;
+        position: sticky;
+        background-color: var(--background-color);
         margin-bottom: 20px;
         top: 0px;
         z-index:10;
-        padding-bottom: 20px;
+        padding-bottom: 5px;
         justify-content: space-between;
         align-items: center;
     }
     .artists-scroll-content {
         margin-top: 70px; /* Adjust based on header height */
         padding: 0 20px;
+        flex-grow: 1;
+        overflow-y: auto;
 
     }
     .exit-link {
@@ -32,11 +35,13 @@
         line-height: 1;
         text-decoration: none;
         padding-right: 20px;
+        color: var(--text-color);
     }
 
     .header-title {
         font-size: 24px;
         padding-bottom: 10px;
+        color: var(--text-color);
     }
 
     .artist-wrapper {
@@ -78,14 +83,15 @@
         align-self: flex-end;
         bottom:20px;
         z-index:10;
+        color: var(--text-color);
     }
 
     .exit-link {
-        position: absolute;
+        position: fixed;
         z-index:15;
         padding-right: -25px;
         margin-top: -20px;
         left: -20px;
-
+        color: var(--text-color);
     }
 }

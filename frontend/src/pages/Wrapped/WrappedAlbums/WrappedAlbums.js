@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./WrappedAlbums.css";
 import { motion } from 'framer-motion';
+import DarkModeToggle from "../../../components/DarkModeToggle/DarkModeToggle";
 
 const WrappedAlbums = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -98,6 +99,7 @@ const WrappedAlbums = () => {
             >
                 &#8594;
             </Link>
+            <DarkModeToggle />
         </>
     );
 };

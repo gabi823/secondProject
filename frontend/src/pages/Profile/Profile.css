@@ -26,10 +26,10 @@
     align-items: center;
     width: 300px;
     height: 300px;
-    background: white;
+    background: var(--background-color);
     border-radius: 50%;
     overflow: hidden;
-    border: 2px black solid;
+    border: 2px var(--text-color) solid;
     margin-bottom: 10px;
 }
 
@@ -42,7 +42,7 @@
 
 /* Username and Email */
 .username, .email {
-    color: black;
+    color: var(--text-color);
     text-align: center;
     font-family: Manrope;
 }
@@ -73,9 +73,9 @@
 .settings-link {
     width: 119px;
     height: 38px;
-    background: white;
+    background: var(--background-color);
     border-radius: 10px;
-    border: 1px black solid;
+    border: 1px var(--text-color) solid;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -83,7 +83,7 @@
 }
 
 .settings-text {
-    color: black;
+    color: var(--text-color);
     font-size: 16px;
     font-family: Manrope, serif;
     font-weight: 400;
@@ -184,7 +184,7 @@
 }
 
 .create-new-link {
-    color: black;
+    color: var(--text-color);
     font-size: 30px;
     font-family: Manrope;
     font-weight: 500;
@@ -192,7 +192,7 @@
 }
 
 .create-new-icon {
-    color: black;
+    color: var(--text-color);
     font-size: 50px;
     font-family: Manrope;
     font-weight: 700;

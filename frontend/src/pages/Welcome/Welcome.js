@@ -4,6 +4,8 @@ import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 import './Welcome.css';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import DarkModeToggle from '../../components/DarkModeToggle/DarkModeToggle';
+
 
 const Welcome = () => {
     const [images, setImages] = useState({

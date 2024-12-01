@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
 import './WrappedSongs.css'; // Import the CSS file
+import DarkModeToggle from '../../../components/DarkModeToggle/DarkModeToggle';
 
 const WrappedSongs = () => {
   const [songs, setSongs] = useState([]); // State to store songs
@@ -85,6 +86,7 @@ const WrappedSongs = () => {
       >
         &#8594;
       </Link>
+        <DarkModeToggle />
     </div>
   );
 };

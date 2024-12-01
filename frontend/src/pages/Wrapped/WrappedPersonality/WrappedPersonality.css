@@ -15,6 +15,7 @@
     font-family: 'Manrope';
     margin: 0;
     z-index: 10;
+    color: var(--text-color);
 
 }
 
@@ -27,6 +28,7 @@
     cursor: pointer;
     text-decoration: none;
     z-index: 10;
+    color: var(--text-color);
 }
 /* Container for centering the target structure */
 .whole-container {
@@ -49,7 +51,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: white;
+    background: var(--background-color);
 }
 
 /* Circles centered within the container */
@@ -65,39 +67,39 @@
 .outer-circle {
     width: 760px;
     height: 760px;
-    outline: 1px dashed black;
+    outline: 1px dashed var(--text-color);
 }
 
 .middle-circle {
     width: 680px;
     height: 680px;
-    outline: 1.5px inset black;
+    outline: 1.5px inset var(--text-color);
 }
 
 .inner-circle {
     width: 600px;
     height: 600px;
-    outline: 1px dashed black;
+    outline: 1px dashed var(--text-color);
 }
 
 .dotted-circle {
     width: 520px;
     height: 520px;
-    outline: 1.5px outset black;
+    outline: 1.5px outset var(--text-color);
 }
 
 .core-circle {
    width: 440px;
     height: 440px;
-    outline: 1px solid black;
-    background-color: white;
+    outline: 1px solid var(--text-color);
+    background-color: var(--background-color);
 }
 
 /* Centered text styling */
 .personality-name, .personality-description {
     position: absolute;
     text-align: center;
-    color: black;
+    color: var(--text-color);
     font-family: 'Manrope';
     word-wrap: break-word;
 }
@@ -108,6 +110,7 @@
     width: 500px;
     margin-bottom: 0px;
     top: 40%;
+    color: var(--text-color);
 }
 
 .personality-description {
@@ -116,6 +119,7 @@
     font-weight: 500;
     width:320px;
     top: 49%;
+    color: var(--text-color);
 }
 
 .next-button {
@@ -124,7 +128,7 @@
     right: 20px;
     font-size: 36px;
     text-decoration: none;
-    color: black;
+    color: var(--text-color);
     cursor: pointer;
 }
 
@@ -177,14 +181,14 @@
     .core-circle {
         width: 360px; /* Larger to fit text comfortably */
         height: 360px;
-        background-color: white;
+        background-color: var(--background-color);
     }
 
     /* Add another circle for more lines if needed */
     .extra-circle {
         width: 30%;
         height: 30%;
-        border: 2px dashed black;
+        border: 2px dashed var(--text-color);
         position: absolute;
         border-radius: 50%;
         display: flex;
@@ -209,7 +213,7 @@
     .personality-name, .personality-description {
     position: absolute;
     text-align: center;
-    color: black;
+    color: var(--text-color);
     font-family: 'Manrope';
     word-wrap: break-word;
     }

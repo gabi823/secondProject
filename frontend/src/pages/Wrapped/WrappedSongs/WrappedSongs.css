@@ -19,6 +19,7 @@
     font-weight: 700;
     font-family: 'Manrope', sans-serif; /* Ensure to import Manrope font */
     margin: 0;
+    color: var(--text-color);
 }
 
 .exit-button {
@@ -27,6 +28,8 @@
     border: none;
     cursor: pointer;
     text-decoration: none;
+    color: var(--text-color)!important;
+    transition: color 0.3s ease;
 }
 
 .wrapper {
@@ -61,7 +64,7 @@
 .rank {
     font-size: 63px;
     font-weight: 1000; /* Correct weight value */
-    color: black;
+    color: var(--text-color);
     font-family: 'Manrope', sans-serif;
 }
 
@@ -70,13 +73,14 @@
     font-weight: 700;
     font-family: 'Manrope', sans-serif;
     margin-top: 0;
+    color: var(--text-color);
 }
 
 .artist {
     font-size: 20px;
     font-weight: 400;
     font-family: 'Manrope', sans-serif;
-    color: black;
+    color: var(--text-color);
     margin-top: 5px;
 }
 
@@ -86,7 +90,7 @@
     right: 20px;
     font-size: 36px;
     text-decoration: none;
-    color: black;
+    color: var(--text-color);
     cursor: pointer;
 }
 
@@ -101,6 +105,7 @@
         font-size: 24px; /* Adjust title font size for smaller screens */
         margin: 0 auto;
         z-index: 10;
+        color: var(--text-color);
     }
 
     /* Adjust song-grid for vertical layout */
@@ -108,14 +113,14 @@
         display: flex;
         flex-direction: column; /* Stack items vertically */
         gap: 20px;
-        margin-top: 10px; /* Adjust top margin */
         overflow-y: auto; /* Enable scrolling if content overflows */
         max-height: 80vh; /* Limit height to make scrolling smoother */
-        margin-top: 60px; /* Increased top margin to shift content down */
+        margin-top: -140px; /* Increased top margin to shift content down */
         margin-bottom: 20px;
         position: absolute;
         width: 100%;
         box-sizing: border-box;
+        margin-right: 20px;
 
     }
     .wrapper {
@@ -144,7 +149,7 @@
     }
 
     .song-title {
-        font-size: 18px; /* Adjust song title size */
+        font-size: 17px; /* Adjust song title size */
     }
 
     .artist {

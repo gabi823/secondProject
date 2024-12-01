@@ -7,6 +7,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: var(--text-color);
 }
 
 .header-title {
@@ -14,6 +15,7 @@
     font-weight: 700;
     font-family: 'Manrope';
     margin: 0;
+    color: var(--text-color);
 }
 
 .exit-link {
@@ -24,6 +26,8 @@
     border: none;
     cursor: pointer;
     text-decoration: none;
+    color: var(--text-color)!important;
+    transition: color 0.3s ease;
 }
 
 /* Container for albums and images */
@@ -68,7 +72,7 @@
     top: 840px;
     transform: translateX(-50%);
     text-align: center;
-    color: black;
+    color: var(--text-color);
     font-size: 17px;
     font-family: 'Manrope';
     font-weight: 400;
@@ -84,7 +88,7 @@
     top: 790px;
     transform: translateX(-50%);
     text-align: center;
-    color: black;
+    color: var(--text-color);
     font-size: 35px;
     font-family: 'Manrope';
     font-weight: 1000;
@@ -94,13 +98,14 @@
     font-family: 'Manrope';
     font-weight: 400;
     font-size: 17px;
-    border: 1px solid black;
-    background-color: white;
+    border: 1px solid var(--text-color);
+    background-color: var(--background-color);
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 3px;
     padding-bottom: 3px;
     border-radius: 10px;
+    color: var(--text-color);
     margin-top: 20px;
 }
 
@@ -115,15 +120,32 @@
     right: 20px;
     font-size: 36px;
     text-decoration: none;
-    color: black;
+    color: var(--text-color);
     cursor: pointer;
 }
 
 @media (max-width: 393px) {
     .albums-container {
-         margin-top: -170px;
+        margin-top: -170px;
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+        padding-bottom: 50px;
 
     }
+    .header-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 20;
+        background-color: var(--background-color);
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     .album-image {
         width: 205px;
         height: 205px;
@@ -137,7 +159,7 @@
         top: 690px;
         transform: translateX(-50%);
         text-align: center;
-        color: black;
+        color: var(--text-color);
         font-size: 17px;
         font-family: 'Manrope';
         font-weight: 400;
@@ -151,10 +173,12 @@
         top: 650px;
         transform: translateX(-50%);
         text-align: center;
-        color: black;
+        color: var(--text-color);
         font-size: 24px;
         font-family: 'Manrope';
         font-weight: 1000;
+        padding-left: 20px;
+        padding-right: 20px;
     }
     .next-page-link {
         bottom: 20px; /* Adjusted for smaller screen */
