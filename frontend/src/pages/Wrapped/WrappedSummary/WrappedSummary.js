@@ -2,6 +2,7 @@ import React from 'react';
 import './WrappedSummary.css';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import DarkModeToggle from "../../../components/DarkModeToggle/DarkModeToggle";
 
 const WrappedSummary = ({ userData = {} }) => {
   const {
@@ -290,6 +291,7 @@ const WrappedSummary = ({ userData = {} }) => {
           </motion.div>
         </motion.div>
       </motion.div>
+      <DarkModeToggle />
     </>
   );
 };

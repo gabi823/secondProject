@@ -65,9 +65,9 @@
     border-radius: 20px;
     border: 1px solid var(--text-color);
     cursor: pointer;
-    color: black;
+    color: var(--text-color);
     text-decoration: none;
-    background-color: var(--button-background);
+    background-color: var(--background-color);
 }
 
 

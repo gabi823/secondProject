@@ -24,6 +24,7 @@
     font-weight: 700;
     font-family: 'Manrope';
     margin: 0;
+    color: var(--text-color);
 }
 
 .exit-link {
@@ -34,6 +35,8 @@
     border: none;
     cursor: pointer;
     text-decoration: none;
+    color: var(--text-color)!important;
+    transition: color 0.3s ease;
 }
 
 /* Container for artist images */
@@ -63,6 +66,7 @@
     position: absolute;
     transform: translate(-50%, -50%);
     text-align: center;
+    color: var(--text-color);
 }
 
 .surrounding-artist-img {
@@ -78,7 +82,7 @@
     right: 20px;
     font-size: 36px;
     text-decoration: none;
-    color: black;
+    color: var(--text-color);
     cursor: pointer;
 }
 @media (max-width: 393px) {
@@ -105,10 +109,12 @@
         font-size: 24px;
         font-weight: 700;
         font-family: 'Manrope';
+        color: var(--text-color);
     }
 
     .exit-link {
         font-size: 24px;
+        color: var(--text-color);
     }
 
     /* Artist wrapper for mobile */
@@ -141,6 +147,7 @@
         font-size: 20px;
         margin-top: 10px;
         text-align: center;
+        color: var(--text-color);
     }
 
     /* Surrounding artist styles for mobile */
@@ -163,6 +170,7 @@
         font-size: 16px;
         margin-top: 5px;
         text-align: center;
+        color: var(--text-color);
     }
 
     /* Next page link styles for mobile */
@@ -171,5 +179,6 @@
         bottom: 20px;
         right: 20px;
         font-size: 28px;
+        color: var(--text-color);
     }
 }

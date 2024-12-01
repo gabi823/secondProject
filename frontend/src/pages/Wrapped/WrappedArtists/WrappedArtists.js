@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import "./WrappedArtists.css";
 import "./WrappedArtists-mobile.css";
+import DarkModeToggle from '../../../components/DarkModeToggle/DarkModeToggle';
 
 const WrappedArtists = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 393);
@@ -255,6 +256,7 @@ const WrappedArtists = () => {
             >
                 &#8594;
             </Link>
+            <DarkModeToggle />
         </div>
     );
 };
