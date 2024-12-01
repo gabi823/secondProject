@@ -4,6 +4,8 @@ import NavBar from "../../components/NavBar/NavBar";
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './Login.css';
+import DarkModeToggle from '../../components/DarkModeToggle/DarkModeToggle';
+
 
 const Login = () => {
     const [username, setUsername] = useState('');

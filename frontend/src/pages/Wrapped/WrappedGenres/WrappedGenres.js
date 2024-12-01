@@ -20,7 +20,7 @@ const WrappedGenres = () => {
                     return;
                 }
 
-                const response = await axios.get("http://127.0.0.1:8000/api/top-genres/", {
+                const response = await axios.get("https://secondproject-8lyv.onrender.com/api/top-genres/", {
                     headers: {
                         'Authorization': `Token ${token}`,
                         'Content-Type': 'application/json',

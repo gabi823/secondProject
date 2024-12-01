@@ -14,7 +14,7 @@
 
 .wrapped-title {
     text-align: left;
-    color: black;
+    color: var(--text-color);
     font-size: 30px;
     font-family: Manrope;
     font-weight: 500;
@@ -28,7 +28,7 @@
 /* Divider */
 .divider {
     width: 100%;
-    border: 0.5px solid black;
+    border: 0.5px solid var(--text-color);
     margin-bottom: 20px;
 }
 
@@ -39,7 +39,7 @@
     border: none;
     cursor: pointer;
     text-decoration: none;
-    color: black;
+    color: var(--text-color);
     margin-left: 30px;
 }
 

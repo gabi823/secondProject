@@ -2,6 +2,8 @@ from datetime import timedelta
 
 from django.contrib.auth.hashers import check_password
 from django.utils import timezone
+from collections import Counter
+import json
 
 import requests
 from django.shortcuts import render, redirect
@@ -1079,3 +1081,139 @@ def get_user_top_albums(request):
             {"error": "An unexpected error occurred"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+      
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_listening_personality(request):
+    """Retrieve current user listening personality based on their Spotify data"""
+    try:
+        user = request.user
+        spotify_user = getattr(user, 'spotify_profile', None)
+
+        if not spotify_user:
+            return Response({
+                'listening_personality': -2,
+                'error': 'No Spotify profile found'
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        # Refresh token if needed
+        if spotify_user.token_expiry <= timezone.now():
+            try:
+                new_token = refresh_spotify_token(spotify_user.refresh_token)
+                spotify_user.access_token = new_token
+                spotify_user.token_expiry = timezone.now() + timedelta(hours=1)
+                spotify_user.save()
+            except Exception as e:
+                return Response({
+                    'error': f'Failed to refresh token: {str(e)}'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Get user's top tracks
+        headers = {'Authorization': f'Bearer {spotify_user.access_token}'}
+        top_tracks_url = 'https://api.spotify.com/v1/me/top/tracks'
+        params = {
+            'limit': 50,  # Get more tracks for better analysis
+            'time_range': 'medium_term'  # Can be short_term, medium_term, or long_term
+        }
+
+        tracks_response = requests.get(top_tracks_url, headers=headers, params=params)
+
+        if tracks_response.status_code != 200:
+            return Response({
+                'error': 'Failed to fetch top tracks',
+                'spotify_error': tracks_response.text
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        tracks_data = tracks_response.json()
+
+        # Initialize counters and accumulators
+        artist_counter = Counter()
+        genre_counter = Counter()
+        total_popularity = 0
+        release_years = []
+
+        # Process each track
+        for track in tracks_data['items']:
+            # Get artist info
+            for artist in track['artists']:
+                artist_counter[artist['name']] += 1
+
+                # Fetch artist genres
+                artist_response = requests.get(
+                    f'https://api.spotify.com/v1/artists/{artist["id"]}',
+                    headers=headers
+                )
+                if artist_response.status_code == 200:
+                    artist_data = artist_response.json()
+                    for genre in artist_data.get('genres', []):
+                        genre_counter[genre] += 1
+
+            # Add popularity
+            total_popularity += track['popularity']
+
+            # Add release year
+            try:
+                release_year = int(track['album']['release_date'].split('-')[0])
+                release_years.append(release_year)
+            except (ValueError, IndexError):
+                continue
+
+        # Calculate metrics
+        unique_artists = len(artist_counter)
+        unique_tracks = len(tracks_data['items'])
+        avg_popularity = total_popularity / unique_tracks if unique_tracks > 0 else 0
+        avg_release_year = sum(release_years) / len(release_years) if release_years else 2000
+
+        # Determine personality traits
+        personality = ''
+
+        # Exploration (E) vs Familiarity (F)
+        personality += 'E' if unique_artists / unique_tracks > 0.5 else 'F'
+
+        # Newness (N) vs Timelessness (T)
+        personality += 'N' if avg_release_year >= 2015 else 'T'
+
+        # Variety (V) vs Loyalty (L)
+        personality += 'V' if unique_artists >= 15 else 'L'
+
+        # Uniqueness (U) vs Commonality (C)
+        personality += 'U' if avg_popularity <= 50 else 'C'
+
+        # Map personality to index
+        personality_types = [
+            "ENVU",  # The Adventurer
+            "ENVC",  # The Trendsetter
+            "FTVU",  # The Heritage Hunter
+            "FNLU",  # The Loyalist
+            "FNLV",  # The Modern Explorer
+            "FTLC",  # The Classic Curator
+            "ETLU",  # The Indie Soul
+            "FNLC",  # The Dedicated Fan
+            "ETVC",  # The Time Capsule
+            "ETVU",  # The Vintage Virtuoso
+            "FNVC",  # The Mainstream Mix
+            "FTLV",  # The Classic Wanderer
+            "ETLC",  # The Retro Enthusiast
+            "ENLC",  # The New Wave Popular
+            "FTVL",  # The Legacy Loyalist
+            "FNVU"  # The Niche Navigator
+        ]
+
+        try:
+            listening_personality = personality_types.index(personality)
+        except ValueError:
+            # Default to first personality if pattern not found
+            listening_personality = 0
+
+        return Response({
+            'listening_personality': listening_personality,
+            'personality_code': personality  # Optionally return the code for debugging
+        }, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        print(f"Error in get_listening_personality: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response({
+            "error": f"Failed to analyze listening personality: {str(e)}"
+        }, status=status.HTTP_400_BAD_REQUEST)

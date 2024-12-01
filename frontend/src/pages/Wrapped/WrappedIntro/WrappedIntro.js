@@ -25,7 +25,7 @@ const WrappedIntro = () => {
     const fetchWrappedData = async (id) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get(`http://localhost:8000/api/get-wrapped-data/?id=${id}`, {
+            const response = await axios.get(`https://secondproject-8lyv.onrender.com/api/get-wrapped-data/?id=${id}`, {
                 headers: {
                     Authorization: `Token ${token}`,
                 },
