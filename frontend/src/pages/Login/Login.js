@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './Login.css';
 import DarkModeToggle from '../../components/DarkModeToggle/DarkModeToggle';
+import {Grid} from "@mui/material";
+import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 
 
 const Login = () => {
@@ -35,7 +37,12 @@ const Login = () => {
 
     return (
         <>
-            <NavBar/>
+            <Grid container spacing={0}>
+               <Grid item xs={12}>
+                     <NavBar/>
+               </Grid>
+
+                   <Grid item xs={12}>
             <motion.div
                 className="login-container"
                 initial="hidden"
@@ -72,6 +79,8 @@ const Login = () => {
                     {error && <p className="login-error">{error}</p>}
                 </div>
             </motion.div>
+                   </Grid>
+            </Grid>
         </>
     );
 };

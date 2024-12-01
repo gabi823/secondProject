@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin-top: -200px;
+    margin-top: -85px;
 }
 
 .feedback-container {
@@ -15,7 +15,6 @@
     background-color: var(--background-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 30px 65px;
-    z-index:1000;
 }
 .link {
     color:var(--text-color);
@@ -88,10 +87,18 @@ textarea.form-input {
 }
 
 @media (max-width: 393px) {
+    .wrapper{
+        margin-top: 0px;
+        top:115px;
+        max-height:300px;
+        margin-bottom: 400px;
+        z-index: 10;
+    }
     .feedback-container {
         max-width: 80%;
         padding: 20px;  /* Reduced padding for small screens */
         margin-top: 0;  /* Adjust margin-top for better alignment */
+        z-index:2;
     }
 
     .form-label1 {
@@ -123,5 +130,6 @@ textarea.form-input {
         width: 100%;
         margin-top: 60px;
         margin-bottom: -40px;
+        z-index:20;
     }
 }

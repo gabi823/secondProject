@@ -5,6 +5,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import DarkModeToggle from '../../components/DarkModeToggle/DarkModeToggle';
+import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
+
 
 
 
@@ -16,6 +18,7 @@ const CreateAccount = () => {
     const [spotifyRedirectUri, setSpotifyRedirectUri] = useState('');
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     // Fetch Spotify credentials from backend
     useEffect(() => {
@@ -71,7 +74,13 @@ const CreateAccount = () => {
 
     return (
         <>
-            <NavBar/>
+           {/*<Grid container spacing={0}>*/}
+           {/*    <Grid item xs={12}>*/}
+                     {isLoggedIn ? <NavBarLoggedIn /> : <NavBar />}
+               {/*</Grid>*/}
+
+                   {/*<Grid item xs={12}>*/}
+
             <motion.div
                 className="create-account-container"
                 initial="hidden"
@@ -109,6 +118,8 @@ const CreateAccount = () => {
                     {message && <p className="form-message">{message}</p>}
                 </form>
             </motion.div>
+                   {/*</Grid>*/}
+            {/*</Grid>*/}
         </>
     );
 };

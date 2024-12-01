@@ -83,12 +83,12 @@
 }
 
 .settings-text {
-    color: var(--text-color);
+    color: black;
     font-size: 16px;
     font-family: Manrope, serif;
     font-weight: 400;
     text-align: center;
-    text-decoration: none!important;
+    text-decoration: none !important;
 }
 
 /* Profile Wrapped Container */
@@ -214,7 +214,6 @@
         width: 125px; /* Reduce image size */
         height: 125px;
         margin-bottom: 0; /* Remove bottom margin */
-        z-index: 1;
     }
     .profile-section {
         display: flex;
@@ -266,6 +265,7 @@
     .wrapped-text {
         font-size: 14px;
         text-align: center; /* Center the text under each image */
+        color: var(--text-color);
     }
 
     /* Create New Wrapped Section */
@@ -304,5 +304,8 @@
         text-decoration: none;
         color: black;
         margin-top: -5px;
+    }
+    .wrapped-details {
+        color: var(--text-color);
     }
 }

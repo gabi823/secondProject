@@ -95,10 +95,9 @@ const AboutUs = () => {
         visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
     };
 
-    const NavbarComponent = isLoggedIn ? NavBarLoggedIn : NavBar;
   return (
       <>
-        <NavbarComponent />
+        <NavBar />
           <motion.div className='wrapper' initial="hidden" animate="visible" variants={fadeUpVariants}>
           <h1 className="message">We hope you enjoyed Nostalgify! 🎵</h1>
           <p className="link-message">
