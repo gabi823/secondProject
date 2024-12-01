@@ -28,7 +28,11 @@ const WrappedGenres = () => {
                 });
 
                 setGenres(response.data.top_genres);
-                setLoading(false);
+
+                // Add a slight delay before hiding the loading screen
+                setTimeout(() => {
+                    setLoading(false);
+                }, 1500); // 1.5 seconds delay
             } catch (err) {
                 console.error("Error fetching top genres:", err);
                 setError(err.response?.data?.error || "Failed to load genres");
@@ -39,7 +43,7 @@ const WrappedGenres = () => {
         fetchTopGenres();
     }, [navigate]);
 
-    if (loading) return <div className="loading">Loading your top genres...</div>;
+    if (loading) return <div className="genre-loading">Onto your top genres...</div>;
     if (error) return <div className="error">{error}</div>;
 
     return (

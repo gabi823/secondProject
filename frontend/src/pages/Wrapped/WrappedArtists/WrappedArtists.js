@@ -34,7 +34,11 @@ const WrappedArtists = () => {
                     }
                 });
                 setTopArtists(response.data.top_artists);
-                setLoading(false);
+
+                // Add a slight delay before hiding the loading screen
+                setTimeout(() => {
+                    setLoading(false);
+                }, 1500); // 1.5 seconds delay
 
                 if (isMobile) {
                     response.data.top_artists.forEach((artist, index) => {
@@ -58,7 +62,7 @@ const WrappedArtists = () => {
         transform: "scale(1)",
         from: { opacity: 0, transform: "scale(0)" },
         config: { tension: 200, friction: 20, duration: 500 },
-        delay: 150,
+        delay: 3000,
         immediate: true,
     });
 
@@ -66,90 +70,90 @@ const WrappedArtists = () => {
         opacity: 1,
         transform: "scale(1)",
         from: { opacity: 0, transform: "scale(0)" },
-        delay: 1000 + 9 * 100,
+        delay: 4000 + 9 * 100,
     });
 
-    if (loading) return <div>Loading your top artists...</div>;
+    if (loading) return <div className="artist-loading">Let's see who you listen to the most!</div>;
 
     // Mobile Render
     if (isMobile) {
-    return (
-        <div className="artist-scroll-container">
-            <div className="header-container">
-                <h1 className="header-title">Your Top Artists</h1>
-                <Link
-                    to="/profile"
-                    className="exit-link"
-                    onClick={() => console.log("Exit clicked")}
-                >
-                    &times;
-                </Link>
-            </div>
-            <div className="artists-scroll-content">
-                <div className="artist-wrapper">
-                    {/* Center artist */}
-                    {topArtists[0] && (
-                        <motion.div
-                            whileHover={{scale: 1.05}}
-                            className="central-artist"
-                        >
-                            <img
-                                src={topArtists[0].image_url}
-                                alt={topArtists[0].name}
-                                className="central-artist-img"
-                            />
-                            <div style={{
-                                fontSize: "20px",
-                                fontWeight: "700",
-                                marginTop: "10px",
-                                fontFamily: "Manrope",
-                            }}>
-                                {topArtists[0].rank}. {topArtists[0].name}
-                            </div>
-                        </motion.div>
-                    )}
-
-                    {/* Surrounding artists */}
-                    {topArtists.slice(1, 10).map((artist, index) => (
-                        <motion.div
-                            key={artist.name}
-                            whileHover={{scale: 1.05}}
-                            className="surrounding-artist"
-                            initial={{opacity: 0, y: 50}}
-                            whileInView={{
-                                opacity: 1,
-                                y: 0,
-                                transition: {
-                                    duration: 0.5,
-                                    delay: index * 0.2
-                                }
-                            }}
-                            viewport={{once: true}}
-                        >
-                            <img
-                                src={artist.image_url}
-                                alt={artist.name}
-                                className="surrounding-artist-img"
-                            />
-                            <div className="artist-rank">
-                                {artist.rank}. {artist.name}
-                            </div>
-                        </motion.div>
-                    ))}
+        return (
+            <div className="artist-scroll-container">
+                <div className="header-container">
+                    <h1 className="header-title">Your Top Artists</h1>
+                    <Link
+                        to="/profile"
+                        className="exit-link"
+                        onClick={() => console.log("Exit clicked")}
+                    >
+                        &times;
+                    </Link>
                 </div>
-            </div>
+                <div className="artists-scroll-content">
+                    <div className="artist-wrapper">
+                        {/* Center artist */}
+                        {topArtists[0] && (
+                            <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                className="central-artist"
+                            >
+                                <img
+                                    src={topArtists[0].image_url}
+                                    alt={topArtists[0].name}
+                                    className="central-artist-img"
+                                />
+                                <div style={{
+                                    fontSize: "20px",
+                                    fontWeight: "700",
+                                    marginTop: "10px",
+                                    fontFamily: "Manrope",
+                                }}>
+                                    {topArtists[0].rank}. {topArtists[0].name}
+                                </div>
+                            </motion.div>
+                        )}
 
-            <Link
-                to="/top-albums"
-                className="next-page-link"
-                onClick={() => console.log("Next page clicked")}
-            >
-                &#8594;
-            </Link>
-            <DarkModeToggle />
-        </div>
-    );
-}
+                        {/* Surrounding artists */}
+                        {topArtists.slice(1, 10).map((artist, index) => (
+                            <motion.div
+                                key={artist.name}
+                                whileHover={{ scale: 1.05 }}
+                                className="surrounding-artist"
+                                initial={{ opacity: 0, y: 50 }}
+                                whileInView={{
+                                    opacity: 1,
+                                    y: 0,
+                                    transition: {
+                                        duration: 0.5,
+                                        delay: index * 0.2
+                                    }
+                                }}
+                                viewport={{ once: true }}
+                            >
+                                <img
+                                    src={artist.image_url}
+                                    alt={artist.name}
+                                    className="surrounding-artist-img"
+                                />
+                                <div className="artist-rank">
+                                    {artist.rank}. {artist.name}
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+
+                <Link
+                    to="/top-albums"
+                    className="next-page-link"
+                    onClick={() => console.log("Next page clicked")}
+                >
+                    &#8594;
+                </Link>
+                <DarkModeToggle />
+            </div>
+        );
+    }
 
     // Desktop Render
     const radius = 280;
@@ -184,7 +188,7 @@ const WrappedArtists = () => {
                     return (
                         <motion.div
                             key={index}
-                            whileHover={{scale: 1.05, transition: {duration: 0.01}}}
+                            whileHover={{ scale: 1.05, transition: { duration: 0.01 } }}
                         >
                             <animated.div
                                 className="surrounding-artist"
@@ -218,7 +222,7 @@ const WrappedArtists = () => {
                 {/* Main artist in the center */}
                 {topArtists[0] && (
                     <motion.div
-                        whileHover={{scale: 1.05, transition: {duration: 0.01}}}
+                        whileHover={{ scale: 1.05, transition: { duration: 0.01 } }}
                     >
                         <animated.div
                             className="central-artist"

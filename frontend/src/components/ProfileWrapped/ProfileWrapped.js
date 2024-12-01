@@ -32,11 +32,12 @@ const ProfileWrapped = ({ albumCoverUrl, wrappedName, dateCreated, onDelete }) =
             </div>
 
             <span className="delete" onClick={handleDeleteClick}>&times;</span>
-
+            <span className="divider"></span>
         </div>
-        <hr className="divider" />
 
-        {showConfirmation && (
+
+    {
+        showConfirmation && (
                 <div className="confirmation-modal">
                     <div className="modal-content">
                         <p>Are you sure you want to delete this Wrap?</p>

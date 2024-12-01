@@ -52,7 +52,7 @@ const WrappedIntro = () => {
     return (
         <>
             <div className="header">
-                <h1 className="header-title">{wrappedData ? wrappedData.wrapped_name : 'Loading...'}</h1>
+                <h1 className="header-title">{wrappedData ? wrappedData.wrapped_name : '   '}</h1>
                 <Link to="/profile" className="exit-button" onClick={() => console.log("Exit clicked")}>&times;</Link>
             </div>
 

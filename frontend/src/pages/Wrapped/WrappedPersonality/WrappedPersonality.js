@@ -126,7 +126,7 @@ const WrappedPersonality = () => {
     };
 
     if (isLoading) {
-        return <div className="loading">Loading your listening personality...</div>;
+        return <div className="personality-loading">Now with all the basics out of the way, let's anaylyze you and your music!</div>;
     }
 
     if (error || personalityIndex === null) {

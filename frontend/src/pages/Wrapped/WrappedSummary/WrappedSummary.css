@@ -124,6 +124,7 @@
   word-wrap: break-word;
   line-height: 1.2;
   margin: 0;
+  background: none;
 }
 
 .subtitle {
@@ -173,6 +174,7 @@
   font-weight: 800;
   display: inline;
   margin-top: 5px;
+  margin-right: 6px;
 }
 
 .top-artist-name {
@@ -235,11 +237,15 @@
 }
 
 .top-albums-section {
-  width: 411px;
   height: 205px;
   left: 200px;
   top: 400px;
   position: absolute;
+  text-overflow: ellipsis;
+  width: 390px;
+  word-wrap: break-word;
+  white-space: normal;
+  margin-bottom: 50px;
 }
 
 .top-albums-item {
@@ -256,23 +262,23 @@
 .top-albums-artist {
   color: var(--text-color);
   font-size: 12px;
-  font-family: 'Manrope';
+  font-family: 'Manrope', serif;
   font-weight: 500;
   margin-left: 8px;
 }
 
 .save-button {
-  margin-top: 30px;
-  margin-left: 20px;
   padding: 10px 20px;
   font-size: 14px;
-  font-family: 'Manrope';
+  font-family: 'Manrope', serif;
   font-weight: 600;
-  color: black;
+  color: var(--text-color);
   border: solid 1px;
   border-radius: 10px;
   cursor: pointer;
-  background-color: white;
+  background-color: var(--background-color);
+  text-decoration: none;
+  margin-left: 30px;
 }
 
 .top-songs-section-title {
