@@ -12,7 +12,7 @@ const WrappedSongs = () => {
 
   useEffect(() => {
     const fetchTopSongs = async () => {
-       try {
+      try {
         const token = localStorage.getItem('token');
 
         console.log("Token found:", token);
@@ -25,7 +25,11 @@ const WrappedSongs = () => {
         });
 
         setSongs(response.data.top_songs);
-        setLoading(false);
+
+        // Add a delay before setting loading to false
+        setTimeout(() => {
+          setLoading(false);
+        }, 1500); // 1.5 seconds delay
       } catch (err) {
         console.error("Error fetching top songs:", err);
         setError(err.response?.data?.error || "Failed to load songs. Please make sure you're logged in.");
@@ -36,7 +40,7 @@ const WrappedSongs = () => {
     fetchTopSongs();
   }, []);
 
-  if (loading) return <div>Loading your top songs...</div>; // Show loading state
+  if (loading) return <div className='song-loading'><h2>Let's look at your songs first...</h2></div>;
   if (error) return <div>{error}</div>; // Show error state
 
   return (
@@ -52,41 +56,41 @@ const WrappedSongs = () => {
         </Link>
       </div>
 
-        <div className="wrapper">
-      <div className="song-grid">
-        {songs.map((song, index) => (
-          <motion.div
-            key={index}
-            className="song-item"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.2, duration: 0.5 }}
-            whileHover={{ scale: 1.05, transition: { duration: 0.01 } }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <img
-              src={song.cover_image || "https://via.placeholder.com/161x161"}
-              alt={`${song.title} cover`}
-              className="song-cover"
-            />
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div className="rank">{index + 1}</div>
-              <div className="song-title">{song.song_title}</div>
-              <div className="artist">{song.artist_name}</div>
-            </div>
-          </motion.div>
-        ))}
+      <div className="wrapper">
+        <div className="song-grid">
+          {songs.map((song, index) => (
+            <motion.div
+              key={index}
+              className="song-item"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2, duration: 0.5 }}
+              whileHover={{ scale: 1.05, transition: { duration: 0.01 } }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <img
+                src={song.cover_image || "https://via.placeholder.com/161x161"}
+                alt={`${song.title} cover`}
+                className="song-cover"
+              />
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div className="rank">{index + 1}</div>
+                <div className="song-title">{song.song_title}</div>
+                <div className="artist">{song.artist_name}</div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
-            </div>
 
       <Link
-        to="/top-genres" // Replace with the actual path to the next page
+        to="/top-genres"
         className="next-button"
         onClick={() => console.log("Next page clicked")}
       >
         &#8594;
       </Link>
-        <DarkModeToggle />
+      <DarkModeToggle />
     </div>
   );
 };

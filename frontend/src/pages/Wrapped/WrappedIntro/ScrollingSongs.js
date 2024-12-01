@@ -46,8 +46,7 @@ const ScrollingSongs = () => {
           {[...Array(18)].map((_, index) => (
             <img
               key={`loading-top-${index}`}
-              src="https://via.placeholder.com/161x161"
-              alt="Loading"
+              alt="  "
               className="carousel-image"
             />
           ))}
@@ -57,8 +56,7 @@ const ScrollingSongs = () => {
           {[...Array(18)].map((_, index) => (
             <img
               key={`loading-bottom-${index}`}
-              src="https://via.placeholder.com/161x161"
-              alt="Loading"
+              alt=" "
               className="carousel-image"
             />
           ))}

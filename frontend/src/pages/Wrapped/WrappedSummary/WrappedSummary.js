@@ -49,26 +49,30 @@ const WrappedSummary = () => {
   }, []);
 
   // Background image rows
-  const renderImageRow = (images, className, duplicates = 2) => (
-    <div className={className}>
-      {[...Array(duplicates)].map((_, i) => (
-        <React.Fragment key={i}>
-          {images.map((image, index) => (
-            <img
-              key={`${i}-${index}`}
-              src={image}
-              alt={`Background ${index + 1}`}
-              className="carousel-image"
-            />
-          ))}
-        </React.Fragment>
-      ))}
-    </div>
-  );
+  const renderImageRow = (images, className) => {
+    // Calculate how many images are needed to fill the screen
+    const duplicates = Math.ceil(window.innerWidth / (images.length * 100)); // Assuming each image is 100px wide
 
+    return (
+      <div className={className}>
+        {[...Array(duplicates)].map((_, i) => (
+          <React.Fragment key={i}>
+            {images.map((image, index) => (
+              <img
+                key={`${i}-${index}`}
+                src={image}
+                alt={`Background ${index + 1}`}
+                className="carousel-image"
+              />
+            ))}
+          </React.Fragment>
+        ))}
+      </div>
+    );
+  };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div> </div>;
   }
 
   return (
@@ -142,12 +146,14 @@ const WrappedSummary = () => {
           {/* Top Albums List */}
           <div className="top-albums-section">
             {topAlbums.map((album, index) => (
-              <div key={index} className="top-albums-item">
-                <span className="top-albums-title">{index + 1}. {album.name}</span>
-                <span className="top-albums-artist">{album.artist}</span>
-              </div>
+                <div key={index} className="top-albums-item">
+                  <span className="top-albums-title">{index + 1}. {album.name}</span>
+                  <span className="top-albums-artist">{album.artist}</span>
+                </div>
             ))}
-            <button className="save-button">Save to Profile</button>
+            <br></br>
+            <br></br>
+            <Link to="/profile" className="save-button">Back to Profile</Link>
           </div>
         </motion.div>
       </motion.div>

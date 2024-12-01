@@ -22,11 +22,14 @@ const WrappedAlbums = () => {
                     }
                 });
                 setAlbums([...response.data.top_albums].reverse());
-                setLoading(false);
             } catch (err) {
                 console.error("Error fetching top albums:", err);
                 setError(err.response?.data?.error || "Failed to load albums");
-                setLoading(false);
+            } finally {
+                // Delay loading state for 1.5 seconds
+                setTimeout(() => {
+                    setLoading(false);
+                }, 1500);
             }
         };
 
@@ -48,7 +51,7 @@ const WrappedAlbums = () => {
         visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
     };
 
-    if (loading) return <div>Loading your top albums...</div>;
+    if (loading) return <div className="album-loading">Cool! Let's look at your albums next...</div>;
     if (error) return <div>{error}</div>;
     if (!albums.length) return <div>No albums found</div>;
 
