@@ -72,8 +72,9 @@
     justify-content: center;
     position: relative;
     min-height: 100vh;
-    margin-top: -75px;
     z-index: 10;
+    max-height:500px;
+    margin-top: -60px;
 }
 
 .create-account-form {
@@ -143,21 +144,14 @@
 @media (max-width: 393px) {
     .create-account-container {
         padding: 0 20px; /* Add horizontal padding */
-        margin-top: -40px;
-    }
-    .images-container {
-        margin-top: 200px;
+        top: 210px;
+        min-height: 422px;
+        margin-bottom: 500px;
+
     }
     .create-button {
         width: 80%;
         font-size: 15px;
-    }
-    .images-row-top {
-        margin-top: -520px;
-    }
-
-    .images-row-bottom {
-        margin-top: 600px;
     }
     .create-account-form {
         padding-top: 40px;
