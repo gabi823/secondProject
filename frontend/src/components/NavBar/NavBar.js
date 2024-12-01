@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.css"; // Import the CSS file
 import logo from "../../images/logo.png";
+import DarkModeToggle from '../../components/DarkModeToggle/DarkModeToggle';
+
 
 const NavBar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -24,16 +26,13 @@ const NavBar = () => {
 
 
     return (
+        <>
         <header className="navbar">
             {/* Logo and Title */}
             <div className="navbar-logo-title">
                 <Link to="/" className="navbar-title">nostalgify</Link>
-                <Link to="/">
-                    <img
-                        className="navbar-logo"
-                        src={logo}
-                        alt="Logo"
-                    />
+                <Link to="/" className="rewind">
+                    ⏮
                 </Link>
             </div>
 
@@ -60,6 +59,8 @@ const NavBar = () => {
                 </ul>
             )}
         </header>
+        <DarkModeToggle />
+    </>
     );
 };
 

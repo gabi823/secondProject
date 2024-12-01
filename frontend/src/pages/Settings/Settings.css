@@ -22,7 +22,7 @@
 }
 
 .settings-title {
-    color: black;
+    color: var(--text-color);
     font-size: 2.5rem;
     font-family: Manrope;
     font-weight: 700;
@@ -32,7 +32,7 @@
 .settings-back-link {
     border: none;
     background: none;
-    color: black;
+    color: var(--text-color);
     font-size: 1rem;
     font-family: Manrope;
     font-weight: 500;
@@ -57,9 +57,9 @@
 
 /* Styling for individual settings sections */
 .settings-section {
-    background: white;
+    background: var(--background-color);
     border-radius: 10px;
-    border: 1px solid black;
+    border: 1px solid var(--text-color);
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
@@ -159,7 +159,7 @@
     .settings-back-link {
         border: none;
         background: none;
-        color: black;
+        color: var(--text-color);
         font-size: 1rem;
         font-family: Manrope;
         font-weight: 500;
@@ -183,9 +183,9 @@
 
     /* Individual settings sections */
     .settings-section {
-        background: white;
+        background: var(--background-color);
         border-radius: 10px;
-        border: 1px solid black;
+        border: 1px solid var(--text-color);
         width: 100%; /* Ensure sections span full width */
         padding: 15px; /* Add padding for spacing */
         box-sizing: border-box;
