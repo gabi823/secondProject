@@ -2,14 +2,13 @@
 .settings-container {
     display: flex;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     padding: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 90%;
     height: 100vh;
     z-index: 1;
-
+    margin-left: -200px;
+    margin-top: -120px;
 }
 
 /* Left section for title and back button */
@@ -17,8 +16,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
-    margin-right: 75px;
+    gap: 5px;
     margin-bottom: 420px;
 }
 
@@ -28,6 +26,7 @@
     font-family: Manrope;
     font-weight: 700;
     margin-bottom: 0;
+    margin-left: 550px;
 }
 
 .settings-back-link {
@@ -40,6 +39,7 @@
     cursor: pointer;
     margin-top: 0;
     text-decoration: none;
+    margin-left: 550px;
 }
 
 .back-arrow {
@@ -51,7 +51,6 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 700px;
     gap: 20px;
     margin-top: 40px;
 }
@@ -84,6 +83,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 980px;
 }
 
 .email-info-container {
@@ -105,6 +105,10 @@
     border: none;
     background: none;
     cursor: pointer;
+}
+
+.settings-delete-button {
+    margin-top: 20px;
 }
 
 /* Row container for Log Out and Delete Account sections */
@@ -132,7 +136,8 @@
         box-sizing: border-box; /* Include padding in width */
         gap: 20px; /* Add consistent spacing between sections */
         max-height: 700px;
-
+        margin-left: 0px;
+        margin-top: 0px;
     }
 
     /* Center the title and back link */
