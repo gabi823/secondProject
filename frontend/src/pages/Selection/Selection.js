@@ -60,7 +60,15 @@ const Selection = () => {
             );
 
             const createdWrapped = response.data;
-            navigate(`/wrapped-intro?wrappedId=${createdWrapped.id}`);
+            navigate('/wrapped-intro', {
+                state: {
+                    wrappedConfig: {
+                        name: wrappedName,
+                        timePeriod: timeRange,
+                        wrappedId: createdWrapped.id
+                    }
+                }
+            });
         } catch (error) {
             console.error("Error creating wrapped:", error);
             alert("Failed to create wrapped. Please try again.");
@@ -123,9 +131,9 @@ const Selection = () => {
                                         onChange={(e) => setTimeRange(e.target.value)}
                                     >
                                         <option value="" disabled>Select time period</option>
-                                        <option value="short">Short Term</option>
-                                        <option value="medium">Medium Term</option>
-                                        <option value="long">Long Term</option>
+                                        <option value="short_term">Last 4 Weeks</option>
+                                        <option value="medium_term">Last 6 Months</option>
+                                        <option value="long_term">All Time</option>
                                     </select>
                                     <span className="dropdown-arrow">▼</span>
                                 </div>

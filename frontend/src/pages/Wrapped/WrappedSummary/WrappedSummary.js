@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './WrappedSummary.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import DarkModeToggle from "../../../components/DarkModeToggle/DarkModeToggle";
 import axios from 'axios';
@@ -12,6 +12,13 @@ const WrappedSummary = () => {
   const [topArtist, setTopArtist] = useState({ name: '', image_url: '' });
   const [backgroundImages, setBackgroundImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const wrappedConfig = location.state?.wrappedConfig || {
+    name: 'My Wrapped',
+    timePeriod: 'medium_term'
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,10 +30,22 @@ const WrappedSummary = () => {
       try {
         // Fetch all required data in parallel
         const [songsRes, genresRes, albumsRes, artistsRes, playlistImagesRes] = await Promise.all([
-          axios.get('https://secondproject-8lyv.onrender.com/api/top-songs/', { headers }),
-          axios.get('https://secondproject-8lyv.onrender.com/api/top-genres/', { headers }),
-          axios.get('https://secondproject-8lyv.onrender.com/api/top-albums/', { headers }),
-          axios.get('https://secondproject-8lyv.onrender.com/api/top-artists/', { headers }),
+          axios.get('https://secondproject-8lyv.onrender.com/api/top-songs/', {
+            headers,
+            params: { time_range: wrappedConfig.timePeriod }
+          }),
+          axios.get('https://secondproject-8lyv.onrender.com/api/top-genres/', {
+            headers,
+            params: { time_range: wrappedConfig.timePeriod }
+          }),
+          axios.get('https://secondproject-8lyv.onrender.com/api/top-albums/', {
+            headers,
+            params: { time_range: wrappedConfig.timePeriod }
+          }),
+          axios.get('https://secondproject-8lyv.onrender.com/api/top-artists/', {
+            headers,
+            params: { time_range: wrappedConfig.timePeriod }
+          }),
           axios.get('https://secondproject-8lyv.onrender.com/api/fetch-playlist-images/')
         ]);
 
@@ -45,8 +64,19 @@ const WrappedSummary = () => {
       }
     };
 
-    fetchData();
-  }, []);
+    if (wrappedConfig.timePeriod) {
+      fetchData();
+    }
+  }, [wrappedConfig.timePeriod]);
+
+  const getTimeRangeLabel = (timeRange) => {
+    const labels = {
+      'short_term': 'Last 4 Weeks',
+      'medium_term': 'Last 6 Months',
+      'long_term': 'All Time'
+    };
+    return labels[timeRange] || timeRange;
+  };
 
   // Background image rows
   const renderImageRow = (images, className) => {
@@ -105,7 +135,9 @@ const WrappedSummary = () => {
         <motion.div className="card">
           <motion.div className="title-section">
             <h1 className="title">You've reached the end...</h1>
-            <h2 className="subtitle">Here's an overview of everything:</h2>
+            <h2 className="subtitle">
+              Here's an overview of {getTimeRangeLabel(wrappedConfig.timePeriod)}:
+            </h2>
           </motion.div>
 
           {/* Top Artist Section */}

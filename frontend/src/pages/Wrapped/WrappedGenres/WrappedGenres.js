@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
 import './WrappedGenres.css';
@@ -10,6 +10,12 @@ const WrappedGenres = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const wrappedConfig = location.state?.wrappedConfig || {
+        name: 'My Wrapped',
+        timePeriod: 'medium_term'
+    };
 
     useEffect(() => {
         const fetchTopGenres = async () => {
@@ -24,6 +30,9 @@ const WrappedGenres = () => {
                     headers: {
                         'Authorization': `Token ${token}`,
                         'Content-Type': 'application/json',
+                    },
+                    params: {
+                        time_range: wrappedConfig.timePeriod
                     }
                 });
 
@@ -40,8 +49,21 @@ const WrappedGenres = () => {
             }
         };
 
-        fetchTopGenres();
-    }, [navigate]);
+        if (wrappedConfig.timePeriod) {
+            fetchTopGenres();
+        } else {
+            navigate('/selection');
+        }
+    }, [wrappedConfig.timePeriod, navigate]);
+
+    const getTimeRangeLabel = (timeRange) => {
+        const labels = {
+            'short_term': 'Last 4 Weeks',
+            'medium_term': 'Last 6 Months',
+            'long_term': 'All Time'
+        };
+        return labels[timeRange] || timeRange;
+    };
 
     if (loading) return <div className="genre-loading">Onto your top genres...</div>;
     if (error) return <div className="error">{error}</div>;
@@ -51,6 +73,9 @@ const WrappedGenres = () => {
             {/* Static Header */}
             <div className="header">
                 <h1 className="title">Your Top Genres</h1>
+                <div className="subtitle">
+                    {getTimeRangeLabel(wrappedConfig.timePeriod)}
+                </div>
                 <Link
                     to="/profile"
                     className="exit-button"
@@ -103,7 +128,7 @@ const WrappedGenres = () => {
             <Link
                 to="/top-artists"
                 className="next-button"
-                onClick={() => console.log("Next page clicked")}
+                state={{ wrappedConfig }}
             >
                 &#8594;
             </Link>
