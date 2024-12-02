@@ -78,9 +78,11 @@ const WrappedSongs = () => {
   return (
     <div className="container">
       <div className="header">
+        <div className="title-container">
         <h1 className="title">Your Top Songs</h1>
         <div className="subtitle">
             {getTimeRangeLabel(wrappedConfig.timePeriod)}
+        </div>
         </div>
         <Link
           to="/profile"

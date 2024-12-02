@@ -82,9 +82,6 @@ const WrappedAlbums = () => {
         <>
             <div className="header-container">
                 <h1 className="header-title">Your Top Albums</h1>
-                <div className="subtitle">
-                    {getTimeRangeLabel(wrappedConfig.timePeriod)}
-                </div>
                 <Link to="/profile" className="exit-link">&times;</Link>
             </div>
 

@@ -213,7 +213,6 @@
         width: 125px; /* Reduce image size */
         height: 125px;
         margin-bottom: 0; /* Remove bottom margin */
-        z-index: 1;
     }
     .profile-section {
         display: flex;

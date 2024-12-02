@@ -103,6 +103,20 @@
     color: var(--text-color);
     cursor: pointer;
 }
+.subtitle {
+    font-size: 32px;
+    font-weight: 400;
+    font-family: 'Manrope', sans-serif;
+    color: var(--text-color);
+    margin-top: 10px;
+    text-align: left;
+    margin-right: 20px;
+}
+.title-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 
 @media (max-width: 393px) {
     .container {
@@ -125,7 +139,7 @@
         gap: 20px;
         overflow-y: auto; /* Enable scrolling if content overflows */
         max-height: 80vh; /* Limit height to make scrolling smoother */
-        margin-top: -140px; /* Increased top margin to shift content down */
+        margin-top: -5px; /* Increased top margin to shift content down */
         margin-bottom: 20px;
         position: absolute;
         width: 100%;
