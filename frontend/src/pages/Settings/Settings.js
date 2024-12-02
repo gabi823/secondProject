@@ -269,7 +269,7 @@ const handleLinkSpotify = async () => {
                         <div className="settings-section">
                             <h2>Delete Account</h2>
                             <p>Delete your nostalgify account and its data.</p>
-                            <button className="delete-button" onClick={handleDeleteAccount}
+                            <button className="settings-delete-button" onClick={handleDeleteAccount}
                                     disabled={isDeleting}>{isDeleting ? 'DELETING...' : 'DELETE ACCOUNT'}</button>
                         </div>
                     </div>
