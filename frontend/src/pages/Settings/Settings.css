@@ -97,7 +97,7 @@
     font-weight: 600;
 }
 
-.change-button, .logout-button, .delete-button, .email-button, .password-button {
+.change-button, .logout-button, .settings-delete-button, .email-button, .password-button {
     color: #1807FF;
     font-size: 1rem;
     font-family: Manrope;
