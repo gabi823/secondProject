@@ -124,9 +124,9 @@ class SpotifyWrapped(models.Model):
     )
     top_track_name = models.CharField(max_length=200, null=True, blank=True)
     album_cover_url = models.URLField(null=True, blank=True)
-    name = models.CharField(max_length=255, default="Untitled Wrapped")
+    wrapped_name = models.CharField(max_length=255, default="Untitled Wrapped")
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.user.username} - {self.time_range} Wrap"
+        return f"{self.wrapped_name} - {self.time_range} Wrap"
 
