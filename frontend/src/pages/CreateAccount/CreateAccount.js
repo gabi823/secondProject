@@ -8,6 +8,8 @@ import DarkModeToggle from '../../components/DarkModeToggle/DarkModeToggle';
 import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 
 
+
+
 const CreateAccount = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
