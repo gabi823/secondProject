@@ -185,6 +185,7 @@ const WrappedSummary = () => {
             ))}
             <br></br>
             <br></br>
+            <br></br>
             <Link to="/profile" className="save-button">Back to Profile</Link>
           </div>
         </motion.div>
