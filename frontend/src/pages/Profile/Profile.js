@@ -19,6 +19,22 @@ const Profile = () => {
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
+    const timeRangeMapping = {
+        short_term: "Short Term",
+        medium_term: "Medium Term",
+        long_term: "Long Term",
+    };
+
+    const formatTimeRange = (timeRange) => {
+        if (!timeRange) return '';
+        return timeRange
+            .split('_') // Split the string by underscores
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+            .join(' '); // Join the words with a space
+    };
+
+
+
     useEffect(() => {
         const initializeProfile = async () => {
             // Check authentication
@@ -67,18 +83,23 @@ const Profile = () => {
                 console.log('Profile Response:', profileResponse.data);
 
                 // Fetch Wrapped data
-                const wrappedResponse = await axios.get('https://secondproject-8lyv.onrender.com/api/get-wrapped-data/', {
+                const wrappedResponse = await axios.get('https://secondproject-8lyv.onrender.com0/api/get-wrapped-data/', {
                     headers: {
                         Authorization: `Token ${token}`,
                     },
                 });
 
                 console.log('Wrapped Data Response:', wrappedResponse.data);
+                console.log('Wrapped Name:', wrap.wrapped_name);
 
                 setWrappedData(wrappedResponse.data.map(wrap => ({
                     ...wrap,
+                    wrapped_name: wrap.wrapped_name || `Your Wrapped #${wrap.id}`,
+                    formatted_time_range: formatTimeRange(wrap.time_range),
                     album_cover_url: wrap.album_cover_url || "https://via.placeholder.com/160",
                 })));
+
+
             } catch (error) {
                 console.error('Error initializing profile:', error);
                 setError('Failed to load profile and Wrapped data.');
@@ -142,7 +163,7 @@ const Profile = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                'https://secondproject-8lyv.onrender.com/api/create-wrapped/',
+                'http://localhost:8000/api/create-wrapped/',
                 { time_range: timeRange },
                 {
                     headers: {
@@ -255,7 +276,10 @@ const Profile = () => {
                                     className="wrapped-img"
                                 />
                                 <div className="wrapped-details">
-                                    <h4>{wrap.name || `Your Wrapped #${wrap.id}`}</h4>
+                                    <h4>
+                                        {wrap.wrapped_name || `Your Wrapped #${wrap.id}`}
+                                        {wrap.time_range ? ` (${wrap.time_range})` : ''}
+                                    </h4>
                                     <p>Date Created: {new Date(wrap.date_created).toLocaleDateString()}</p>
                                 </div>
                             </div>
