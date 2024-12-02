@@ -128,7 +128,7 @@ const WrappedSummary = () => {
         {renderImageRow(topAlbums.map(album => album.image_url), 'image-row-middle')}
 
         {/* Bottom row - playlist images */}
-        {renderImageRow(backgroundImages, 'image-row-bottom')}
+        {renderImageRow(topSongs.map(song => song.cover_image), 'image-row-bottom')}
       </motion.div>
 
       <motion.div className="container">
