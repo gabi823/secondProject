@@ -350,25 +350,29 @@
     align-items: center;
     margin-top: -50px;
     justify-content: center;
-    justify-items: center;
   }
 
   .title-section {
     width: 100%;
     height: auto;
     left: 0;
-    top: 20px;
+    top: 5px;
     align-items: center;
     justify-items: center;
+    gap: -20px;
+    display: flex;
+    flex-direction: column;
   }
 
   .title {
     font-size: 22px;
+    margin-bottom: -20px;
   }
 
   .subtitle {
     font-size: 12px;
     align-items: center;
+    top: -40px;
   }
 
   .top-artist-image-container {
@@ -396,10 +400,10 @@
   .top-songs-section-title {
     width: 100%;
     height: auto;
-    left: -90px;
+    left: -100px;
     top: 75px;
     text-align: center;
-
+    margin-left: -5px;
   }
   .top-songs-section {
     width: 100%;
@@ -407,11 +411,12 @@
     left: 0;
     top: 110px;
     padding: 0 15px;
+    margin-left: 10px;
   }
   .top-genres-section-title {
     width: 100%;
     height: auto;
-    left: -90px;
+    left: -100px;
     top: 265px;
     text-align: center;
   }
@@ -422,12 +427,14 @@
     left: 20px;
     top: 295px;
     padding: 0 20px;
+    margin-left: -15px;
+    margin-top: 5px;
   }
 
   .top-albums-section-title {
     width: 100%;
     height: auto;
-    left: -90px;
+    left: -100px;
     top: 450px;
     text-align: center;
   }
@@ -437,11 +444,13 @@
     left: -5px;
     top: 480px;
     padding: 0 20px;
+    margin-left: 10px;
+    margin-top: 5px;
   }
 
   .save-button {
-    margin-top: 35px;
-    margin-left: 100px;
+    margin-top: 130px;
+    margin-left: 90px;
     align-items: center;
     justify-items: center;
     justify-content: center;
