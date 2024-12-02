@@ -26,7 +26,7 @@ const AboutUs = () => {
                 }
 
                 // Check login status with the token
-                const response = await axios.get("https://secondproject-8lyv.onrender.com/api/check-login/", {
+                const response = await axios.get("http://localhost:8000/api/check-login/", {
                     headers: {
                         'Authorization': `Token ${token}`
                     },

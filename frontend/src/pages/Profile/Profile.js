@@ -32,7 +32,7 @@ const Profile = () => {
             try {
                 // Check Spotify link
                 console.log('Checking Spotify link...');
-                const spotifyResponse = await fetch('https://secondproject-8lyv.onrender.com/api/check-spotify-link/', {
+                const spotifyResponse = await fetch('http://localhost:8000/api/check-spotify-link/', {
                     headers: {
                         'Authorization': `Token ${token}`,
                         'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const Profile = () => {
                 // Fetch profile data
                 console.log('Fetching profile data...');
 
-                const profileResponse = await axios.get('https://secondproject-8lyv.onrender.com/api/profile/', {
+                const profileResponse = await axios.get('http://localhost:8000/api/profile/', {
                     headers: {
                         Authorization: `Token ${token}`,
                         'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ const Profile = () => {
                 console.log('Profile Response:', profileResponse.data);
 
                 // Fetch Wrapped data
-                const wrappedResponse = await axios.get('https://secondproject-8lyv.onrender.com/api/get-wrapped-data/', {
+                const wrappedResponse = await axios.get('http://localhost:8000/api/get-wrapped-data/', {
                     headers: {
                         Authorization: `Token ${token}`,
                     },
@@ -89,7 +89,7 @@ const Profile = () => {
         const fetchWraps = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/get-wrapped-data/', {
+                const response = await axios.get('http://localhost:8000/api/get-wrapped-data/', {
                     headers: {
                         Authorization: `Token ${token}`,
                     }
@@ -113,7 +113,7 @@ const Profile = () => {
     const checkSpotifyLink = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('https://secondproject-8lyv.onrender.com/api/spotify/login/', {
+            const response = await fetch('http://localhost:8000/api/spotify/login/', {
                 method: 'GET',
                 headers: {
                     Authorization: `Token ${token}`,
@@ -142,7 +142,7 @@ const Profile = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                'https://secondproject-8lyv.onrender.com/api/create-wrapped/',
+                'http://localhost:8000/api/create-wrapped/',
                 { time_range: timeRange },
                 {
                     headers: {
@@ -178,7 +178,7 @@ const Profile = () => {
             console.log("Using token:", token);
 
             console.log("Deleting wrap with ID:", id);
-            const response = await axios.delete(`https://secondproject-8lyv.onrender.com/api/delete-wrapped/${id}/`, {
+            const response = await axios.delete(`http://localhost:8000/api/delete-wrapped/${id}/`, {
                 headers: {
                     Authorization: `Token ${token}`,
                     "X-CSRFToken": csrfToken, // Include CSRF token

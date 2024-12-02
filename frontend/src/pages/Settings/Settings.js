@@ -14,7 +14,7 @@ const Settings = () => {
     const fetchSpotifyInfo = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('https://secondproject-8lyv.onrender.com/api/get_spotify_info/', {
+            const response = await fetch('http://localhost:8000/api/get_spotify_info/', {
                 headers: {
                     'Authorization': `Token ${token}`,
                 },
@@ -43,7 +43,7 @@ const Settings = () => {
     const handleUnlinkSpotify = async () => {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch('https://secondproject-8lyv.onrender.com/api/unlink_spotify/', {
+        const response = await fetch('http://localhost:8000/api/unlink_spotify/', {
             method: 'POST',
             headers: {
                 'Authorization': `Token ${token}`,
@@ -67,7 +67,7 @@ const Settings = () => {
 const handleLinkSpotify = async () => {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch('https://secondproject-8lyv.onrender.com/api/spotify/login/', {
+        const response = await fetch('http://localhost:8000/api/spotify/login/', {
             method: 'GET',
             headers: {
                 'Authorization': `Token ${token}`,
@@ -97,7 +97,7 @@ const handleLinkSpotify = async () => {
         setIsLoading(true);
         try {
             const token = localStorage.getItem('token');
-            await fetch('https://secondproject-8lyv.onrender.com/api/logout/', {
+            await fetch('http://localhost:8000/api/logout/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Token ${token}`
@@ -125,7 +125,7 @@ const handleLinkSpotify = async () => {
             }
             console.log('Token:', token); // Debug: Log the token
 
-            const url = 'https://secondproject-8lyv.onrender.com/api/delete_account/';
+            const url = 'http://localhost:8000/api/delete_account/';
             console.log('Request URL:', url); // Debug: Log the request URL
 
             const response = await fetch(url, {
@@ -176,7 +176,7 @@ const handleLinkSpotify = async () => {
             return;
         }
 
-        const response = await fetch('https://secondproject-8lyv.onrender.com/api/change_password/', {
+        const response = await fetch('http://localhost:8000/api/change_password/', {
             method: 'POST',
             headers: {
                 'Authorization': `Token ${token}`,

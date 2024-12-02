@@ -13,7 +13,7 @@ const ScrollingSongs = () => {
     const fetchTopSongs = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('https://secondproject-8lyv.onrender.com/api/top-songs/', {
+        const response = await axios.get('http://localhost:8000/api/top-songs/', {
           headers: {
             'Authorization': `Token ${token}`
           }

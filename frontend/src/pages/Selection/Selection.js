@@ -17,7 +17,7 @@ const Selection = () => {
     useEffect(() => {
         const fetchImages = async () => {
             try {
-                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/fetch-playlist-images/');
+                const response = await axios.get('http://localhost:8000/api/fetch-playlist-images/');
                 const fetchedImages = response.data.images;
 
                 // Divide images into a single column and duplicate for smooth scrolling if needed
@@ -46,7 +46,7 @@ const Selection = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                'https://secondproject-8lyv.onrender.com/api/create-wrapped/',
+                'http://localhost:8000/api/create-wrapped/',
                 {
                     time_range: timeRange,
                     wrapped_name: wrappedName

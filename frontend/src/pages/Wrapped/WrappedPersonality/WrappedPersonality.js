@@ -35,7 +35,7 @@ const WrappedPersonality = () => {
 
             try {
                 console.log("Making request to listening-personality endpoint...");
-                const response = await axios.get('https://secondproject-8lyv.onrender.com/api/listening-personality/', {
+                const response = await axios.get('http://localhost:8000/api/listening-personality/', {
                     headers: {
                         Authorization: `Token ${token}`,
                         'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const WrappedPersonality = () => {
     const checkSpotifyLink = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('https://secondproject-8lyv.onrender.com/api/spotify/login/', {
+            const response = await fetch('http://localhost:8000/api/spotify/login/', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Token ${token}`,

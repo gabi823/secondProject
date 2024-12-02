@@ -23,11 +23,11 @@ const WrappedSummary = () => {
       try {
         // Fetch all required data in parallel
         const [songsRes, genresRes, albumsRes, artistsRes, playlistImagesRes] = await Promise.all([
-          axios.get('https://secondproject-8lyv.onrender.com/api/top-songs/', { headers }),
-          axios.get('https://secondproject-8lyv.onrender.com/api/top-genres/', { headers }),
-          axios.get('https://secondproject-8lyv.onrender.com/api/top-albums/', { headers }),
-          axios.get('https://secondproject-8lyv.onrender.com/api/top-artists/', { headers }),
-          axios.get('https://secondproject-8lyv.onrender.com/api/fetch-playlist-images/')
+          axios.get('http://localhost:8000/api/top-songs/', { headers }),
+          axios.get('http://localhost:8000/api/top-genres/', { headers }),
+          axios.get('http://localhost:8000/api/top-albums/', { headers }),
+          axios.get('http://localhost:8000/api/top-artists/', { headers }),
+          axios.get('http://localhost:8000/api/fetch-playlist-images/')
         ]);
 
         setTopSongs(songsRes.data.top_songs.slice(0, 5));

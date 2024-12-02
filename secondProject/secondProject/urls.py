@@ -33,6 +33,8 @@ urlpatterns = [
     path('', home_view, name='home'),
     path('csrf/', views.csrf, name='csrf'),
 
+    path('api/recent-tracks/', views.get_recent_tracks, name='get_recent_tracks'),
+
     # Spotify Authentication and Profile Management
     path('spotify-callback/', views.spotify_callback, name='spotify_callback'),
     path('api/spotify/login/', views.spotify_login, name='spotify_login'),

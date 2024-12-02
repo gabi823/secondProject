@@ -1075,7 +1075,7 @@ def get_user_top_albums(request):
             {"error": "An unexpected error occurred"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
-      
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_listening_personality(request):
@@ -1215,3 +1215,124 @@ def get_listening_personality(request):
 @ensure_csrf_cookie
 def csrf(request):
     return JsonResponse({"csrfToken": request.META.get("CSRF_COOKIE")})
+
+
+import random
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+from .models import SpotifyUser
+
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+import requests
+import random
+from collections import Counter
+from datetime import timedelta
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_recent_tracks(request):
+    """
+    Fetches a random track ID from the authenticated user's recent tracks,
+    selects another track by the same artist, and provides additional random tracks as options.
+    """
+    # Get the SpotifyUser instance linked to the authenticated Django user
+    spotify_user = get_object_or_404(SpotifyUser, user=request.user)
+
+    # Refresh token if needed
+    if spotify_user.token_expiry <= timezone.now():
+        print('trying to refresh token')
+        try:
+            new_token = refresh_spotify_token(spotify_user.refresh_token)
+            spotify_user.access_token = new_token
+            spotify_user.token_expiry = timezone.now() + timedelta(hours=1)
+            spotify_user.save()
+        except Exception as e:
+            return Response({
+                'error': f'Failed to refresh token: {str(e)}'
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    # Fetch user's recently played tracks
+    headers = {'Authorization': f'Bearer {spotify_user.access_token}'}
+    recent_tracks_url = 'https://api.spotify.com/v1/me/top/tracks/'
+    params = {'limit': 50, 'time_range:': 'medium_term'}
+
+    tracks_response = requests.get(recent_tracks_url, headers=headers, params=params)
+
+    if tracks_response.status_code != 200:
+        print('Failed to fetch recent tracks', tracks_response.status_code)
+        return Response({
+            'error': 'Failed to fetch recent tracks',
+            'spotify_error': tracks_response.text
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    tracks_data = tracks_response.json().get('items', [])
+    if not tracks_data:
+        return Response({
+            'error': 'No recent tracks found.'
+        }, status=status.HTTP_404_NOT_FOUND)
+
+    # print('tracks_data', tracks_data)
+
+    # Count occurrences of each artist
+    artist_counter = Counter()
+    artist_tracks = {}
+
+    for item in tracks_data:
+        track = item
+        # print(track)
+        artists = track.get('artists', [])
+        for artist in artists:
+            artist_id = artist.get('id')
+            artist_counter[artist_id] += 1
+            if artist_id not in artist_tracks:
+                artist_tracks[artist_id] = []
+            artist_tracks[artist_id].append(track)
+
+    # print(artist_counter)
+
+    # Filter artists with more than two tracks
+    eligible_artists = [artist_id for artist_id, count in artist_counter.items() if count > 2]
+
+    if not eligible_artists:
+        print('no eligible artists')
+        return Response({
+            'error': 'No artists with more than two tracks found in recent plays.'
+        }, status=status.HTTP_404_NOT_FOUND)
+
+    # Select a random artist
+    selected_artist_id = random.choice(eligible_artists)
+    selected_artist_tracks = artist_tracks[selected_artist_id]
+
+    # Select a random track to play
+    track_to_play = random.choice(selected_artist_tracks)
+
+    # Select another track by the same artist as the correct answer
+    correct_answer_track = random.choice([track for track in selected_artist_tracks if track != track_to_play])
+    # print('gay', correct_answer_track)
+
+    # Get 4 additional random tracks from recent plays
+    other_tracks = [track for track in tracks_data if track.get('id') != correct_answer_track.get('id')]
+    if len(other_tracks) < 4:
+        return Response({
+            'error': 'Not enough tracks to generate options.'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    incorrect_options = random.sample(other_tracks, 4)
+
+    # Compile options
+    options = [correct_answer_track.get('name')] + [track.get('name') for track in incorrect_options]
+    random.shuffle(options)
+
+    a = {
+        "track_id": track_to_play.get('id'),
+        "options": options,
+        "correct_answer": correct_answer_track.get('name')
+    }
+    print('yay', a)
+    return Response(a)
