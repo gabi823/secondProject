@@ -163,7 +163,7 @@ const Profile = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                'http://localhost:8000/api/create-wrapped/',
+                'https://secondproject-8lyv.onrender.com/api/create-wrapped/',
                 { time_range: timeRange },
                 {
                     headers: {
