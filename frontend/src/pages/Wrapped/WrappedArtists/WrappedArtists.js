@@ -104,9 +104,6 @@ const WrappedArtists = () => {
             <div className="artist-scroll-container">
                 <div className="header-container">
                     <h1 className="header-title">Your Top Artists</h1>
-                    <div className="subtitle">
-                        {getTimeRangeLabel(wrappedConfig.timePeriod)}
-                    </div>
                     <Link
                         to="/profile"
                         className="exit-link"
