@@ -360,17 +360,15 @@ def get_spotify_info(request):
 def create_wrapped(request):
     try:
         spotify_user = request.user.spotify_profile
-        wrapped_name = request.data.get('wrapped_name', SpotifyWrapped._meta.get_field('wrapped_name').default)
+        name = request.data.get('wrapped_name', 'My Wrapped')
         time_range = request.data.get('time_range')
-
-        if not time_range:
-            return Response({'error': 'Time range is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create initial wrapped instance
         wrapped = SpotifyWrapped.objects.create(
             user=spotify_user,
-            wrapped_name=wrapped_name,
+            name=name,
             time_range=time_range,
+            date_created=timezone.now()
         )
 
         # Fetch the user's top track for this time period
@@ -397,7 +395,7 @@ def create_wrapped(request):
 
         return Response({
             'id': wrapped.id,
-            'wrapped_name': wrapped.wrapped_name,
+            'name': wrapped.name,
             'time_range': wrapped.time_range,
             'date_created': wrapped.date_created,
             'top_track_name': wrapped.top_track_name,
@@ -428,8 +426,7 @@ def get_wrapped_data(request):
                     'time_range': wrap.time_range,
                     'top_track_name': wrap.top_track_name,
                     'album_cover_url': wrap.album_cover_url,
-                    'date_created': wrap.date_created,
-                    'wrapped_name': wrap.wrapped_name
+                    'date_created': wrap.date_created
                 }, status=status.HTTP_200_OK)
             except SpotifyWrapped.DoesNotExist:
                 return Response({'error': 'Wrapped not found.'}, status=status.HTTP_404_NOT_FOUND)
@@ -443,7 +440,7 @@ def get_wrapped_data(request):
                 'top_track_name': wrap.top_track_name,
                 'album_cover_url': wrap.album_cover_url,
                 'date_created': wrap.date_created,
-                'wrapped_name': wrap.wrapped_name
+                'wrapped_name': wrap.name
             }
             for wrap in wraps
         ]
