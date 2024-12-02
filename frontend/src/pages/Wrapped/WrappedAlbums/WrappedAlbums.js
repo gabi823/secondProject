@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./WrappedAlbums.css";
 import { motion } from 'framer-motion';
@@ -10,6 +10,13 @@ const WrappedAlbums = () => {
     const [albums, setAlbums] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const wrappedConfig = location.state?.wrappedConfig || {
+        name: 'My Wrapped',
+        timePeriod: 'medium_term'
+    };
 
     useEffect(() => {
         const fetchTopAlbums = async () => {
@@ -19,6 +26,9 @@ const WrappedAlbums = () => {
                     headers: {
                         'Authorization': `Token ${token}`,
                         'Content-Type': 'application/json',
+                    },
+                    params: {
+                        time_range: wrappedConfig.timePeriod
                     }
                 });
                 setAlbums([...response.data.top_albums].reverse());
@@ -33,8 +43,21 @@ const WrappedAlbums = () => {
             }
         };
 
-        fetchTopAlbums();
-    }, []);
+        if (wrappedConfig.timePeriod) {
+            fetchTopAlbums();
+        } else {
+            navigate('/selection');
+        }
+    }, [wrappedConfig.timePeriod, navigate]);
+
+    const getTimeRangeLabel = (timeRange) => {
+        const labels = {
+            'short_term': 'Last 4 Weeks',
+            'medium_term': 'Last 6 Months',
+            'long_term': 'All Time'
+        };
+        return labels[timeRange] || timeRange;
+    };
 
     const handleImageClick = () => {
         if (currentIndex < albums.length - 1) {
@@ -59,6 +82,9 @@ const WrappedAlbums = () => {
         <>
             <div className="header-container">
                 <h1 className="header-title">Your Top Albums</h1>
+                <div className="subtitle">
+                    {getTimeRangeLabel(wrappedConfig.timePeriod)}
+                </div>
                 <Link to="/profile" className="exit-link">&times;</Link>
             </div>
 
@@ -99,6 +125,7 @@ const WrappedAlbums = () => {
             <Link
                 to="/listening-personality"
                 className="next-page-link"
+                state={{ wrappedConfig }}
             >
                 &#8594;
             </Link>

@@ -13,15 +13,14 @@ const WrappedIntro = () => {
     const navigate = useNavigate();
 
     // Parse query params
-    const params = new URLSearchParams(location.search);
-    const wrappedId = params.get('wrappedId');
+    const wrappedConfig = location.state?.wrappedConfig;
 
     useEffect(() => {
         // Fetch the wrapped data when wrappedId is available
-        if (wrappedId) {
-            fetchWrappedData(wrappedId);
+        if (wrappedConfig?.wrappedId) {
+            fetchWrappedData(wrappedConfig.wrappedId);
         }
-    }, [wrappedId]);
+    }, [wrappedConfig]);
 
     const fetchWrappedData = async (id) => {
         try {
@@ -36,6 +35,18 @@ const WrappedIntro = () => {
         } catch (error) {
             console.error('Error fetching wrapped data:', error);
         }
+    };
+
+    const handleBegin = () => {
+        console.log('Starting wrapped with time range:', wrappedData?.time_range || 'long_term');
+        navigate('/top-songs', {
+            state: {
+                wrappedConfig: {
+                    ...wrappedConfig,
+                    wrappedData: wrappedData
+                }
+            }
+        });
     };
 
     // Framer Motion animation settings
@@ -64,7 +75,7 @@ const WrappedIntro = () => {
                         <h1>Seems like you’ve been busy...</h1>
                         <p>Let’s see what you’ve been up to!</p>
                     </div>
-                    <Link to="/top-songs" className="begin-button">Begin</Link>
+                    <button onClick={handleBegin} className="begin-button">Begin</button>
                 </motion.div>
             <DarkModeToggle />
 

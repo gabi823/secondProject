@@ -238,7 +238,15 @@ const Profile = () => {
                         >
                             {/* Make the whole section (except delete button) clickable */}
                             <div
-                                onClick={() => navigate(`/wrapped-intro?wrappedId=${wrap.id}`)}
+                                onClick={() => navigate('/wrapped-intro', {
+                                  state: {
+                                    wrappedConfig: {
+                                      name: wrap.wrapped_name,
+                                      timePeriod: wrap.time_range,
+                                      wrappedId: wrap.id
+                                    }
+                                  }
+                                })}
                                 style={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}
                             >
                                 <img

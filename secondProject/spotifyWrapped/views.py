@@ -796,7 +796,21 @@ def get_user_top_songs(request):
     """
     try:
         # Debug prints
-        print(f"User requesting top songs: {request.user.username}")
+        time_range = request.GET.get('time_range', 'medium_term')
+
+        print("Received request params:", request.GET)
+        print("Time range before validation:", time_range)
+        print("Request headers:", request.headers)
+
+        # Validate time range
+        valid_ranges = ['short_term', 'medium_term', 'long_term']
+        if time_range not in valid_ranges:
+            return Response(
+                {"error": "Invalid time range. Must be one of: short_term, medium_term, long_term"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        print(f"User requesting top songs: {request.user.username} for time range: {time_range}")
 
         user = request.user
         spotify_user = getattr(user, 'spotify_profile', None)
@@ -842,11 +856,22 @@ def get_user_top_songs(request):
 
         url = "https://api.spotify.com/v1/me/top/tracks"
         headers = {"Authorization": f"Bearer {spotify_access_token}"}
-        params = {"limit": 12, "time_range": "medium_term"}
+        params = {"limit": 12, "time_range": time_range}
 
-        print(f"Making request to Spotify API: {url}")
+        print("Final request to Spotify API:", {
+            "url": url,
+            "headers": headers,
+            "params": params
+        })
+
+        print(f"Making request to Spotify API: {url} with time_range: {time_range}")
         response = requests.get(url, headers=headers, params=params)
         print(f"Spotify API response status: {response.status_code}")
+
+        print("Spotify API response:", {
+            "status": response.status_code,
+            "data": response.json() if response.status_code == 200 else response.text
+        })
 
         if response.status_code == 200:
             data = response.json()
@@ -858,7 +883,7 @@ def get_user_top_songs(request):
                 }
                 for item in data.get('items', [])
             ]
-            return Response({"top_songs": top_songs}, status=200)
+            return Response({"top_songs": top_songs, "time_range": time_range}, status=200)
         else:
             print(f"Spotify API error response: {response.text}")
             return Response(
@@ -873,6 +898,7 @@ def get_user_top_songs(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_top_genres(request):
@@ -880,7 +906,17 @@ def get_user_top_genres(request):
     Fetch the user's top genres from Spotify by analyzing their top artists
     """
     try:
-        print(f"User requesting top genres: {request.user.username}")
+        time_range = request.GET.get('time_range', 'medium_term')
+
+        # Validate time range
+        valid_ranges = ['short_term', 'medium_term', 'long_term']
+        if time_range not in valid_ranges:
+            return Response(
+                {"error": "Invalid time range. Must be one of: short_term, medium_term, long_term"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        print(f"User requesting top genres: {request.user.username} for time range: {time_range}")
         user = request.user
         spotify_user = getattr(user, 'spotify_profile', None)
 
@@ -906,7 +942,7 @@ def get_user_top_genres(request):
         # Get user's top artists and their genres
         url = "https://api.spotify.com/v1/me/top/artists"
         headers = {"Authorization": f"Bearer {spotify_user.access_token}"}
-        params = {"limit": 50, "time_range": "medium_term"}  # Get more artists for better genre analysis
+        params = {"limit": 50, "time_range": time_range}  # Get more artists for better genre analysis
 
         response = requests.get(url, headers=headers, params=params)
 
@@ -932,7 +968,7 @@ def get_user_top_genres(request):
                 for idx, genre in enumerate(top_genres)
             ]
 
-            return Response({"top_genres": genres}, status=200)
+            return Response({"top_genres": genres, "time-range": time_range}, status=200)
         else:
             print(f"Spotify API error response: {response.text}")
             return Response(
@@ -947,6 +983,7 @@ def get_user_top_genres(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_top_artists(request):
@@ -954,6 +991,17 @@ def get_user_top_artists(request):
     Fetch the user's top artists from Spotify
     """
     try:
+        time_range = request.GET.get('time_range', 'medium_term')
+
+        # Validate time range
+        valid_ranges = ['short_term', 'medium_term', 'long_term']
+        if time_range not in valid_ranges:
+            return Response(
+                {"error": "Invalid time range. Must be one of: short_term, medium_term, long_term"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        print(f"User requesting top artists: {request.user.username} for time range: {time_range}")
         user = request.user
         spotify_user = getattr(user, 'spotify_profile', None)
 
@@ -979,7 +1027,7 @@ def get_user_top_artists(request):
         # Get user's top artists
         url = "https://api.spotify.com/v1/me/top/artists"
         headers = {"Authorization": f"Bearer {spotify_user.access_token}"}
-        params = {"limit": 10, "time_range": "medium_term"}
+        params = {"limit": 10, "time_range": time_range}
 
         response = requests.get(url, headers=headers, params=params)
 
@@ -993,7 +1041,7 @@ def get_user_top_artists(request):
                 }
                 for idx, item in enumerate(data.get('items', []))
             ]
-            return Response({"top_artists": top_artists}, status=200)
+            return Response({"top_artists": top_artists, "time-range": time_range}, status=200)
         else:
             return Response(
                 {"error": f"Spotify API error: {response.text}"},
@@ -1015,6 +1063,17 @@ def get_user_top_albums(request):
     Fetch the user's top albums from Spotify
     """
     try:
+        time_range = request.GET.get('time_range', 'medium_term')
+
+        # Validate time range
+        valid_ranges = ['short_term', 'medium_term', 'long_term']
+        if time_range not in valid_ranges:
+            return Response(
+                {"error": "Invalid time range. Must be one of: short_term, medium_term, long_term"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        print(f"User requesting top albums: {request.user.username} for time range: {time_range}")
         user = request.user
         spotify_user = getattr(user, 'spotify_profile', None)
 
@@ -1040,7 +1099,7 @@ def get_user_top_albums(request):
         # Get user's top tracks to extract album information
         url = "https://api.spotify.com/v1/me/top/tracks"
         headers = {"Authorization": f"Bearer {spotify_user.access_token}"}
-        params = {"limit": 50, "time_range": "medium_term"}  # Get more tracks to find unique albums
+        params = {"limit": 50, "time_range": time_range}  # Get more tracks to find unique albums
 
         response = requests.get(url, headers=headers, params=params)
 
@@ -1062,7 +1121,7 @@ def get_user_top_albums(request):
                         "image_url": item['album']['images'][0]['url'] if item['album']['images'] else None,
                     })
 
-            return Response({"top_albums": top_albums}, status=200)
+            return Response({"top_albums": top_albums, "time_range": time_range}, status=200)
         else:
             return Response(
                 {"error": f"Spotify API error: {response.text}"},
@@ -1075,7 +1134,8 @@ def get_user_top_albums(request):
             {"error": "An unexpected error occurred"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
-      
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_listening_personality(request):
@@ -1211,6 +1271,7 @@ def get_listening_personality(request):
         return Response({
             "error": f"Failed to analyze listening personality: {str(e)}"
         }, status=status.HTTP_400_BAD_REQUEST)
+
 
 @ensure_csrf_cookie
 def csrf(request):

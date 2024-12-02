@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
 import './WrappedSongs.css'; // Import the CSS file
@@ -9,6 +9,13 @@ const WrappedSongs = () => {
   const [songs, setSongs] = useState([]); // State to store songs
   const [loading, setLoading] = useState(true); // State to manage loading
   const [error, setError] = useState(null); // State to handle errors
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const wrappedConfig = location.state?.wrappedConfig || {
+    name: 'My Wrapped',
+    timePeriod: 'medium_term'
+  };
 
   useEffect(() => {
     const fetchTopSongs = async () => {
@@ -16,15 +23,27 @@ const WrappedSongs = () => {
         const token = localStorage.getItem('token');
 
         console.log("Token found:", token);
+        console.log("Fetching songs for time period:", wrappedConfig.timePeriod);
 
         const response = await axios.get("https://secondproject-8lyv.onrender.com/api/top-songs/", {
           headers: {
             'Authorization': `Token ${token}`,
             'Content-Type': 'application/json',
+          },
+          params: {
+             time_range: wrappedConfig.timePeriod
           }
         });
 
         setSongs(response.data.top_songs);
+
+        const wrappedData = {
+          ...wrappedConfig,
+          songs: response.data.top_songs,
+          createdAt: new Date().toISOString()
+        };
+
+        localStorage.setItem('currentWrapped', JSON.stringify(wrappedData));
 
         // Add a delay before setting loading to false
         setTimeout(() => {
@@ -37,8 +56,21 @@ const WrappedSongs = () => {
       }
     };
 
-    fetchTopSongs();
-  }, []);
+    if (wrappedConfig.timePeriod) {
+      fetchTopSongs();
+    } else {
+      navigate('/selection'); // Redirect if no time period is specified
+    }
+  }, [wrappedConfig.timePeriod, navigate]);
+
+  const getTimeRangeLabel = (timeRange) => {
+    const labels = {
+      'short_term': 'Last 4 Weeks',
+      'medium_term': 'Last 6 Months',
+      'long_term': 'All Time'
+    };
+    return labels[timeRange] || timeRange;
+  };
 
   if (loading) return <div className='song-loading'><h2>Let's look at your songs first...</h2></div>;
   if (error) return <div>{error}</div>; // Show error state
@@ -47,6 +79,9 @@ const WrappedSongs = () => {
     <div className="container">
       <div className="header">
         <h1 className="title">Your Top Songs</h1>
+        <div className="subtitle">
+            {getTimeRangeLabel(wrappedConfig.timePeriod)}
+        </div>
         <Link
           to="/profile"
           className="exit-button"
@@ -87,6 +122,7 @@ const WrappedSongs = () => {
         to="/top-genres"
         className="next-button"
         onClick={() => console.log("Next page clicked")}
+        state={{ wrappedConfig }}
       >
         &#8594;
       </Link>

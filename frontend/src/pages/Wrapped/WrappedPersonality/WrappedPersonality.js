@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import './WrappedPersonality.css';
 import { listeningPersonalities } from './listeningPersonalities';
@@ -10,12 +10,18 @@ import SpotifyLinkModal from '../../../components/SpotifyLinkModal/SpotifyLinkMo
 
 
 const WrappedPersonality = () => {
-    const navigate = useNavigate();
     const [showLinkModal, setShowLinkModal] = useState(false);
     const [hasSpotifyLinked, setHasSpotifyLinked] = useState(false);
     const [error, setError] = useState('');
     const [personalityIndex, setPersonalityIndex] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const wrappedConfig = location.state?.wrappedConfig || {
+        name: 'My Wrapped',
+        timePeriod: 'medium_term'
+    };
 
     // Debug log the imported data
     console.log("Imported listening personalities:", listeningPersonalities);
@@ -39,6 +45,9 @@ const WrappedPersonality = () => {
                     headers: {
                         Authorization: `Token ${token}`,
                         'Content-Type': 'application/json',
+                    },
+                    params: {
+                        time_range: wrappedConfig.timePeriod
                     },
                     validateStatus: function(status) {
                         return status < 500; // Don't reject responses with status < 500
@@ -93,8 +102,21 @@ const WrappedPersonality = () => {
             }
         };
 
-        initializeProfile();
-    }, [navigate]);
+        if (wrappedConfig.timePeriod) {
+            initializeProfile();
+        } else {
+            navigate('/selection');
+        }
+    }, [wrappedConfig.timePeriod, navigate]);
+
+    const getTimeRangeLabel = (timeRange) => {
+        const labels = {
+            'short_term': 'Last 4 Weeks',
+            'medium_term': 'Last 6 Months',
+            'long_term': 'All Time'
+        };
+        return labels[timeRange] || timeRange;
+    };
 
     const checkSpotifyLink = async () => {
         try {
@@ -239,9 +261,9 @@ const WrappedPersonality = () => {
             </div>
 
             <Link
-                to="/your-playlist"
+                to="/wrapped-summary"
                 className="next-button"
-                onClick={() => console.log("Next page clicked")}
+                state={{ wrappedConfig }}
             >
                 &#8594;
             </Link>

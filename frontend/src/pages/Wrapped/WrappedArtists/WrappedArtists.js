@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTrail, useSpring, animated } from "@react-spring/web";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -12,6 +12,13 @@ const WrappedArtists = () => {
     const [visibleArtists, setVisibleArtists] = useState([]);
     const [topArtists, setTopArtists] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const wrappedConfig = location.state?.wrappedConfig || {
+        name: 'My Wrapped',
+        timePeriod: 'medium_term'
+    };
 
     useEffect(() => {
         const handleResize = () => {
@@ -31,6 +38,9 @@ const WrappedArtists = () => {
                     headers: {
                         'Authorization': `Token ${token}`,
                         'Content-Type': 'application/json',
+                    },
+                    params: {
+                        time_range: wrappedConfig.timePeriod
                     }
                 });
                 setTopArtists(response.data.top_artists);
@@ -53,8 +63,21 @@ const WrappedArtists = () => {
             }
         };
 
-        fetchTopArtists();
-    }, [isMobile]);
+        if (wrappedConfig.timePeriod) {
+            fetchTopArtists();
+        } else {
+            navigate('/selection');
+        }
+    }, [isMobile, wrappedConfig.timePeriod, navigate]);
+
+    const getTimeRangeLabel = (timeRange) => {
+        const labels = {
+            'short_term': 'Last 4 Weeks',
+            'medium_term': 'Last 6 Months',
+            'long_term': 'All Time'
+        };
+        return labels[timeRange] || timeRange;
+    };
 
     // Desktop animations
     const trail = useTrail(9, {
@@ -81,6 +104,9 @@ const WrappedArtists = () => {
             <div className="artist-scroll-container">
                 <div className="header-container">
                     <h1 className="header-title">Your Top Artists</h1>
+                    <div className="subtitle">
+                        {getTimeRangeLabel(wrappedConfig.timePeriod)}
+                    </div>
                     <Link
                         to="/profile"
                         className="exit-link"
@@ -146,7 +172,7 @@ const WrappedArtists = () => {
                 <Link
                     to="/top-albums"
                     className="next-page-link"
-                    onClick={() => console.log("Next page clicked")}
+                    state={{ wrappedConfig }}
                 >
                     &#8594;
                 </Link>
@@ -257,7 +283,7 @@ const WrappedArtists = () => {
             <Link
                 to="/top-albums"
                 className="next-page-link"
-                onClick={() => console.log("Next page clicked")}
+                state={{ wrappedConfig }}
             >
                 &#8594;
             </Link>
