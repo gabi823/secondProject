@@ -2,13 +2,14 @@
 .settings-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     padding: 20px;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     height: 100vh;
-    margin-top: -110px;
+    z-index: 1;
+
 }
 
 /* Left section for title and back button */
@@ -125,16 +126,18 @@
     .settings-container {
         display: flex;
         flex-direction: column; /* Stack items vertically */
-        align-items: center; /* Center align all items */
+        align-items: start; /* Center align all items */
         padding: 15px; /* Add padding for spacing */
         width: 100%; /* Ensure it spans the full screen */
         box-sizing: border-box; /* Include padding in width */
         gap: 20px; /* Add consistent spacing between sections */
+        max-height: 700px;
+
     }
 
     /* Center the title and back link */
     .settings-left-section {
-        position: sticky;
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center; /* Center align title and back link */
@@ -144,6 +147,7 @@
         margin: 0; /* Remove external margins */
         top: 0;
         z-index: 10;
+        max-height: fit-content;
     }
 
     .settings-title {
@@ -152,7 +156,7 @@
         font-weight: 700;
         margin: 0; /* Remove extra margins */
         text-align: center; /* Explicitly center the title */
-        padding-top: 150px;
+        padding-top: 50px;
 
     }
 
@@ -173,11 +177,10 @@
         display: flex;
         flex-direction: column; /* Stack sections vertically */
         align-items: stretch; /* Ensure sections span the full width */
-        justify-content: center; /* Center align horizontally */
+        justify-content: start; /* Center align horizontally */
         width: 100%; /* Full width for container */
         max-width: 360px; /* Limit max width */
         gap: 20px; /* Spacing between sections */
-        padding-top: 100px;
         overflow-y: auto;
     }
 
@@ -245,4 +248,8 @@
         cursor: pointer;
         text-align: right;
     }
+    .back-arrow {
+    font-size: 1.2rem;
+        padding-left: 120px;
+}
 }

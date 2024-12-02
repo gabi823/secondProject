@@ -3,6 +3,7 @@ import NavBarLoggedIn from "../../components/NavBarLoggedIn/NavBarLoggedIn";
 import { Link } from "react-router-dom";
 import { motion } from 'framer-motion';
 import "./Settings.css";
+import {Grid} from "@mui/material";
 
 const Settings = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -204,70 +205,79 @@ const handleLinkSpotify = async () => {
 
     return (
         <>
-            <NavBarLoggedIn />
-            <motion.div
-                className="settings-container"
-                initial="hidden"
-                animate="visible"
-                variants={fadeUpVariants}
-            >
-                {/* Left section with Settings title and Back button */}
-                <motion.div className="settings-left-section" variants={fadeUpVariants}>
-                    <h1 className="settings-title">Settings</h1>
-                    <Link to="/profile" className="settings-back-link">
-                        <span className="back-arrow">←</span>
-                        back to profile
-                    </Link>
-                </motion.div>
+            <Grid container spacing={0}>
+                <Grid item xs={12}>
+                    <NavBarLoggedIn />
+                </Grid>
+
+            {/* Left section with Settings title and Back button */}
+                 <Grid item xs={12}>
+            <div className="settings-container">
+                <Grid container spacing={0}>
+                    {/*<div className="settings-left-section">*/}
+                        <Grid item xs={12}>
+                            <h1 className="settings-title">Settings</h1>
+                        </Grid>
+                        <Grid item xs={12}>
+                              <Link to="/profile" className="settings-back-link">
+                            <span className="back-arrow">←</span>
+                            back to profile
+                        </Link>
+                        </Grid>
+                    {/*</div>*/}
+                </Grid>
+
 
                 {/* Settings items container */}
-                <motion.div className="settings-items-container" variants={fadeUpVariants}>
+                <div className="settings-items-container">
                     {/* Spotify Account Section */}
-                    <motion.div className="settings-section" variants={fadeUpVariants}>
+                    <div className="settings-section">
                         <h2>Spotify Account</h2>
                         <p>The Spotify account you’re signed in with.</p>
                         <div className="settings-info-container">
-                                {spotifyUsername ? (
-                                    <>
-                                        <span className="settings-username">{spotifyUsername}</span>
-                                        <button className="change-button" onClick={handleUnlinkSpotify}>
-                                            UNLINK
-                                        </button>
-                                    </>
-                                ) : (
-                                    <button className="change-button" onClick={handleLinkSpotify}>
-                                        LINK SPOTIFY
+                            {spotifyUsername ? (
+                                <>
+                                    <span className="settings-username">{spotifyUsername}</span>
+                                    <button className="change-button" onClick={handleUnlinkSpotify}>
+                                        UNLINK
                                     </button>
-                                )}
+                                </>
+                            ) : (
+                                <button className="change-button" onClick={handleLinkSpotify}>
+                                    LINK SPOTIFY
+                                </button>
+                            )}
                         </div>
-                    </motion.div>
+                    </div>
 
-
-                    <motion.div className="password-section" variants={fadeUpVariants}>
+                    <div className="password-section">
                         <div className="settings-section">
                             <h2>Password</h2>
                             <p>Change your nostalgify account password.</p>
                             <button className="password-button" onClick={handleChangePassword}>CHANGE</button>
                         </div>
-                    </motion.div>
+                    </div>
 
                     {/* Log Out and Delete Account Sections */}
-                    <motion.div className="settings-row" variants={fadeUpVariants}>
+                    <div className="settings-row">
                         <div className="settings-section">
                             <h2>Log Out</h2>
                             <p>Log out of your account in this browser.</p>
-                            <button className="logout-button" onClick={handleLogout} disable={isLoading}>{isLoading ? 'LOGGING OUT...' : 'LOG OUT'}</button>
+                            <button className="logout-button" onClick={handleLogout}
+                                    disable={isLoading}>{isLoading ? 'LOGGING OUT...' : 'LOG OUT'}</button>
                         </div>
                         <div className="settings-section">
                             <h2>Delete Account</h2>
                             <p>Delete your nostalgify account and its data.</p>
-                            <button className="delete-button" onClick={handleDeleteAccount} disabled={isDeleting}>{isDeleting ? 'DELETING...' : 'DELETE ACCOUNT'}</button>
+                            <button className="delete-button" onClick={handleDeleteAccount}
+                                    disabled={isDeleting}>{isDeleting ? 'DELETING...' : 'DELETE ACCOUNT'}</button>
                         </div>
-                    </motion.div>
-                </motion.div>
-            </motion.div>
+                    </div>
+                </div>
+            </div>
+                 </Grid>
+            </Grid>
         </>
     );
 };
-
 export default Settings;

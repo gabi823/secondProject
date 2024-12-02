@@ -70,6 +70,7 @@
     justify-content: center;
     position: relative;
     min-height: 100vh;
+    z-index: 10;
 }
 
 .login-box {
@@ -159,9 +160,10 @@
 
 @media (max-width: 393px) {
     .login-container {
-        padding: 20px; /* Add padding around the container */
-        box-sizing: border-box;
-        margin-top: 20px;
+        padding: 0 20px; /* Add horizontal padding */
+        top: 210px;
+        min-height: 422px;
+        margin-bottom: 500px;
     }
 
     .login-box {
